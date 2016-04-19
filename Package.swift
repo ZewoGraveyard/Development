@@ -62,7 +62,7 @@ let package = Package(
         .Package(url: "https://github.com/Zewo/URLEncodedForm.git",               majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/URLEncodedFormMediaType.git",      majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/WebSocket.git",                    majorVersion: 0, minor: 5),
-        .Package(url: "https://github.com/Zewo/XML.git",                          majorVersion: 0, minor: 5),
+        //.Package(url: "https://github.com/Zewo/XML.git",                          majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/ZeroMQ.git",                       majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/Zewo.git",                         majorVersion: 0, minor: 5),
     ]
