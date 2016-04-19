@@ -28,7 +28,6 @@ let package = Package(
         //.Package(url: "https://github.com/Zewo/CMySQL.git",                       majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/COpenSSL.git",                     majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/CURIParser.git",                   majorVersion: 0, minor: 5),
-        .Package(url: "https://github.com/Zewo/CZeroMQ.git",                      majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/ContentNegotiationMiddleware.git", majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/Event.git",                        majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/HTTP.git",                         majorVersion: 0, minor: 5),
@@ -64,6 +63,5 @@ let package = Package(
         .Package(url: "https://github.com/Zewo/WebSocket.git",                    majorVersion: 0, minor: 5),
         //.Package(url: "https://github.com/Zewo/XML.git",                          majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/ZeroMQ.git",                       majorVersion: 0, minor: 5),
-        .Package(url: "https://github.com/Zewo/Zewo.git",                         majorVersion: 0, minor: 5),
     ]
 )
