@@ -5,7 +5,6 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/open-swift/C7.git", majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/open-swift/S4.git", majorVersion: 0, minor: 4),
-        //.Package(url: "https://github.com/open-swift/D5.git", majorVersion: 0, minor: 0),
 
         .Package(url: "https://github.com/VeniceX/ChannelStream.git", majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/VeniceX/CLibvenice.git",    majorVersion: 0, minor: 5),
@@ -25,7 +24,6 @@ let package = Package(
         .Package(url: "https://github.com/Zewo/BasicAuthMiddleware.git",          majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/CHTTPParser.git",                  majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/CLibpq.git",                       majorVersion: 0, minor: 5),
-        //.Package(url: "https://github.com/Zewo/CMySQL.git",                       majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/COpenSSL.git",                     majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/CURIParser.git",                   majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/ContentNegotiationMiddleware.git", majorVersion: 0, minor: 5),
@@ -42,7 +40,6 @@ let package = Package(
         .Package(url: "https://github.com/Zewo/MediaType.git",                    majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/MessagePack.git",                  majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/Mustache.git",                     majorVersion: 0, minor: 5),
-        //.Package(url: "https://github.com/Zewo/MySQL.git",                        majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/OpenSSL.git",                      majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/POSIX.git",                        majorVersion: 0, minor: 5),
         .Package(url: "https://github.com/Zewo/POSIXRegex.git",                   majorVersion: 0, minor: 5),
