@@ -20,7 +20,7 @@ swift build -Xcc -I/usr/local/include -Xcc -I/usr/local/include/libxml2 -Xlinker
 - Dependencies
 
 ```bash
-$ sudo apt-get install libssl-dev libpq-dev libzmq3-dev libxml2-dev 
+$ sudo apt-get install libssl-dev libpq-dev libzmq3-dev libxml2-dev
 ```
 
 - Build command
