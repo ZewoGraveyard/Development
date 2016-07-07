@@ -149,14 +149,12 @@ func start() throws {
     let store = TodoInMemoryStore()
     let app = TodoApplication(store: store)
     let router = TodoRouter(app: app)
-    
+
     try Server(router).start()
 }
 
-class QuarkTests: XCTestCase {
-    func testExample() {
-        try! start()
-    }
+class QuarkTests : XCTestCase {
+    func testExample() {}
 
     static var allTests : [(String, (QuarkTests) -> () throws -> Void)] {
         return [
