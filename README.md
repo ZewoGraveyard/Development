@@ -6,7 +6,7 @@
 [![Slack][slack-badge]][slack-url]
 [![Travis][travis-badge]][travis-url]
 
-Clean Web Framework for Modern Applications
+Swift Web Framework for Modern Applications
 
 ## Installation
 
