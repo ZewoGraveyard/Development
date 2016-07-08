@@ -24,21 +24,21 @@ let package = Package(
 
 ## Authors
 
-- Alex Studnicka
-- Anton Mescheryakov
-- Brad Hilton
+- [Alex Studnicka](https://github.com/alex-alex)
+- [Anton Mescheryakov](https://github.com/antonmes)
+- [Brad Hilton](https://github.com/bradhilton)
 - Brian Rojas
-- Dan Appel
-- David Ask
-- Honza Dvorsky
-- Kevin Sullivan
-- Oleg Dreyman
-- Paulo Faria
-- Peter Zignego
-- Ricardo Borelli
-- Scott Byrns
-- Tomo Hisa
-- Thiago Holanda
+- [Dan Appel](https://github.com/Danappelxx)
+- [David Ask](https://github.com/formbound)
+- [Honza Dvorsky](https://github.com/czechboy0)
+- [Kevin Sullivan](https://github.com/kevinup7)
+- [Oleg Dreyman](https://github.com/dreymonde)
+- [Paulo Faria](http://github.com/paulofaria)
+- [Peter Zignego](https://github.com/pvzig)
+- [Ricardo Borelli](http://github.com/rabc)
+- [Scott Byrns](https://github.com/scottbyrns)
+- [Tomohisa Takaoka](https://github.com/tomohisa)
+- [Thiago Holanda](http://github.com/unnamedd)
 - Vadym Holoveichuk
 
 ## License
