@@ -27,7 +27,7 @@ let package = Package(
 - [Alex Studnicka](https://github.com/alex-alex)
 - [Anton Mescheryakov](https://github.com/antonmes)
 - [Brad Hilton](https://github.com/bradhilton)
-- Brian Rojas
+- [Brian Rojas](https://github.com/marchinram)
 - [Dan Appel](https://github.com/Danappelxx)
 - [David Ask](https://github.com/formbound)
 - [Honza Dvorsky](https://github.com/czechboy0)
@@ -39,7 +39,7 @@ let package = Package(
 - [Scott Byrns](https://github.com/scottbyrns)
 - [Tomohisa Takaoka](https://github.com/tomohisa)
 - [Thiago Holanda](http://github.com/unnamedd)
-- Vadym Holoveichuk
+- [Vadym Holoveichuk](https://github.com/goloveychuk)
 
 ## License
 
