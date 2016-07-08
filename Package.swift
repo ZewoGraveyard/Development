@@ -4,7 +4,8 @@ let package = Package(
     name: "Quark",
     targets: [
         Target(name: "Quark"),
-        Target(name: "TestApplication", dependencies: ["Quark"]),
+        Target(name: "ExampleDomain", dependencies: ["Quark"]),
+        Target(name: "ExampleApplication", dependencies: ["Quark", "ExampleDomain"]),
     ],
     dependencies: [
         .Package(url: "https://github.com/open-swift/S4.git", majorVersion: 0, minor: 10),

@@ -1,5 +1,5 @@
 public protocol Resource : RouterRepresentable {
-    associatedtype ControllerType: Controller
+    associatedtype ControllerType : Controller
     var controller: ControllerType { get }
     var file: FileProtocol.Type { get }
     var path: String { get }

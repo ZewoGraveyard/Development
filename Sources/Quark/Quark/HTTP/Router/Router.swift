@@ -1,3 +1,5 @@
+public typealias MainRouter = Router
+
 public protocol Router : RouterRepresentable {
     var path: String { get }
     var middleware: [Middleware] { get }
