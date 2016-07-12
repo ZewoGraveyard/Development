@@ -1,5 +1,3 @@
-// This is where you configure your resource
-
 struct TodoResource : Resource {
     let controller: TodoController
 

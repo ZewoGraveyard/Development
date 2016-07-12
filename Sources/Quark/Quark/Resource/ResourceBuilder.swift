@@ -115,8 +115,8 @@ extension ResourceBuilder {
         RenderOutput: StructuredDataFallibleRepresentable
         >(
         middleware: Middleware...,
-        action: (Void) throws -> ActionOutput,
-        render: (ActionOutput) throws -> RenderOutput
+        action: (Void) throws -> [ActionOutput],
+        render: ([ActionOutput]) throws -> RenderOutput
         ) {
         let mustacheSerializer = MustacheSerializer(templatePath: "Views/\(viewsPath)/list.html", file: file)
         let templateMiddleware = TemplateEngineMiddleware(serializer: mustacheSerializer)
@@ -188,14 +188,15 @@ extension ResourceBuilder {
     }
 
     public func destroy<
-        ID: PathParameterInitializable
+        ID: PathParameterInitializable,
+        DestroyOutput: StructuredDataFallibleRepresentable
         >(
         middleware: Middleware...,
-        action: (ID) throws -> Void) {
+        action: (ID) throws -> DestroyOutput?) {
         let responder = BasicResponder { request in
             let id = try ID(pathParameter: request.pathParameters["id"]!)
-            try action(id)
-            return Response(status: .noContent)
+            let output = try action(id)
+            return try Response(content: output)
         }
         addRoute(method: .delete, path: "/:id", middleware: middleware, responder: responder)
     }
@@ -246,17 +247,23 @@ extension ResourceBuilder {
         addRoute(method: .patch, path: "", middleware: [contentMapper] + middleware, responder: responder)
     }
 
-    public func destroy(
-        _ action: (Void) throws -> Void) {
+    public func destroy<
+        DestroyOutput: StructuredDataFallibleRepresentable
+        >(
+        _ action: (Void) throws -> DestroyOutput?) {
         destroy(action: action)
     }
 
-    public func destroy(
+    public func destroy<
+        DestroyOutput: StructuredDataFallibleRepresentable
+        >(
         middleware: Middleware...,
-        action: (Void) throws -> Void) {
+        action: (Void) throws -> DestroyOutput?) {
         let responder = BasicResponder { request in
-            try action()
-            return Response(status: .noContent)
+            guard let output = try action() else {
+                return Response(status: .noContent)
+            }
+            return try Response(content: output)
         }
         addRoute(method: .delete, path: "", middleware: middleware, responder: responder)
     }

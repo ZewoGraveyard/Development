@@ -1,13 +1,11 @@
-// This is where you define your domain entity
-
 public struct Todo {
-    public var id: String?
     public let title: String
     public let done: Bool
+    public let user: User
 
-    public init(id: String?, title: String, done: Bool) {
-        self.id = id
+    public init(title: String, done: Bool, user: User) {
         self.title = title
         self.done = done
+        self.user = user
     }
 }

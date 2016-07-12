@@ -1,19 +1,8 @@
-public struct UserController : SingularController {
+public struct UserController : CRUDController {
+    public typealias Model = User
     let store: Store
 
-    public func create(element user: User) throws -> User {
-        return try store.user.save(user)
-    }
-
-    public func detail() throws -> User {
-        return try store.user.get()
-    }
-
-    public func update(element user: User) throws -> User {
-        return try store.user.update(user)
-    }
-
-    public func destroy() throws {
-        try store.user.remove()
+    public var repository: Repository<User> {
+        return store.users
     }
 }

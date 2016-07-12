@@ -1,5 +1,3 @@
-// This is where you configure your resource
-
-struct UserResource : SingularResource {
+struct UserResource : Resource {
     let controller: UserController
 }

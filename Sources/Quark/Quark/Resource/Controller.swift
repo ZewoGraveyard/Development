@@ -1,41 +1,45 @@
 public protocol Controller {
-    associatedtype DetailID: PathParameterInitializable = UpdateID
-    associatedtype UpdateID: PathParameterInitializable
-    associatedtype DestroyID: PathParameterInitializable = UpdateID
+    associatedtype ID : PathParameterInitializable = String
+    associatedtype Model : StructuredDataInitializable, StructuredDataFallibleRepresentable = StructuredData
 
-    associatedtype CreateInput: StructuredDataInitializable = UpdateInput
-    associatedtype UpdateInput: StructuredDataInitializable
+    associatedtype DetailID : PathParameterInitializable = ID
+    associatedtype UpdateID : PathParameterInitializable = ID
+    associatedtype DestroyID : PathParameterInitializable = ID
 
-    associatedtype ListOutput: StructuredDataFallibleRepresentable = UpdateOutput
-    associatedtype CreateOutput: StructuredDataFallibleRepresentable = UpdateOutput
-    associatedtype DetailOutput: StructuredDataFallibleRepresentable = UpdateOutput
-    associatedtype UpdateOutput: StructuredDataFallibleRepresentable
+    associatedtype CreateInput : StructuredDataInitializable = Model
+    associatedtype UpdateInput : StructuredDataInitializable = Model
 
-    func list() throws -> ListOutput
-    func create(element: CreateInput) throws -> CreateOutput
+    associatedtype ListOutput : StructuredDataFallibleRepresentable = Model
+    associatedtype CreateOutput : StructuredDataFallibleRepresentable = Model
+    associatedtype DetailOutput : StructuredDataFallibleRepresentable = Model
+    associatedtype UpdateOutput : StructuredDataFallibleRepresentable = Model
+    associatedtype DestroyOutput : StructuredDataFallibleRepresentable = Model
+
+    func list() throws -> [ListOutput]
+    func create(_ input: CreateInput) throws -> CreateOutput
     func detail(id: DetailID) throws -> DetailOutput
-    func update(id: UpdateID, element: UpdateInput) throws -> UpdateOutput
-    func destroy(id: DestroyID) throws
+    func update(id: UpdateID, _ input: UpdateInput) throws -> UpdateOutput
+    func destroy(id: DestroyID) throws -> DestroyOutput
 }
 
-extension Controller {
-    public func list() throws -> ListOutput {
+public extension Controller {
+    func list() throws -> [ListOutput] {
         throw ClientError.notFound
     }
 
-    public func create(element: CreateInput) throws -> CreateOutput {
+    func create(_: CreateInput) throws -> CreateOutput {
         throw ClientError.notFound
     }
 
-    public func detail(id: DetailID) throws -> DetailOutput {
+    func detail(id: DetailID) throws -> DetailOutput {
         throw ClientError.notFound
     }
 
-    public func update(id: UpdateID, element: UpdateInput) throws -> UpdateOutput {
+    func update(id: UpdateID, _: UpdateInput) throws -> UpdateOutput {
         throw ClientError.notFound
     }
 
-    public func destroy(id: DestroyID) throws {
+    func destroy(id: DestroyID) throws -> DestroyOutput {
         throw ClientError.notFound
     }
 }

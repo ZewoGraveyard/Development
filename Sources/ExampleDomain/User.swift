@@ -1,9 +1,11 @@
-// This is where you define your domain entity
-
 public struct User {
-    public let name: String
+    public let username: String
+    public let password: String
+    public let todos: [Todo]
 
-    public init(name: String) {
-        self.name = name
+    public init(username: String, password: String, todos: [Todo]) {
+        self.username = username
+        self.password = password
+        self.todos = todos
     }
 }

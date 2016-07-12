@@ -1,16 +1,8 @@
-extension Todo : UniquelyIdentifiable {
-    public var uniqueIdentifier: String? {
-        get { return id }
-        set { id = newValue }
-    }
-}
-
 public final class InMemoryStore : Store {
-    public var todos: Entity<Todo>
-    public var user: SingularEntity<User>
+    public let todos: Repository<Todo> = Repository(InMemoryRepository())
+    public let users: Repository<User> = Repository(InMemoryRepository())
 
-    public init() {
-        todos = Entity(InMemoryEntity<Todo>())
-        user = SingularEntity(InMemorySingularEntity<User>())
+    public func fetchAllDoneTodos() throws -> [Record<Todo>] {
+        return try todos.fetchAll().filter({ $0.model.done })
     }
 }

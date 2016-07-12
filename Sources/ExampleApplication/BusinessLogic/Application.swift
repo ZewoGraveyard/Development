@@ -9,6 +9,7 @@ public struct Application {
 }
 
 public protocol Store {
-    var todos: Entity<Todo> { get }
-    var user: SingularEntity<User> { get }
+    var todos: Repository<Todo> { get }
+    var users: Repository<User> { get }
+    func fetchAllDoneTodos() throws -> [Record<Todo>]
 }

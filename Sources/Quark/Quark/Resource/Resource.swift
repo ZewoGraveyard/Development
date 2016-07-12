@@ -12,7 +12,7 @@ public protocol Resource : RouterRepresentable {
 
     associatedtype ListOutput: StructuredDataFallibleRepresentable = ControllerType.ListOutput
 
-    func renderList(input: ControllerType.ListOutput) throws -> ListOutput
+    func renderList(input: [ControllerType.ListOutput]) throws -> ListOutput
 }
 
 // Warning: This is here due to a compiler bug.
@@ -52,7 +52,7 @@ extension Resource {
 
     public func build(resource: ResourceBuilder) {}
 
-    public func renderList(input: ControllerType.ListOutput) throws -> ListOutput {
+    public func renderList(input: [ControllerType.ListOutput]) throws -> ListOutput {
         throw PresenterError.bypass
     }
 }
