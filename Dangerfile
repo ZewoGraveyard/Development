@@ -4,6 +4,8 @@ trivial_changes = pr_title.include? "#trivial" || !has_source_changes
 github = env.request_source.client
 organization, repository = env.ci_source.repo_slug.split("/")
 
+message "Ahoy, @#{pr_author}!! Thanks for your contribution mate!"
+
 unless github.organization_member?(organization, pr_author)
     message "Hey @#{pr_author}, you're not a member of #{organization} yet. Would you like to join the #{organization} Github organization?\nYou can also join our [Slack](http://slack.zewo.io) and interact with a great community of developers. 😊"
 end

@@ -6,11 +6,19 @@
 [![Slack][slack-badge]][slack-url]
 [![Travis][travis-badge]][travis-url]
 
-Swift Web Framework for Modern Applications
+A Clean Web Framework for Modern Swift Applications
+
+## Manifesto
+
+**Quark** is a framework heavily inspired by the [Clean Architecture](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [The Tweleve-Factor App](http://12factor.net). We believe that frameworks should do their best to make the developer's life easier while maintaining freedom. Applications built with **Quark** are architected in a way that the business logic is separated from the delivery mechanism (the web). This provides longevity for your application to evolve as the web evolves and incorporate new ways to deliver your application (real-time web apps for example). **Quark**'s architecture also allows you to test your business logic with no dependencies on the web or the database. You can have integration tests without booting up a server too.
+
+## Documentation
+
+Want to dive deep inside **Quark**? Read our beautiful [Documentation](quak-docs.readme.io).
 
 ## Installation
 
-Works best with June 20, 2016 Swift 3 Development Snapshot.
+**Quark** works best with **June 20, 2016** Swift 3 Development Snapshot.
 
 ```swift
 import PackageDescription
@@ -22,7 +30,23 @@ let package = Package(
 )
 ```
 
+## Support
+
+If you have **any** trouble create a Github [issue](https://github.com/QuarkX/Quark/issues/new). When stating your issue be sure to add enough details and reproduction steps so we can help you faster. If you prefer you can join our [Slack](http://slack.zewo.io) and go to the **#help** channel too.
+
+## Community
+
+[![Slack][slack-image]][slack-url]
+
+We have an amazing community. Join us on [Slack](http://slack.zewo.io) to get to know us!
+
+## Contribution
+
+Yo! Want to be a part of **Quark**? Check out our [Contribution Guidelines](CONTRIBUTING.md).
+
 ## Authors
+
+These are the amazing folks that helped developing **Quark**. 
 
 - [Alex Studnicka](https://github.com/alex-alex)
 - [Anton Mescheryakov](https://github.com/antonmes)
@@ -49,7 +73,7 @@ let package = Package(
 [swift-url]: https://swift.org
 [zewo-badge]: https://img.shields.io/badge/Zewo-0.5-FF7565.svg?style=flat
 [zewo-url]: http://zewo.io
-[platform-badge]: https://img.shields.io/badge/Platforms-OS%20X%20--%20Linux-lightgray.svg?style=flat
+[platform-badge]: https://img.shields.io/badge/Platforms-macOS%20&%20Linux-lightgray.svg?style=flat
 [platform-url]: https://swift.org
 [mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
 [mit-url]: https://tldrlegal.com/license/mit-license
