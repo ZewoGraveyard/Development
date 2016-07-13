@@ -1,36 +1,43 @@
 public typealias MainRouter = Router
 
 public protocol Router : RouterRepresentable {
-    var path: String { get }
+    var fileType: FileProtocol.Type { get }
+    var staticFilesPath: String { get }
+
     var middleware: [Middleware] { get }
-    var matcher: RouteMatcher.Type { get }
-    func build(router: RouterBuilder)
+    func recover(error: ErrorProtocol) throws -> Response
+    func custom(routes: Routes)
+}
+
+// Warning: This is here due to a compiler bug.
+// This will have to be deleted once we split Venice from Quark
+
+extension Router {
+    public var fileType: FileProtocol.Type {
+        return File.self
+    }
 }
 
 extension Router {
-    public var path: String {
-        return ""
+    public var staticFilesPath: String {
+        return "Public"
     }
 
     public var middleware: [Middleware] {
         return []
     }
 
-    public var matcher: RouteMatcher.Type {
-        return TrieRouteMatcher.self
+    public func recover(error: ErrorProtocol) throws -> Response {
+        return try RecoveryMiddleware.defaultRecover(error: error)
     }
 
-    public func build(router: RouterBuilder) {}
+    public func custom(routes: Routes) {}
 }
 
 extension Router {
     public var router: RouterProtocol {
-        let router = RouterBuilder(path: path)
-        build(router: router)
-        return BasicRouter(
-            middleware: middleware,
-            matcher: matcher,
-            router: router
-        )
+        let routes = Routes(staticFilesPath: staticFilesPath, fileType: fileType)
+        custom(routes: routes)
+        return BasicRouter(recover: recover, middleware: middleware, routes: routes)
     }
 }

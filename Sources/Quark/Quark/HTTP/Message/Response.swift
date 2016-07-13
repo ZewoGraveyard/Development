@@ -111,6 +111,31 @@ extension Response {
     public var reasonPhrase: String {
         return status.reasonPhrase
     }
+
+    public var cookies: Set<AttributedCookie> {
+        get {
+            var cookies = Set<AttributedCookie>()
+
+            for header in cookieHeaders {
+                if let cookie = AttributedCookie.parse(header) {
+                    cookies.insert(cookie)
+                }
+            }
+
+            return cookies
+        }
+
+        set(cookies) {
+            var headers = Set<String>()
+
+            for cookie in cookies {
+                let header = String(cookie)
+                headers.insert(header)
+            }
+
+            cookieHeaders = headers
+        }
+    }
 }
 
 extension Response : CustomStringConvertible {

@@ -34,4 +34,4 @@ if !trivial_changes && !modified_files.include?("CHANGELOG.md")
   fail "Please include a CHANGELOG entry. \nYou can find it at CHANGELOG.md"
 end
 
-(modified_files + added_files).select {|f| f != "Dangerfile" && File.read(f) =~ /all rights reserved/i}.each {|f| fail("#{f} includes all rights reserved")}
+added_files.select {|f| f != "Dangerfile" && File.read(f) =~ /all rights reserved/i}.each {|f| fail("#{f} includes all rights reserved")}

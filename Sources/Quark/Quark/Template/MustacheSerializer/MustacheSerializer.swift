@@ -27,15 +27,15 @@ extension StructuredData : MustacheBoxable {
 
 public struct MustacheSerializer : StructuredDataSerializer {
     public let templatePath: String
-    let file: FileProtocol.Type
+    let fileType: FileProtocol.Type
 
-    public init(templatePath: String, file: FileProtocol.Type) {
+    public init(templatePath: String, fileType: FileProtocol.Type) {
         self.templatePath = templatePath
-        self.file = file
+        self.fileType = fileType
     }
 
     public func serialize(_ structuredData: StructuredData) throws -> Data {
-        let templateFile = try file.init(path: templatePath)
+        let templateFile = try fileType.init(path: templatePath)
 
         guard let templateString = try? String(data: templateFile.readAllBytes()) else {
             throw MustacheSerializerError.unsupportedTemplateEncoding

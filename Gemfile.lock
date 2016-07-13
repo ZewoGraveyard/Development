@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/ashfurrow/danger-swiftlint/
-  revision: 2ae416a243f3c3d35cbe465e66a4c39e529eb423
-  branch: master
-  specs:
-    danger-swiftlint (0.1.2)
-      danger
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,7 +39,6 @@ PLATFORMS
 
 DEPENDENCIES
   danger
-  danger-swiftlint!
 
 BUNDLED WITH
    1.10.6

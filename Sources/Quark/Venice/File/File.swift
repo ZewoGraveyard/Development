@@ -201,12 +201,23 @@ extension File {
 }
 
 extension File {
-    public static func workingDirectory() throws -> String {
+    public static var workingDirectory: String {
         var buffer = [Int8](repeating: 0, count: Int(MAXNAMLEN))
-        errno = 0
         let workingDirectory = getcwd(&buffer, buffer.count)
-        try ensureLastOperationSucceeded()
+
+        do {
+            try ensureLastOperationSucceeded()
+        } catch {
+            fatalError("Error: \(error)")
+        }
+
         return String(cString: workingDirectory!)
+    }
+
+    public static func changeWorkingDirectory(path: String) throws {
+        if chdir(path) == -1 {
+            try ensureLastOperationSucceeded()
+        }
     }
 
     public static func contentsOfDirectory(at path: String) throws -> [String] {

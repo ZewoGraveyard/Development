@@ -1,27 +1,31 @@
 public struct TodoController : Controller {
     let store: Store
 
+    public var repository: Repository<Todo> {
+        return store.todos
+    }
+
     public func list() throws -> [Todo] {
-        return try store.todos.fetchAll().map({ $0.model })
+        return try self.super.list()
     }
 
     public func listDone() throws -> [Todo] {
-        return try store.fetchAllDoneTodos().map({ $0.model })
+        return try store.fetchDoneTodos().map({ $0.model })
     }
 
-    public func create(_ todo: Todo) throws -> Todo {
-        return try store.todos.save(todo).model
+    public func create(model todo: Todo) throws -> Todo {
+        return try self.super.create(model: todo)
     }
 
     public func detail(id: String) throws -> Todo {
-        return try store.todos.fetch(id: id).model
+        return try self.super.detail(id: id)
     }
 
-    public func update(id: String, _ todo: Todo) throws -> Todo {
-        return try store.todos.update(id: id, model: todo).model
+    public func update(id: String, model todo: Todo) throws -> Todo {
+        return try self.super.update(id: id, model: todo)
     }
 
     public func destroy(id: String) throws -> Todo {
-        return try store.todos.remove(id: id).model
+        return try self.super.destroy(id: id)
     }
 }

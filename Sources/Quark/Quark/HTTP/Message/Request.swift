@@ -174,17 +174,15 @@ extension Request {
         }
     }
 
-    // Waiting on removal of cookies at S4
+    public var cookies: Set<Cookie> {
+        get {
+            return headers["Cookie"].flatMap(Cookie.parse) ?? []
+        }
 
-    // public var cookies: Set<Cookie> {
-    //     get {
-    //         return headers["Cookie"].merged().flatMap(Cookie.parse) ?? []
-    //     }
-
-    //     set(cookies) {
-    //         headers["Cookie"] = Header(merging: cookies.map({$0.description}))
-    //     }
-    // }
+        set(cookies) {
+            headers["Cookie"] = cookies.map({$0.description}).joined(separator: ", ")
+        }
+    }
 
     public var host: String? {
         get {

@@ -1,14 +1,42 @@
+struct Credentials : ResourceConvertible {
+    let email: String
+    let password: String
+}
+
 public struct Router : MainRouter {
+    let app: Application
     let todos: TodoResource
-    let users: UserResource
 
     public init(app: Application) {
-        todos = TodoResource(controller: app.todoController)
-        users = UserResource(controller: app.userController)
+        self.app = app
+        self.todos = TodoResource(controller: app.todoController)
     }
 
-    public func build(router: RouterBuilder) {
-        router.compose("/todos", resource: todos)
-        router.compose("/users", resource: users)
+    public func custom(routes: Routes) {
+        routes.compose("/todos", resource: todos)
+
+        routes.get("/") { request in
+            guard request.session["user-id"] != nil else {
+                return Response(redirectTo: "/sign-in")
+            }
+            return try Response(filePath: "Public/index.html")
+        }
+
+        routes.post("/sign-in") { (request, credentials: Credentials) in
+            let id = try self.app.signIn(email: credentials.email, password: credentials.password)
+            request.session["user-id"] = id
+            return Response(redirectTo: "/")
+        }
+
+        routes.post("/sign-up") { (request, credentials: Credentials) in
+            let id = try self.app.signUp(email: credentials.email, password: credentials.password)
+            request.session["user-id"] = id
+            return Response(redirectTo: "/")
+        }
+
+        routes.post("/sign-out") { request in
+            request.session["user-id"] = nil
+            return Response(redirectTo: "/sign-in")
+        }
     }
 }

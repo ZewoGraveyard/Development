@@ -44,6 +44,8 @@ extension Server {
                 if !request.isKeepAlive {
                     try stream.close()
                 }
+            } catch SystemError.brokenPipe {
+                break
             } catch {
                 if stream.closed {
                     break
@@ -163,50 +165,5 @@ extension Server {
         header += "Started HTTP server, listening on port \(port)."
         print(header)
     }
-
-    public static func run(_ configure: (ServerParameters) throws -> ResponderRepresentable) {
-        do {
-            let responder = try configure(ServerParameters())
-            try Server(responder.responder).start()
-        } catch {
-            print(error)
-        }
-    }
 }
 
-public protocol ParameterRepresentable {
-    var parameters: [String: String] { get }
-}
-
-public struct ServerParameters : ParameterRepresentable {
-    public let parameters: [String: String]
-
-    init() {
-        self.parameters = [:]
-    }
-
-    func host() throws -> String {
-        return ""
-    }
-
-    func port() throws -> Int {
-        return 0
-    }
-}
-
-public protocol DatabaseParameters : ParameterRepresentable {
-    func databaseURI() throws -> String
-}
-
-public enum DatabaseParametersError : ErrorProtocol {
-    case databaseURIRequired
-}
-
-extension DatabaseParameters {
-    public func databaseURI() throws -> String {
-        guard let uri = parameters["database-uri"] else {
-            throw DatabaseParametersError.databaseURIRequired
-        }
-        return uri
-    }
-}

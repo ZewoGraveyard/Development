@@ -1,41 +1,41 @@
-public protocol CRUDController : Controller {
-    associatedtype Model
+public protocol Controller {
+    associatedtype Model : StructuredDataInitializable, StructuredDataFallibleRepresentable = StructuredData
     var repository: Repository<Model> { get }
 
     func list() throws -> [Model]
-    func create(_ model: Model) throws -> Model
+    func create(model: Model) throws -> Model
     func detail(id: String) throws -> Model
-    func update(id: String, _ model: Model) throws -> Model
+    func update(id: String, model: Model) throws -> Model
     func destroy(id: String) throws -> Model
 }
 
-public extension CRUDController {
-    var `default`: DefaultCRUDController<Model> {
-        return DefaultCRUDController(repository: self.repository)
+public extension Controller {
+    var `super`: DefaultController<Model> {
+        return DefaultController(repository: self.repository)
     }
 
     func list() throws -> [Model] {
-        return try self.default.list()
+        return try self.super.list()
     }
 
     func create(model: Model) throws -> Model {
-        return try self.default.create(model: model)
+        return try self.super.create(model: model)
     }
 
     func detail(id: String) throws -> Model {
-        return try self.default.detail(id: id)
+        return try self.super.detail(id: id)
     }
 
     func update(id: String, model: Model) throws -> Model {
-        return try self.default.update(id: id, model: model)
+        return try self.super.update(id: id, model: model)
     }
 
     func destroy(id: String) throws -> Model {
-        return try self.default.destroy(id: id)
+        return try self.super.destroy(id: id)
     }
 }
 
-public struct DefaultCRUDController<M where M : StructuredDataInitializable, M : StructuredDataFallibleRepresentable> : CRUDController {
+public struct DefaultController<M where M : StructuredDataInitializable, M : StructuredDataFallibleRepresentable> : Controller {
     public typealias Model = M
     public let repository: Repository<Model>
 

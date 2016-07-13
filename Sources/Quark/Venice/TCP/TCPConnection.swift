@@ -67,7 +67,7 @@ public final class TCPConnection : Connection {
             } catch SystemError.connectionResetByPeer {
                 closed = true
                 throw StreamError.closedStream(data: Data(data.prefix(received)))
-          }
+            }
         }
 
         return Data(data.prefix(received))

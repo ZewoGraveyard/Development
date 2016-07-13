@@ -13,6 +13,7 @@ public protocol FileProtocol {
     init(path: String, mode: FileMode) throws
     var stream: Stream { get }
     var fileExtension: String? { get }
+    static func changeWorkingDirectory(path: String) throws
 
     func write(_ data: Data, timingOut deadline: Double) throws
     func read(upTo byteCount: Int, timingOut deadline: Double) throws -> Data

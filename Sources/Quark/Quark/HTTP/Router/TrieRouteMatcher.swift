@@ -1,8 +1,8 @@
 public struct TrieRouteMatcher : RouteMatcher {
-    private var routesTrie = Trie<String, Route>()
-    public let routes: [Route]
+    private var routesTrie = Trie<String, RouteProtocol>()
+    public let routes: [RouteProtocol]
 
-    public init(routes: [Route]) {
+    public init(routes: [RouteProtocol]) {
         self.routes = routes
 
         for route in routes {
@@ -15,7 +15,7 @@ public struct TrieRouteMatcher : RouteMatcher {
 
         // ensure parameter paths are processed later than static paths
         routesTrie.sort { t1, t2 in
-            func rank(_ t: Trie<String, Route>) -> Int {
+            func rank(_ t: Trie<String, RouteProtocol>) -> Int {
                 if t.prefix == "*" {
                     return 3
                 }
@@ -29,7 +29,7 @@ public struct TrieRouteMatcher : RouteMatcher {
         }
     }
 
-    func searchForRoute(head: Trie<String, Route>, components: IndexingIterator<[String]>, parameters: inout [String: String]) -> Route? {
+    func searchForRoute(head: Trie<String, RouteProtocol>, components: IndexingIterator<[String]>, parameters: inout [String: String]) -> RouteProtocol? {
 
         var components = components
 
@@ -41,7 +41,7 @@ public struct TrieRouteMatcher : RouteMatcher {
 
         // store each possible path (ie both a static and a parameter)
         // and then go through them all
-        var paths = [Trie<String, Route>]()
+        var paths = [Trie<String, RouteProtocol>]()
 
         for child in head.children {
 
@@ -82,7 +82,7 @@ public struct TrieRouteMatcher : RouteMatcher {
         return nil
     }
 
-    public func match(_ request: Request) -> Route? {
+    public func match(_ request: Request) -> RouteProtocol? {
         guard let path = request.path else {
             return nil
         }

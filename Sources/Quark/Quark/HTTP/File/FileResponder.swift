@@ -1,12 +1,12 @@
 public struct FileResponder : Responder {
     let path: String
     let headers: Headers
-    let file: FileProtocol.Type
+    let fileType: FileProtocol.Type
 
-    public init(path: String, headers: Headers = [:], file: FileProtocol.Type) {
+    public init(path: String, headers: Headers = [:], fileType: FileProtocol.Type) {
         self.path = path
         self.headers = headers
-        self.file = file
+        self.fileType = fileType
     }
 
     public func respond(to request: Request) throws -> Response {
@@ -14,15 +14,10 @@ public struct FileResponder : Responder {
             throw ClientError.methodNotAllowed
         }
 
-        guard let requestPath = request.path else {
+        guard let path = request.path else {
             throw ServerError.internalServerError
         }
 
-        var path = requestPath
-
-        if path.ends(with: "/") {
-            path += "index.html"
-        }
-        return try Response(status: .ok, headers: headers, filePath: self.path + path, file: file)
+        return try Response(status: .ok, headers: headers, filePath: self.path + path, fileType: fileType)
     }
 }

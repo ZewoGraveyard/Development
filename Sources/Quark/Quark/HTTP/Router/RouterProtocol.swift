@@ -9,9 +9,9 @@ extension RouterRepresentable {
 }
 
 public protocol RouterProtocol : Responder, RouterRepresentable {
-    var routes: [Route] { get }
+    var routes: [RouteProtocol] { get }
     var fallback: Responder { get }
-    func match(_ request: Request) -> Route?
+    func match(_ request: Request) -> RouteProtocol?
 }
 
 extension RouterProtocol {
@@ -27,19 +27,19 @@ extension RouterProtocol {
     }
 }
 
-public protocol Route : Responder {
+public protocol RouteProtocol : Responder {
     var path: String { get }
     var actions: [Method: Responder] { get }
     var fallback: Responder { get }
 }
 
 public protocol RouteMatcher {
-    var routes: [Route] { get }
-    init(routes: [Route])
-    func match(_ request: Request) -> Route?
+    var routes: [RouteProtocol] { get }
+    init(routes: [RouteProtocol])
+    func match(_ request: Request) -> RouteProtocol?
 }
 
-extension Route {
+extension RouteProtocol {
     public var fallback: Responder {
         return BasicResponder { _ in
             Response(status: .methodNotAllowed)
@@ -52,7 +52,7 @@ extension Route {
     }
 }
 
-public final class BasicRoute : Route {
+public final class BasicRoute : RouteProtocol {
     public let path: String
     public var actions: [Method: Responder]
     public var fallback: Responder
@@ -69,5 +69,17 @@ public final class BasicRoute : Route {
 
     public static let defaultFallback = BasicResponder { _ in
         Response(status: .methodNotAllowed)
+    }
+}
+
+extension BasicRoute : CustomStringConvertible {
+    public var description: String {
+        var actions: [String] = []
+
+        for (method, _) in self.actions {
+            actions.append("\(method) \(path)")
+        }
+
+        return actions.joined(separator: ", ")
     }
 }

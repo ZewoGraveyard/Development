@@ -1,32 +1,25 @@
 public struct BasicRouter : RouterProtocol {
     public let middleware: [Middleware]
-    public let matcher: RouteMatcher
-    public let routes: [Route]
+    public let routes: [RouteProtocol]
     public let fallback: Responder
+    public let matcher: RouteMatcher
 
-    init(middleware: [Middleware], matcher: RouteMatcher.Type, router: RouterBuilder) {
-        self.middleware = middleware
-        self.matcher = matcher.init(routes: router.routes)
-        self.routes = router.routes
-        self.fallback = router.fallback
-    }
-
-    public init(
-        path: String = "",
-        matcher: RouteMatcher.Type = TrieRouteMatcher.self,
-        middleware: [Middleware] = [],
-        build: @noescape (router: RouterBuilder) -> Void
+    init(
+        recover: ((ErrorProtocol) throws -> Response),
+        middleware: [Middleware],
+        routes: Routes
         ) {
-        let router = RouterBuilder(path: path)
-        build(router: router)
-        self.init(
-            middleware: middleware,
-            matcher: matcher,
-            router: router
-        )
+        var chain: [Middleware] = []
+        chain.append(RecoveryMiddleware(recover))
+        chain.append(contentsOf: middleware)
+
+        self.middleware = chain
+        self.routes = routes.routes
+        self.fallback = routes.fallback
+        self.matcher = TrieRouteMatcher(routes: routes.routes)
     }
 
-    public func match(_ request: Request) -> Route? {
+    public func match(_ request: Request) -> RouteProtocol? {
         return matcher.match(request)
     }
 }

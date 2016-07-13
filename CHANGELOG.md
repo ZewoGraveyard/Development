@@ -4,5 +4,7 @@
 * `Application`
 * `Controller`
 * `Store`
+* `Repository`
+* `Record`
 * `Router`
 * `Resource`

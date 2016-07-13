@@ -1,33 +1,25 @@
 public struct BasicResource : RouterProtocol {
     public let middleware: [Middleware]
-    public let routes: [Route]
+    public let routes: [RouteProtocol]
     public let fallback: Responder
     public let matcher: RouteMatcher
 
     init(
-        matcher: RouteMatcher.Type,
-        middleware: [Middleware],
-        mediaTypes: [MediaTypeRepresentor.Type],
         recover: ((ErrorProtocol) throws -> Response),
-        resource: ResourceBuilder) {
+        middleware: [Middleware],
+        routes: ResourceRoutes
+        ) {
         var chain: [Middleware] = []
-
         chain.append(RecoveryMiddleware(recover))
-
-        var types: [MediaTypeRepresentor.Type] = [JSON.self, URLEncodedForm.self]
-        types.append(contentsOf: mediaTypes)
-        let contentNegotiaton = ContentNegotiationMiddleware(mediaTypes: types)
-        chain.append(contentNegotiaton)
-
         chain.append(contentsOf: middleware)
 
         self.middleware = chain
-        self.fallback = resource.fallback
-        self.matcher = matcher.init(routes: resource.routes)
-        self.routes = resource.routes
+        self.routes = routes.routes
+        self.fallback = routes.fallback
+        self.matcher = TrieRouteMatcher(routes: routes.routes)
     }
 
-    public func match(_ request: Request) -> Route? {
+    public func match(_ request: Request) -> RouteProtocol? {
         return matcher.match(request)
     }
 }
