@@ -46,11 +46,7 @@ Yo! Want to be a part of **Quark**? Check out our [Contribution Guidelines](CONT
 
 ## Authors
 
-<<<<<<< HEAD
-These are the amazing folks that helped developing **Quark**.
-=======
 These are the amazing folks that have contributed in the development of **Quark**.
->>>>>>> master
 
 - [Alex Studnicka](https://github.com/alex-alex)
 - [Anton Mescheryakov](https://github.com/antonmes)
