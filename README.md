@@ -14,7 +14,7 @@ A Clean Web Framework for Modern Swift Applications
 
 ## Documentation
 
-Want to dive deep inside **Quark**? Read our beautiful [Documentation](quak-docs.readme.io).
+Want to dive deep inside **Quark**? Read our beautiful [documentation](https://quark-docs.readme.io).
 
 ## Installation
 
@@ -46,7 +46,7 @@ Yo! Want to be a part of **Quark**? Check out our [Contribution Guidelines](CONT
 
 ## Authors
 
-These are the amazing folks that helped developing **Quark**. 
+These are the amazing folks that have contributed in the development of **Quark**. 
 
 - [Alex Studnicka](https://github.com/alex-alex)
 - [Anton Mescheryakov](https://github.com/antonmes)
