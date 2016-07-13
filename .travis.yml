@@ -1,12 +1,16 @@
-os:
-  - osx
-language: generic
+<<<<<<< HEAD
+language: swift
 sudo: required
-dist: trusty
 osx_image: xcode8
 install:
   - eval "$(curl -sL https://raw.githubusercontent.com/QuarkX/Quark/master/swiftenv-install.sh)"
 script:
   - swift build
   - swift build --configuration release
-  - swift test
+  - swift package generate-xcodeproj
+  - set -o pipefail
+  - xcodebuild -version
+  - xcodebuild -showsdks
+  - xcodebuild -project Quark.xcodeproj -scheme Quark -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty -c;
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
