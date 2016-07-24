@@ -10,7 +10,7 @@ A Clean Web Framework for Modern Swift Applications
 
 ## Manifesto
 
-**Quark** is a framework heavily inspired by the [Clean Architecture](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [The Tweleve-Factor App](http://12factor.net). We believe that frameworks should do their best to make the developer's life easier while maintaining freedom. Applications built with **Quark** are architected in a way that the business logic is separated from the delivery mechanism (the web). This provides longevity for your application to evolve as the web evolves and incorporate new ways to deliver your application (real-time web apps for example). **Quark**'s architecture also allows you to test your business logic with no dependencies on the web or the database. You can have integration tests without booting up a server too.
+**Quark** is a framework heavily inspired by the [Clean Architecture](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [The Twelve-Factor App](http://12factor.net). We believe that frameworks should do their best to make the developer's life easier while maintaining freedom. Applications built with **Quark** are architected in a way that the business logic is separated from the delivery mechanism (the web). This provides longevity for your application to evolve as the web evolves and incorporate new ways to deliver your application (real-time web apps for example). **Quark**'s architecture also allows you to test your business logic with no dependencies on the web or the database. You can have integration tests without booting up a server too.
 
 ## Documentation
 
