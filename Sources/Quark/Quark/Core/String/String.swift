@@ -27,6 +27,16 @@ extension String {
 		return self[i]
 	}
 
+    public func capitalized() -> String {
+        let first = String(characters.prefix(1)).uppercased()
+        let rest = String(characters.dropFirst()).lowercased()
+        return first + rest
+    }
+
+    public mutating func capitalize() {
+        self = self.capitalized()
+    }
+
     public func split(separator: Character, maxSplits: Int = .max, omittingEmptySubsequences: Bool = true) -> [String] {
         return characters.split(separator: separator, maxSplits: maxSplits, omittingEmptySubsequences: omittingEmptySubsequences).map(String.init)
     }

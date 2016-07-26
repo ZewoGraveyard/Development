@@ -220,29 +220,62 @@ extension StructuredData {
         }
 
         set(structuredData) {
-            switch self {
-            case .array(let array):
+            if case .array(let array) = self {
                 var array = array
                 if index >= 0 && index < array.count {
                     array[index] = structuredData ?? .null
                     self = .array(array)
                 }
-            default: break
             }
         }
     }
 
-    public subscript(key: String) -> StructuredData? {
+    public subscript(keyPath: String) -> StructuredData? {
         get {
-            return dictionaryValue?[key]
+            let keys = keyPath.split(separator: ".")
+            var value: StructuredData?
+
+            for key in keys {
+                if let v = value {
+                    value = v.dictionaryValue?[key]
+                } else {
+                    value = dictionaryValue?[key]
+                }
+            }
+
+            return value
         }
+
         set(structuredData) {
-            switch self {
-            case .dictionary(let dictionary):
+            if case .dictionary(let dictionary) = self {
                 var dictionary = dictionary
-                dictionary[key] = structuredData
-                self = .dictionary(dictionary)
-            default: break
+                var keys = keyPath.split(separator: ".")
+                let first = keys.first!
+                keys.removeFirst()
+
+                if keys.isEmpty {
+                    if let existingStructuredData = self[first], newStructuredData = structuredData {
+                        var combinedDictionary: [String: StructuredData] = [:]
+                        if case .dictionary(let existingDictionary) = existingStructuredData, case .dictionary(let newDictionary) = newStructuredData {
+                            for (key, value) in existingDictionary {
+                                combinedDictionary[key] = value
+                            }
+
+                            for (key, value) in newDictionary {
+                                combinedDictionary[key] = value
+                            }
+
+                            dictionary[first] = .dictionary(combinedDictionary)
+                        }
+                    } else {
+                        dictionary[first] = structuredData
+                    }
+                    self = .dictionary(dictionary)
+                } else {
+                    var next = self[first] ?? [:]
+                    next[keys.joined(separator: ".")] = structuredData
+                    self[first] = next
+                }
             }
         }
     }

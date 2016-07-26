@@ -233,8 +233,10 @@ extension GenericJSONStructuredDataParser {
         }
 
         var fraction: Double = 0.0
+        var hasFraction = false
 
         if expect(".") {
+            hasFraction = true
             var factor = 0.1
             var fractionLength = 0
 
@@ -291,7 +293,11 @@ extension GenericJSONStructuredDataParser {
             exponent *= expSign
         }
 
-        return .double(sign * (Double(integer) + fraction) * pow(10, Double(exponent)))
+        if hasFraction {
+            return .double(sign * (Double(integer) + fraction) * pow(10, Double(exponent)))
+        } else {
+            return .int(Int(sign * Double(integer) * pow(10, Double(exponent))))
+        }
     }
 
     private func parseObject() throws -> StructuredData {

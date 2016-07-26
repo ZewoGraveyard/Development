@@ -1,9 +1,17 @@
 @_exported import Quark
 @_exported import ExampleDomain
 
-Quark.run { parameters in
+struct ServerConfiguration : Configuration {
+    let host: String
+    let port: Int
+}
+
+struct AppConfiguration : Configuration {
+    let server: ServerConfiguration
+}
+
+configure { (configuration: AppConfiguration) in
     let store = InMemoryStore()
     let app = Application(store: store)
-    let router = Router(app: app)
-    return router
+    return Router(app: app)
 }

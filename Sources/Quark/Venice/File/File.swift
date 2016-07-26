@@ -205,10 +205,12 @@ extension File {
         var buffer = [Int8](repeating: 0, count: Int(MAXNAMLEN))
         let workingDirectory = getcwd(&buffer, buffer.count)
 
-        do {
-            try ensureLastOperationSucceeded()
-        } catch {
-            fatalError("Error: \(error)")
+        if workingDirectory == nil {
+            do {
+                try ensureLastOperationSucceeded()
+            } catch {
+                fatalError("Error: \(error)")
+            }
         }
 
         return String(cString: workingDirectory!)
