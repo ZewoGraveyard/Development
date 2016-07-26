@@ -50,7 +50,7 @@ Yo! Want to be a part of **Quark**? Check out our [Contribution Guidelines](CONT
 
 ## Authors
 
-These are the amazing folks that have contributed in the development of **Quark**.
+These are the amazing folks that have contributed to the development of **Quark**.
 
 - [Alex Studnicka](https://github.com/alex-alex)
 - [Anton Mescheryakov](https://github.com/antonmes)
