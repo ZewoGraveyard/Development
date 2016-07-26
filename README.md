@@ -18,7 +18,7 @@ For guides and an overview of **Quark** read our beautiful [documentation](https
 
 ## Reference
 
-Want to dive deep inside **Quark**? Take a look at **Quark**'s [reference](http://reference.quark.zewo.io).
+Want to dive deep inside **Quark**? Take a look at Quark's [reference](http://reference.quark.zewo.io).
 
 ## Installation
 
