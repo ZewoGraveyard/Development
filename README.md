@@ -4,7 +4,8 @@
 [![Platform][platform-badge]][platform-url]
 [![License][mit-badge]][mit-url]
 [![Slack][slack-badge]][slack-url]
-[![Travis][travis-badge]][travis-url]
+[![Travis CI][travis-badge]][travis-url]
+[![Circle CI][circle-ci-badge]][circle-ci-url]
 
 A Clean Web Framework for Modern Swift Applications
 
@@ -86,3 +87,5 @@ These are the amazing folks that have contributed to the development of **Quark*
 [slack-url]: http://slack.zewo.io
 [travis-badge]: https://travis-ci.org/QuarkX/Quark.svg?branch=master
 [travis-url]: https://travis-ci.org/QuarkX/Quark
+[circle-ci-badge]: https://circleci.com/gh/QuarkX/Quark.svg?style=shield
+[circle-ci-url]: https://circleci.com/gh/QuarkX/Quark
