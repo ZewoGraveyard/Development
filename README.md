@@ -14,7 +14,11 @@ A Clean Web Framework for Modern Swift Applications
 
 ## Documentation
 
-Want to dive deep inside **Quark**? Read our beautiful [documentation](https://quark-docs.readme.io).
+For guides and an overview of **Quark** read our beautiful [documentation](https://quark-docs.readme.io).
+
+## Reference
+
+Want to dive deep inside **Quark**? Take a look at **Quark**'s [reference](http://reference.quark.zewo.io).
 
 ## Installation
 
@@ -32,13 +36,13 @@ let package = Package(
 
 ## Support
 
-If you have **any** trouble create a Github [issue](https://github.com/QuarkX/Quark/issues/new). When stating your issue be sure to add enough details and reproduction steps so we can help you faster. If you prefer you can join our [Slack](http://slack.zewo.io) and go to the **#help** channel too.
+If you have **any** trouble create a Github [issue](https://github.com/QuarkX/Quark/issues/new) and we'll do everything we can to help you. When stating your issue be sure to add enough details and reproduction steps so we can help you faster. If you prefer you can join our [Slack](http://slack.zewo.io) and go to the **#help** channel too.
 
 ## Community
 
 [![Slack][slack-image]][slack-url]
 
-We have an amazing community. Join us on [Slack](http://slack.zewo.io) to get to know us!
+We have an amazing community of open and welcoming developers. Join us on [Slack](http://slack.zewo.io) to get to know us!
 
 ## Contribution
 
