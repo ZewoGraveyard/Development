@@ -94,7 +94,7 @@ These are the amazing folks that have contributed to the development of **Quark*
 [slack-url]: http://slack.zewo.io
 [travis-badge]: https://travis-ci.org/QuarkX/Quark.svg?branch=master
 [travis-url]: https://travis-ci.org/QuarkX/Quark
-[circle-ci-badge]: https://circleci.com/gh/QuarkX/Quark.svg?style=shield
+[circle-ci-badge]: https://circleci.com/gh/QuarkX/Quark/tree/master.svg?style=shield
 [circle-ci-url]: https://circleci.com/gh/QuarkX/Quark
 [codecov-badge]: https://codecov.io/gh/QuarkX/Quark/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/QuarkX/Quark
