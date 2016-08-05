@@ -6,7 +6,7 @@ extension StructuredData {
 
 extension StructuredData {
     internal func mapThrough<T>(_ transform: (@noescape (StructuredData) throws -> T)) throws -> [T] {
-        if let array = self.arrayValue {
+        if let array = self.asArray {
             return try array.map(transform)
         }
         throw StructuredDataError.incompatibleType
@@ -27,7 +27,7 @@ extension StructuredData {
 //    }
 
     internal func flatMapThrough<T>(_ transform: (@noescape (StructuredData) throws -> T?)) throws -> [T] {
-        if let array = self.arrayValue {
+        if let array = self.asArray {
             return try array.flatMap(transform)
         }
         throw StructuredDataError.incompatibleType

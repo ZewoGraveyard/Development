@@ -5,10 +5,12 @@ public final class FallibleReceivingChannel<T> : Sequence {
         self.channel = channel
     }
 
+    @discardableResult
     public func receive() throws -> T? {
         return try channel.receive()
     }
 
+    @discardableResult
     public func receiveResult() -> ChannelResult<T>? {
         return channel.receiveResult()
     }

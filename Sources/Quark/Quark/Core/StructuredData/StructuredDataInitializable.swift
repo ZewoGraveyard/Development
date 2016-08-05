@@ -26,19 +26,6 @@ extension StructuredData : StructuredDataInitializable {
     }
 }
 
-extension Optional : StructuredDataInitializable {
-    public init(structuredData: StructuredData) throws {
-        switch structuredData {
-        case .null: self = .none
-        default:
-            guard let initializable = Wrapped.self as? StructuredDataInitializable.Type else {
-                throw StructuredDataError.notStructuredDataInitializable(Wrapped.self)
-            }
-            self = try initializable.init(structuredData: structuredData) as? Wrapped
-        }
-    }
-}
-
 extension Bool : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .bool(let bool) = structuredData else {
@@ -84,6 +71,19 @@ extension Data : StructuredDataInitializable {
     }
 }
 
+extension Optional : StructuredDataInitializable {
+    public init(structuredData: StructuredData) throws {
+        guard let initializable = Wrapped.self as? StructuredDataInitializable.Type else {
+            throw StructuredDataError.notStructuredDataInitializable(Wrapped.self)
+        }
+        if case .null = structuredData {
+            self = .none
+        } else {
+            self = try initializable.init(structuredData: structuredData) as? Wrapped
+        }
+    }
+}
+
 extension Array : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .array(let array) = structuredData else {
@@ -95,7 +95,9 @@ extension Array : StructuredDataInitializable {
         var this = Array()
         this.reserveCapacity(array.count)
         for element in array {
-            try this.append(initializable.init(structuredData: element) as! Element)
+            if let value = try initializable.init(structuredData: element) as? Element {
+                this.append(value)
+            }
         }
         self = this
     }
@@ -124,7 +126,9 @@ extension Dictionary : StructuredDataInitializable {
         }
         var this = Dictionary(minimumCapacity: dictionary.count)
         for (key, value) in dictionary {
-            this[keyInitializable.init(structuredDataDictionaryKey: key) as! Key] = try valueInitializable.init(structuredData: value) as? Value
+            if let key = keyInitializable.init(structuredDataDictionaryKey: key) as? Key {
+                this[key] = try valueInitializable.init(structuredData: value) as? Value
+            }
         }
         self = this
     }

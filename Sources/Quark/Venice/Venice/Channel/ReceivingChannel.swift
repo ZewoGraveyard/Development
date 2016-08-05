@@ -5,6 +5,7 @@ public final class ReceivingChannel<T> : Sequence {
         self.channel = channel
     }
 
+    @discardableResult
     public func receive() -> T? {
         return channel.receive()
     }

@@ -1,3 +1,16 @@
+private struct HashedType : Hashable {
+    let hashValue: Int
+    init(_ type: Any.Type) {
+        hashValue = unsafeBitCast(type, to: Int.self)
+    }
+}
+
+private func == (lhs: HashedType, rhs: HashedType) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+private var cachedProperties = [HashedType : Array<Property.Description>]()
+
 /// An instance property
 public struct Property {
     public let key: String
@@ -13,34 +26,39 @@ public struct Property {
 
 /// Retrieve properties for `instance`
 public func properties(_ instance: Any) throws -> [Property] {
-    let props = try properties(instance.dynamicType)
+    let properties = try Quark.properties(instance.dynamicType)
     var copy = instance
-    var storage = storageForInstance(&copy)
-    return props.map { nextPropertyForDescription($0, pointer: &storage) }
+    return properties.map { nextPropertyForDescription($0, pointer: storageForInstance(&copy)) }
 }
 
 /// Retrieve property descriptions for `type`
 public func properties(_ type: Any.Type) throws -> [Property.Description] {
-    if let nominalType = Metadata.Struct(type: type) {
-        return propertiesForNominalType(nominalType)
+    if let properties = cachedProperties[HashedType(type)] {
+        return properties
+    } else if let nominalType = Metadata.Struct(type: type) {
+        let properties = try propertiesForNominalType(nominalType)
+        cachedProperties[HashedType(type)] = properties
+        return properties
     } else if let nominalType = Metadata.Class(type: type) {
-        return propertiesForNominalType(nominalType)
+        let properties = try propertiesForNominalType(nominalType)
+        cachedProperties[HashedType(type)] = properties
+        return properties
     } else {
         throw ReflectionError.notStructOrClass(type: type)
     }
 }
 
-private func nextPropertyForDescription(_ description: Property.Description, pointer: inout UnsafePointer<Int>) -> Property {
-    defer { pointer = pointer.advanced(by: wordSizeForType(description.type)) }
-    return Property(key: description.key, value: AnyExistentialContainer(type: description.type, pointer: pointer).any)
+private func nextPropertyForDescription(_ description: Property.Description, pointer: UnsafePointer<UInt8>) -> Property {
+    return Property(key: description.key, value: AnyExistentialContainer(type: description.type, pointer: pointer.advanced(by: description.offset)).any)
 }
 
-private func propertiesForNominalType<T : NominalType>(_ type: T) -> [Property.Description] {
+private func propertiesForNominalType<T : NominalType>(_ type: T) throws -> [Property.Description] {
+    guard type.nominalTypeDescriptor.numberOfFields != 0 else { return [] }
+    guard let fieldTypes = type.fieldTypes, let fieldOffsets = type.fieldOffsets else {
+        throw ReflectionError.unexpected
+    }
     let fieldNames = type.nominalTypeDescriptor.fieldNames
-    let fieldTypes = type.fieldTypes
-    var offset = 0
     return (0..<type.nominalTypeDescriptor.numberOfFields).map { i in
-        defer { offset += wordSizeForType(fieldTypes[i]) }
-        return Property.Description(key: fieldNames[i], type: fieldTypes[i], offset: offset)
+        return Property.Description(key: fieldNames[i], type: fieldTypes[i], offset: fieldOffsets[i])
     }
 }

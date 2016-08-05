@@ -4,7 +4,13 @@
     import Darwin.C
 #endif
 
-public struct Log {
+public protocol Appender {
+    var name: String { get }
+    var levels: Logger.Level { get }
+    func append(event: Logger.Event)
+}
+
+public final class Logger {
     public struct Level: OptionSet {
         public let rawValue: Int32
 
@@ -21,117 +27,134 @@ public struct Log {
         public static let all     = Level(rawValue: ~0)
     }
 
-    let stream: Stream
-    let levels: Level
-
-    public init(stream: Stream, levels: Level = .all) {
-        self.stream = stream
-        self.levels = levels
+    public struct Event {
+        public let locationInfo: LocationInfo
+        public let timestamp: String
+        public let level: Logger.Level
+        public let name: String
+        public let logger: Logger
+        public var message: Any? = nil
+        public var error: ErrorProtocol? = nil
     }
 
-    public func log(level: Level, item: Any, terminator: String = "\n", flush: Bool = true) {
-        if levels.contains(level) {
-            let message = "\(item)\(terminator)"
-            do {
-                try stream.send(message.data, timingOut: .never)
-                if flush {
-                    try stream.flush(timingOut: .never)
-                }
-            } catch {
-                print("Log error: \(error)")
-                print("Log message: \(message)")
-            }
-        }
+    public struct LocationInfo {
+        public let file: String
+        public let line: Int
+        public let column: Int
+        public let function: String
     }
 
-    public func trace(_ item: Any, terminator: String = "\n", flush: Bool = true) {
-        log(level: .trace, item: item, terminator: terminator, flush: flush)
-    }
+    var appenders = [Appender]()
+    var name: String
 
-    public func debug(_ item: Any, terminator: String = "\n", flush: Bool = true) {
-        log(level: .debug, item: item, terminator: terminator, flush: flush)
-    }
-
-    public func info(_ item: Any, terminator: String = "\n", flush: Bool = true) {
-        log(level: .info, item: item, terminator: terminator, flush: flush)
-    }
-
-    public func warning(_ item: Any, terminator: String = "\n", flush: Bool = true) {
-        log(level: .warning, item: item, terminator: terminator, flush: flush)
-    }
-
-    public func error(_ item: Any, terminator: String = "\n", flush: Bool = true) {
-        log(level: .error, item: item, terminator: terminator, flush: flush)
-    }
-
-    public func fatal(_ item: Any, terminator: String = "\n", flush: Bool = true) {
-        log(level: .fatal, item: item, terminator: terminator, flush: flush)
+    public init(name: String = "Logger", appenders: [Appender] = [StandardOutputAppender()]) {
+        self.appenders.append(contentsOf: appenders)
+        self.name = name
     }
 }
 
-public final class Logger {
-
-    var appenders = [Appender]()
-    var levels: Log.Level
-    var name: String
-
-    public init(name: String = "Logger", appender: Appender? = StandardOutputAppender(), levels: Log.Level = .all) {
-        if let appender = appender {
-            self.appenders.append(appender)
-        }
-        self.levels = levels
-        self.name = name
+extension Logger.LocationInfo : CustomStringConvertible {
+    public var description: String {
+        return "\(file):\(function):\(line):\(column)"
     }
+}
 
-    public init(name: String = "Logger", appenders: [Appender], levels: Log.Level = .all) {
-        self.appenders.append(contentsOf: appenders)
-        self.levels = levels
-        self.name = name
-    }
-
-    public func log(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        let locationInfo = LocationInfo(file: file, line: line, column: column, function: function)
-        let event = LoggingEvent(locationInfo: locationInfo, timestamp: currentTime, level: self.levels, name: self.name, logger: self, message: item, error: error)
+extension Logger {
+    private func log(level: Level, item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+        let event = Event(
+            locationInfo: LocationInfo(
+                file: file,
+                line: line,
+                column: column,
+                function: function
+            ),
+            timestamp: currentTime,
+            level: level,
+            name: self.name,
+            logger: self,
+            message: item,
+            error: error
+        )
         for apender in appenders {
-            apender.append(event)
-        }
-    }
-
-    private func log(level: Log.Level, item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        let locationInfo = LocationInfo(file: file, line: line, column: column, function: function)
-        let event = LoggingEvent(locationInfo: locationInfo, timestamp: currentTime, level: level, name: self.name, logger: self, message: item, error: error)
-        for apender in appenders {
-            apender.append(event)
+            apender.append(event: event)
         }
     }
 
     public func trace(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(level: .trace, item: item, error: error, file: file, function: function, line: line, column: column)
+        log(
+            level: .trace,
+            item: item,
+            error: error,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
     }
 
     public func debug(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(level: .debug, item: item, error: error, file: file, function: function, line: line, column: column)
+        log(
+            level: .debug,
+            item: item,
+            error: error,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
     }
 
     public func info(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(level: .info, item: item, error: error, file: file, function: function, line: line, column: column)
+        log(
+            level: .info,
+            item: item,
+            error: error,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
     }
 
     public func warning(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(level: .warning, item: item, error: error, file: file, function: function, line: line, column: column)
+        log(
+            level: .warning,
+            item: item,
+            error: error,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
     }
 
     public func error(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(level: .error, item: item, error: error, file: file, function: function, line: line, column: column)
+        log(
+            level: .error,
+            item: item,
+            error: error,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
     }
 
     public func fatal(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
-        log(level: .fatal, item: item, error: error, file: file, function: function, line: line, column: column)
+        log(
+            level: .fatal,
+            item: item,
+            error: error,
+            file: file,
+            function: function,
+            line: line,
+            column: column
+        )
     }
 
-    private var currentTime: Int {
+    private var currentTime: String {
       var tv = timeval()
       gettimeofday(&tv, nil)
-      return tv.tv_sec
+      return String(tv.tv_sec)
     }
 }

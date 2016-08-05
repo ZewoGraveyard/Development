@@ -1,3 +1,7 @@
+public enum BodyStreamError: ErrorProtocol {
+    case receiveUnsupported
+}
+
 final class BodyStream : Stream {
     var closed = false
     let transport: Stream
@@ -10,25 +14,22 @@ final class BodyStream : Stream {
         closed = true
     }
 
-    func receive(upTo byteCount: Int, timingOut deadline: Double = .never) throws -> Data {
-        enum Error: ErrorProtocol {
-            case receiveUnsupported
-        }
-        throw Error.receiveUnsupported
+    func read(upTo byteCount: Int, deadline: Double = .never) throws -> Data {
+        throw BodyStreamError.receiveUnsupported
     }
 
-    func send(_ data: Data, timingOut deadline: Double = .never) throws {
+    func write(_ data: Data, deadline: Double = .never) throws {
         if closed {
             throw StreamError.closedStream(data: data)
         }
         let newLine: Data = [13, 10]
-        try transport.send(String(data.count, radix: 16).data)
-        try transport.send(newLine)
-        try transport.send(data)
-        try transport.send(newLine)
+        try transport.write(String(data.count, radix: 16).data)
+        try transport.write(newLine)
+        try transport.write(data)
+        try transport.write(newLine)
     }
 
-    func flush(timingOut deadline: Double = .never) throws {
+    func flush(deadline: Double = .never) throws {
         try transport.flush()
     }
 }

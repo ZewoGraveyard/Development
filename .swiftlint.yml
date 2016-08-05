@@ -1,23 +1,40 @@
 disabled_rules:
   - line_length
+  - file_length
   - type_name
-  - todo
-  - valid_docs
-  - function_parameter_count
   - cyclomatic_complexity
-  - function_body_length
+  - colon
   - conditional_binding_cascade
+  - type_body_length
+  - function_body_length
+  - variable_name
 
 opt_in_rules:
   - empty_count
+#  - missing_docs # let's prepare for this!
 
-force_cast: warning
-file_length:
-  warning: 400
-  error: 600
+excluded:
+  - Sources/Quark/Quark/Template/Mustache
+  - Sources/Quark/Mustache
+  - Packages
 
-variable_name:
-  max_length: 100
-  excluded:
-  - a
-  - b
+closing_brace: error
+comma: error
+control_statement: error
+leading_whitespace: error
+legacy_cggeometry_functions: error
+legacy_constant: error
+legacy_constructor: error
+nesting: error
+opening_brace: error
+operator_whitespace: error
+return_arrow_whitespace: error
+statement_position: error
+trailing_newline: error
+trailing_semicolon: error
+trailing_whitespace: error
+valid_docs: error
+
+function_parameter_count:
+  warning: 5
+  error: 7

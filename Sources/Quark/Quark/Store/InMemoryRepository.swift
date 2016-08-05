@@ -5,7 +5,7 @@ public final class InMemoryRepository<Model> : RepositoryProtocol {
 
     func nextId() -> String {
         defer { count += 1 }
-        return "\(count)"
+        return String(count)
     }
 
     public init() {}

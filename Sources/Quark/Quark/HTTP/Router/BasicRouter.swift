@@ -1,32 +1,33 @@
 public struct BasicRouter : RouterProtocol {
     public let middleware: [Middleware]
-    public let routes: [RouteProtocol]
+    public let routes: [Route]
     public let fallback: Responder
-    public let matcher: RouteMatcher
+    public let matcher: TrieRouteMatcher
 
     init(
-        recover: ((ErrorProtocol) throws -> Response),
+        recover: Recover,
         middleware: [Middleware],
         routes: Routes
         ) {
-        var chain: [Middleware] = []
-        chain.append(RecoveryMiddleware(recover))
-        chain.append(contentsOf: middleware)
-
-        self.middleware = chain
+        self.middleware = [RecoveryMiddleware(recover)] + middleware
         self.routes = routes.routes
         self.fallback = routes.fallback
         self.matcher = TrieRouteMatcher(routes: routes.routes)
     }
 
-    public func match(_ request: Request) -> RouteProtocol? {
-        return matcher.match(request)
+    public init(
+        recover: Recover = RecoveryMiddleware.recover,
+        staticFilesPath: String = "Public",
+        fileType: C7.File.Type,
+        middleware: [Middleware] = [],
+        routes: (Routes) -> Void
+        ) {
+        let r = Routes(staticFilesPath: staticFilesPath, fileType: fileType)
+        routes(r)
+        self.init(recover: recover, middleware: middleware, routes: r)
     }
-}
 
-extension BasicRouter {
-    public func respond(to request: Request) throws -> Response {
-        let responder = match(request) ?? fallback
-        return try middleware.chain(to: responder).respond(to: request)
+    public func match(_ request: Request) -> Route? {
+        return matcher.match(request)
     }
 }

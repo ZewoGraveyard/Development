@@ -97,24 +97,26 @@ extension Dictionary where Key : StructuredDataDictionaryKeyRepresentable, Value
 
 extension Optional : StructuredDataFallibleRepresentable {
     public func asStructuredData() throws -> StructuredData {
-        if case .some(let wrapped) = self, let representable = wrapped as? StructuredDataFallibleRepresentable {
-            return try representable.asStructuredData()
-        } else if Wrapped.self is StructuredDataFallibleRepresentable.Type {
-            return .null
+        guard Wrapped.self is StructuredDataFallibleRepresentable.Type else {
+            throw StructuredDataError.notStructuredDataRepresentable(Wrapped.self)
         }
-        throw StructuredDataError.notStructuredDataRepresentable(Wrapped.self)
+        if case .some(let wrapped as StructuredDataFallibleRepresentable) = self {
+            return try wrapped.asStructuredData()
+        }
+        return .null
     }
 }
 
 extension Array : StructuredDataFallibleRepresentable {
     public func asStructuredData() throws -> StructuredData {
+        guard Element.self is StructuredDataFallibleRepresentable.Type else {
+            throw StructuredDataError.notStructuredDataRepresentable(Element.self)
+        }
         var array: [StructuredData] = []
         array.reserveCapacity(count)
         for element in self {
-            guard let representable = element as? StructuredDataFallibleRepresentable else {
-                throw StructuredDataError.notStructuredDataRepresentable(Element.self)
-            }
-            array.append(try representable.asStructuredData())
+            let element = element as! StructuredDataFallibleRepresentable
+            array.append(try element.asStructuredData())
         }
         return .array(array)
     }
@@ -122,15 +124,17 @@ extension Array : StructuredDataFallibleRepresentable {
 
 extension Dictionary : StructuredDataFallibleRepresentable {
     public func asStructuredData() throws -> StructuredData {
+        guard Key.self is StructuredDataDictionaryKeyRepresentable.Type else {
+            throw StructuredDataError.notStructuredDataDictionaryKeyRepresentable(Value.self)
+        }
+        guard Value.self is StructuredDataFallibleRepresentable.Type else {
+            throw StructuredDataError.notStructuredDataRepresentable(Value.self)
+        }
         var dictionary = [String: StructuredData](minimumCapacity: count)
         for (key, value) in self {
-            guard let representable = value as? StructuredDataFallibleRepresentable else {
-                throw StructuredDataError.notStructuredDataRepresentable(Value.self)
-            }
-            guard let key = key as? StructuredDataDictionaryKeyRepresentable else {
-                throw StructuredDataError.notStructuredDataDictionaryKeyRepresentable(Key.self)
-            }
-            dictionary[key.structuredDataDictionaryKey] = try representable.asStructuredData()
+            let value = value as! StructuredDataFallibleRepresentable
+            let key = key as! StructuredDataDictionaryKeyRepresentable
+            dictionary[key.structuredDataDictionaryKey] = try value.asStructuredData()
         }
         return .dictionary(dictionary)
     }

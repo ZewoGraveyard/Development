@@ -10,8 +10,8 @@ script:
   - swift build --configuration release
   - swift package generate-xcodeproj
   - set -o pipefail
-  - xcodebuild -version
-  - xcodebuild -showsdks
-  - xcodebuild -project Quark.xcodeproj -scheme Quark -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES test | xcpretty -c;
+  - export WORKING_DIRECTORY=$(PWD)
+  - export TOOLCHAINS=org.swift.3020160620a
+  - xcodebuild ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES -project Quark.xcodeproj -scheme Quark -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES test
 after_success:
   - bash <(curl -s https://codecov.io/bash)

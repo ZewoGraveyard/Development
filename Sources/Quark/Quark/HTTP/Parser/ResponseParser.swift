@@ -38,14 +38,20 @@ public final class ResponseParser : S4.ResponseParser {
     let stream: Stream
     let context: ResponseContext
     var parser = http_parser()
-    var response: Response?
+    var responses: [Response] = []
+    let bufferSize: Int
 
-    public init(stream: Stream) {
+    convenience public init(stream: Stream) {
+        self.init(stream: stream, bufferSize: 2048)
+    }
+
+    public init(stream: Stream, bufferSize: Int) {
         self.stream = stream
+        self.bufferSize = bufferSize
         self.context = ResponseContext(allocatingCapacity: 1)
         self.context.initialize(with: ResponseParserContext { response in
-            self.response = response
-            })
+            self.responses.insert(response, at: 0)
+        })
 
         resetParser()
     }
@@ -61,24 +67,16 @@ public final class ResponseParser : S4.ResponseParser {
 
     public func parse() throws -> Response {
         while true {
-            defer {
-                response = nil
+            if let response = responses.popLast() {
+                return response
             }
 
-            let data = try stream.receive(upTo: 2048)
+            let data = try stream.read(upTo: bufferSize)
             let bytesParsed = http_parser_execute(&parser, &responseSettings, UnsafePointer(data.bytes), data.count)
 
             guard bytesParsed == data.count else {
-                resetParser()
-                let errorName = http_errno_name(http_errno(parser.http_errno))!
-                let errorDescription = http_errno_description(http_errno(parser.http_errno))!
-                let error = ParseError(description: "\(String(validatingUTF8: errorName)!): \(String(validatingUTF8: errorDescription)!)")
-                throw error
-            }
-
-            if let response  = response {
-                resetParser()
-                return response
+                defer { resetParser() }
+                throw http_errno(parser.http_errno)
             }
         }
     }
@@ -86,10 +84,7 @@ public final class ResponseParser : S4.ResponseParser {
 
 func onResponseStatus(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
     return ResponseContext(parser!.pointee.data).withPointee {
-        guard let reasonPhrase = String(pointer: data!, length: length) else {
-            return 1
-        }
-
+        let reasonPhrase = String(cString: data!, length: length)
         $0.reasonPhrase += reasonPhrase
         return 0
     }
@@ -97,9 +92,7 @@ func onResponseStatus(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int
 
 func onResponseHeaderField(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
     return ResponseContext(parser!.pointee.data).withPointee {
-        guard let headerName = String(pointer: data!, length: length) else {
-            return 1
-        }
+        let headerName = String(cString: data!, length: length)
 
         if $0.currentHeaderName != "" {
             $0.currentHeaderName = ""
@@ -117,13 +110,15 @@ func onResponseHeaderField(_ parser: Parser?, data: UnsafePointer<Int8>?, length
 
 func onResponseHeaderValue(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
     return ResponseContext(parser!.pointee.data).withPointee {
-        guard let headerValue = String(pointer: data!, length: length) else {
-            return 1
-        }
+        let headerValue = String(cString: data!, length: length)
 
         if $0.currentHeaderName == "" {
             $0.currentHeaderName = CaseInsensitiveString($0.buildingHeaderName)
             $0.buildingHeaderName = ""
+
+            if let previousHeaderValue = $0.headers[$0.currentHeaderName] {
+                $0.headers[$0.currentHeaderName] = previousHeaderValue + ", "
+            }
         }
 
         if $0.currentHeaderName == "Set-Cookie" {

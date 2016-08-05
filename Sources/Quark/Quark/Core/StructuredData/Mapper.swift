@@ -14,7 +14,7 @@ public final class Mapper {
 
 extension Mapper {
     public func map<T>(from key: String) throws -> T {
-        let value: T = try structuredData.get(key)
+        let value: T = try structuredData.get(at: key)
         return value
     }
 

@@ -9,3 +9,9 @@ extension Headers : CustomStringConvertible {
         return string
     }
 }
+
+extension Headers : Equatable {}
+
+public func == (lhs: Headers, rhs: Headers) -> Bool {
+    return lhs.headers == rhs.headers
+}

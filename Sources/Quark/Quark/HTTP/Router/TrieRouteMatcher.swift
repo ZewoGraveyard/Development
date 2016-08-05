@@ -1,8 +1,8 @@
-public struct TrieRouteMatcher : RouteMatcher {
-    private var routesTrie = Trie<String, RouteProtocol>()
-    public let routes: [RouteProtocol]
+public struct TrieRouteMatcher {
+    private var routesTrie = Trie<String, Route>()
+    public let routes: [Route]
 
-    public init(routes: [RouteProtocol]) {
+    public init(routes: [Route]) {
         self.routes = routes
 
         for route in routes {
@@ -15,7 +15,7 @@ public struct TrieRouteMatcher : RouteMatcher {
 
         // ensure parameter paths are processed later than static paths
         routesTrie.sort { t1, t2 in
-            func rank(_ t: Trie<String, RouteProtocol>) -> Int {
+            func rank(_ t: Trie<String, Route>) -> Int {
                 if t.prefix == "*" {
                     return 3
                 }
@@ -29,64 +29,8 @@ public struct TrieRouteMatcher : RouteMatcher {
         }
     }
 
-    func searchForRoute(head: Trie<String, RouteProtocol>, components: IndexingIterator<[String]>, parameters: inout [String: String]) -> RouteProtocol? {
-
-        var components = components
-
-        // if no more components, we hit the end of the path and
-        // may have matched something
-        guard let component = components.next() else {
-            return head.payload
-        }
-
-        // store each possible path (ie both a static and a parameter)
-        // and then go through them all
-        var paths = [Trie<String, RouteProtocol>]()
-
-        for child in head.children {
-
-            // matched static
-            if child.prefix == component {
-                paths.append(child)
-                continue
-            }
-
-            // matched parameter
-            if child.prefix?.characters.first == ":" {
-                paths.append(child)
-                let param = String(child.prefix!.characters.dropFirst())
-                parameters[param] = component
-                continue
-            }
-
-            // matched wildstar
-            if child.prefix == "*" {
-                paths.append(child)
-                continue
-            }
-        }
-
-        // go through all the paths and recursively try to match them. if
-        // any of them match, the route has been matched
-        for path in paths {
-
-            if let route = path.payload where path.prefix == "*" {
-                return route
-            }
-
-            let matched = searchForRoute(head: path, components: components, parameters: &parameters)
-            if let matched = matched { return matched }
-        }
-
-        // we went through all the possible paths and still found nothing. 404
-        return nil
-    }
-
-    public func match(_ request: Request) -> RouteProtocol? {
-        guard let path = request.path else {
-            return nil
-        }
-
+    public func match(_ request: Request) -> Route? {
+        let path = request.path!
         let components = path.unicodeScalars.split(separator: "/").map(String.init)
         var parameters: [String: String] = [:]
 
@@ -107,17 +51,73 @@ public struct TrieRouteMatcher : RouteMatcher {
         let parametersMiddleware = PathParameterMiddleware(parameters)
 
         // wrap the route to inject the pathParameters upon receiving a request
-        return BasicRoute(
+        return Route(
             path: route.path,
             actions: route.actions.mapValues({parametersMiddleware.chain(to: $0)}),
             fallback: route.fallback
         )
     }
-}
 
-extension TrieRouteMatcher : CustomStringConvertible {
-    public var description: String {
-        return routesTrie.description
+    func searchForRoute(head: Trie<String, Route>, components: IndexingIterator<[String]>, parameters: inout [String: String]) -> Route? {
+
+        var components = components
+
+        // if no more components, we hit the end of the path and
+        // may have matched something
+        guard let component = components.next() else {
+            return head.payload
+        }
+
+        // store each possible path (ie both a static and a parameter)
+        // and then go through them all
+        var paths = [(node: Trie<String, Route>, param: String?)]()
+
+        for child in head.children {
+
+            // matched static
+            if child.prefix == component {
+                paths.append((node: child, param: nil))
+                continue
+            }
+
+            // matched parameter
+            if let prefix = child.prefix where prefix.characters.first == ":" {
+                let param = String(prefix.characters.dropFirst())
+                paths.append((node: child, param: param))
+                continue
+            }
+
+            // matched wildstar
+            if child.prefix == "*" {
+                paths.append((node: child, param: nil))
+                continue
+            }
+        }
+
+        // go through all the paths and recursively try to match them. if
+        // any of them match, the route has been matched
+        for (node, param) in paths {
+
+            if let route = node.payload where node.prefix == "*" {
+                return route
+            }
+
+            let matched = searchForRoute(head: node, components: components, parameters: &parameters)
+
+            // this path matched! we're done
+            if let matched = matched {
+
+                // add the parameter if there was one
+                if let param = param {
+                    parameters[param] = component
+                }
+
+                return matched
+            }
+        }
+
+        // we went through all the possible paths and still found nothing. 404
+        return nil
     }
 }
 

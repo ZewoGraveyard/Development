@@ -13,7 +13,7 @@ public struct TodoController : Controller {
         return try store.fetchDoneTodos().map({ $0.model })
     }
 
-    public func create(model todo: Todo) throws -> Todo {
+    public func create(model todo: Todo) throws -> (String, Todo) {
         return try self.super.create(model: todo)
     }
 

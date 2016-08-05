@@ -2,8 +2,10 @@ import CHTTPParser
 
 typealias Parser = UnsafeMutablePointer<http_parser>
 
-struct ParseError : ErrorProtocol {
-    let description: String
+extension http_errno : ErrorProtocol, CustomStringConvertible {
+    public var description: String {
+        return String(cString: http_errno_description(self))
+    }
 }
 
 extension Method {
@@ -33,7 +35,7 @@ extension Method {
         case 21: self = other(method: "MKACTIVITY")
         case 22: self = other(method: "CHECKOUT")
         case 23: self = other(method: "MERGE")
-        case 24: self = other(method: "MSEARCH")
+        case 24: self = other(method: "M-SEARCH")
         case 25: self = other(method: "NOTIFY")
         case 26: self = other(method: "SUBSCRIBE")
         case 27: self = other(method: "UNSUBSCRIBE")

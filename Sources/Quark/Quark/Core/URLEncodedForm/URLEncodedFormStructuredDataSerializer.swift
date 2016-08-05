@@ -23,9 +23,9 @@ public struct URLEncodedFormStructuredDataSerializer : StructuredDataSerializer 
             if index != 0 {
                 string += "&"
             }
-            string += "\(key)="
+            string += String(key) + "="
             let value = try structuredData.asString(converting: true)
-            string += try value.percentEncoded(allowing: .uriQueryAllowed)
+            string += value.percentEncoded(allowing: .uriQueryAllowed)
         }
 
         return string

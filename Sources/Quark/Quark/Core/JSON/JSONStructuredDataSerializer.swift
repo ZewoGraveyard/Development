@@ -1,63 +1,84 @@
 // This file has been modified from its original project Swift-JsonSerializer
 
 public struct JSONStructuredDataSerializer : StructuredDataSerializer {
-    enum Error: ErrorProtocol {
-        case invalidStructuredData
+    let ordering: Bool
+
+    public init(ordering: Bool = false) {
+        self.ordering = ordering
     }
 
-    public init() {}
-
     public func serialize(_ data: StructuredData) throws -> Data {
-        return try serializeToString(data).data
+        return try Data(serializeToString(data))
     }
 
     public func serializeToString(_ data: StructuredData) throws -> String {
         switch data {
         case .null: return "null"
-        case .bool(let bool): return bool ? "true" : "false"
-        case .double(let number): return serialize(number: number)
-        case .int(let number): return serialize(number: Double(number))
-        case .string(let text): return escapeAsJSON(text)
-        case .array(let array): return try serialize(array: array)
-        case .dictionary(let dictionary): return try serialize(dictionary: dictionary)
-        default: throw Error.invalidStructuredData
+        case .bool(let bool): return String(bool)
+        case .double(let number): return String(number)
+        case .int(let number): return String(number)
+        case .string(let string): return escape(string)
+        case .array(let array): return try serialize(array)
+        case .dictionary(let dictionary): return try serialize(dictionary)
+        default: throw StructuredDataError.incompatibleType
         }
     }
 
-    func serialize(number: Double) -> String {
-        if number == Double(Int64(number)) {
-            return Int64(number).description
+    func serialize(_ array: [StructuredData]) throws -> String {
+        var string = "["
+
+        for index in 0 ..< array.count {
+            string += try serializeToString(array[index])
+
+            if index != array.count - 1 {
+                string += ","
+            }
+        }
+
+        return string + "]"
+    }
+
+    func serialize(_ dictionary: [String: StructuredData]) throws -> String {
+        var string = "{"
+        var index = 0
+
+        if ordering {
+            for (key, value) in dictionary.sorted(isOrderedBefore: {$0.0 < $1.0}) {
+                string += try "\(escape(key)):\(serialize(value))"
+
+                if index != dictionary.count - 1 {
+                    string += ","
+                }
+
+                index += 1
+            }
         } else {
-            return number.description
-        }
-    }
+            for (key, value) in dictionary {
+                string += try "\(escape(key)):\(serialize(value))"
 
-    func serialize(array: [StructuredData]) throws -> String {
-        var s = "["
+                if index != dictionary.count - 1 {
+                    string += ","
+                }
 
-        for i in 0 ..< array.count {
-            s += try serializeToString(array[i])
-
-            if i != (array.count - 1) {
-                s += ","
+                index += 1
             }
         }
 
-        return s + "]"
+        return string + "}"
     }
+}
 
-    func serialize(dictionary: [String: StructuredData]) throws -> String {
-        var s = "{"
-        var i = 0
+func escape(_ source: String) -> String {
+    var string = "\""
 
-        for entry in dictionary {
-            s += try "\(escapeAsJSON(entry.0)):\(serialize(entry.1))"
-            if i != (dictionary.count - 1) {
-                s += ","
-            }
-            i += 1
+    for character in source.characters {
+        if let escapedSymbol = escapeMapping[character] {
+            string.append(escapedSymbol)
+        } else {
+            string.append(character)
         }
-
-        return s + "}"
     }
+
+    string.append("\"")
+    return string
 }

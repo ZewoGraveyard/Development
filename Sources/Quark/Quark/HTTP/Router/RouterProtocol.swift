@@ -9,9 +9,17 @@ extension RouterRepresentable {
 }
 
 public protocol RouterProtocol : Responder, RouterRepresentable {
-    var routes: [RouteProtocol] { get }
+    var routes: [Route] { get }
     var fallback: Responder { get }
-    func match(_ request: Request) -> RouteProtocol?
+    var middleware: [Middleware] { get }
+    func match(_ request: Request) -> Route?
+}
+
+extension RouterProtocol {
+    public func respond(to request: Request) throws -> Response {
+        let responder = match(request) ?? fallback
+        return try middleware.chain(to: responder).respond(to: request)
+    }
 }
 
 extension RouterProtocol {
@@ -20,44 +28,12 @@ extension RouterProtocol {
     }
 }
 
-extension RouterProtocol {
-    public func respond(request: Request) throws -> Response {
-        let responder = match(request) ?? fallback
-        return try responder.respond(to: request)
-    }
-}
-
-public protocol RouteProtocol : Responder {
-    var path: String { get }
-    var actions: [Method: Responder] { get }
-    var fallback: Responder { get }
-}
-
-public protocol RouteMatcher {
-    var routes: [RouteProtocol] { get }
-    init(routes: [RouteProtocol])
-    func match(_ request: Request) -> RouteProtocol?
-}
-
-extension RouteProtocol {
-    public var fallback: Responder {
-        return BasicResponder { _ in
-            Response(status: .methodNotAllowed)
-        }
-    }
-
-    public func respond(to request: Request) throws -> Response {
-        let action = actions[request.method] ?? fallback
-        return try action.respond(to: request)
-    }
-}
-
-public final class BasicRoute : RouteProtocol {
+public final class Route : Responder {
     public let path: String
     public var actions: [Method: Responder]
     public var fallback: Responder
 
-    public init(path: String, actions: [Method: Responder] = [:], fallback: Responder = BasicRoute.defaultFallback) {
+    public init(path: String, actions: [Method: Responder] = [:], fallback: Responder = Route.defaultFallback) {
         self.path = path
         self.actions = actions
         self.fallback = fallback
@@ -68,11 +44,16 @@ public final class BasicRoute : RouteProtocol {
     }
 
     public static let defaultFallback = BasicResponder { _ in
-        Response(status: .methodNotAllowed)
+        throw ClientError.methodNotAllowed
+    }
+
+    public func respond(to request: Request) throws -> Response {
+        let action = actions[request.method] ?? fallback
+        return try action.respond(to: request)
     }
 }
 
-extension BasicRoute : CustomStringConvertible {
+extension Route : CustomStringConvertible {
     public var description: String {
         var actions: [String] = []
 

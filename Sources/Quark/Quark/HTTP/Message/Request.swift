@@ -1,18 +1,4 @@
 extension Request {
-    public typealias DidUpgrade = (Response, Stream) throws -> Void
-
-    public var didUpgrade: DidUpgrade? {
-        get {
-            return storage["request-connection-upgrade"] as? DidUpgrade
-        }
-
-        set(didUpgrade) {
-            storage["request-connection-upgrade"] = didUpgrade
-        }
-    }
-}
-
-extension Request {
     public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: Data = []) {
         self.init(
             method: method,
@@ -25,113 +11,67 @@ extension Request {
         self.headers["Content-Length"] = body.count.description
     }
 
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: Stream) {
+    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: InputStream) {
         self.init(
             method: method,
             uri: uri,
             version: Version(major: 1, minor: 1),
             headers: headers,
-            body: .receiver(body)
+            body: .reader(body)
         )
 
         self.headers["Transfer-Encoding"] = "chunked"
     }
 
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: (SendingStream) throws -> Void) {
+    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: (C7.OutputStream) throws -> Void) {
         self.init(
             method: method,
             uri: uri,
             version: Version(major: 1, minor: 1),
             headers: headers,
-            body: .sender(body)
+            body: .writer(body)
         )
 
         self.headers["Transfer-Encoding"] = "chunked"
     }
+}
 
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: AsyncStream) {
-        self.init(
-            method: method,
-            uri: uri,
-            version: Version(major: 1, minor: 1),
-            headers: headers,
-            body: .asyncReceiver(body)
-        )
-
-        self.headers["Transfer-Encoding"] = "chunked"
-    }
-
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: (AsyncSendingStream, ((Void) throws -> Void) -> Void) -> Void) {
-        self.init(
-            method: method,
-            uri: uri,
-            version: Version(major: 1, minor: 1),
-            headers: headers,
-            body: .asyncSender(body)
-        )
-
-        self.headers["Transfer-Encoding"] = "chunked"
-    }
-
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: Stream, didUpgrade: DidUpgrade?) {
+extension Request {
+    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: DataRepresentable) {
         self.init(
             method: method,
             uri: uri,
             headers: headers,
-            body: body
-        )
-
-        self.didUpgrade = didUpgrade
-    }
-
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: Data = Data(), didUpgrade: DidUpgrade?) {
-        self.init(
-            method: method,
-            uri: uri,
-            headers: headers,
-            body: body
-        )
-
-        self.didUpgrade = didUpgrade
-    }
-
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: DataConvertible, didUpgrade: DidUpgrade? = nil) {
-        self.init(
-            method: method,
-            uri: uri,
-            headers: headers,
-            body: body.data,
-            didUpgrade: didUpgrade
+            body: body.data
         )
     }
+}
 
-    public init(method: Method = .get, uri: String, headers: Headers = [:], body: Data = Data(), didUpgrade: DidUpgrade? = nil) throws {
+extension Request {
+    public init(method: Method = .get, uri: String, headers: Headers = [:], body: Data = []) throws {
         self.init(
             method: method,
             uri: try URI(uri),
             headers: headers,
-            body: body,
-            didUpgrade: didUpgrade
+            body: body
         )
     }
 
-    public init(method: Method = .get, uri: String, headers: Headers = [:], body: DataConvertible, didUpgrade: DidUpgrade? = nil) throws {
-        try self.init(
-            method: method,
-            uri: uri,
-            headers: headers,
-            body: body.data,
-            didUpgrade: didUpgrade
-        )
-    }
-
-    public init(method: Method = .get, uri: String, headers: Headers = [:], body: Stream, didUpgrade: DidUpgrade? = nil) throws {
+    public init(method: Method = .get, uri: String, headers: Headers = [:], body: InputStream) throws {
         self.init(
             method: method,
             uri: try URI(uri),
             headers: headers,
-            body: body,
-            didUpgrade: didUpgrade
+            body: body
+        )
+    }
+
+    public init(method: Method = .get, uri: String, headers: Headers = [:], body: (C7.OutputStream) throws -> Void) throws {
+        self.init(
+            method: method,
+            uri: try URI(uri),
+            headers: headers,
+            body: body
         )
     }
 }
@@ -141,8 +81,8 @@ extension Request {
         return uri.path
     }
 
-    public var query: String? {
-        return uri.query
+    public var query: [String: String] {
+        return uri.singleValuedQuery
     }
 }
 
@@ -176,7 +116,7 @@ extension Request {
 
     public var cookies: Set<Cookie> {
         get {
-            return headers["Cookie"].flatMap(Cookie.parse) ?? []
+            return headers["Cookie"].flatMap({Set<Cookie>(cookieHeader: $0)}) ?? []
         }
 
         set(cookies) {
@@ -216,6 +156,18 @@ extension Request {
 }
 
 extension Request {
+    public typealias UpgradeConnection = (Response, Stream) throws -> Void
+
+    public var upgradeConnection: UpgradeConnection? {
+        return storage["request-connection-upgrade"] as? UpgradeConnection
+    }
+
+    public mutating func upgradeConnection(_ upgrade: UpgradeConnection)  {
+        storage["request-connection-upgrade"] = upgrade
+    }
+}
+
+extension Request {
     public var pathParameters: [String: String] {
         get {
             return storage["pathParameters"] as? [String: String] ?? [:]
@@ -229,7 +181,7 @@ extension Request {
 
 extension Request : CustomStringConvertible {
     public var requestLineDescription: String {
-        return "\(method) \(uri) HTTP/\(version.major).\(version.minor)\n"
+        return String(method) + " " + String(uri) + " HTTP/" + String(version.major) + "." + String(version.minor) + "\n"
     }
 
     public var description: String {
@@ -240,6 +192,6 @@ extension Request : CustomStringConvertible {
 
 extension Request : CustomDebugStringConvertible {
     public var debugDescription: String {
-        return description + "\n\n" + storageDescription
+        return description + "\n" + storageDescription
     }
 }

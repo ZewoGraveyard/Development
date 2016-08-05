@@ -7,7 +7,7 @@ struct TodoResource : Resource {
     }
 
     func create(content todo: Todo) throws -> Response {
-        let todo = try controller.create(model: todo)
+        let (_, todo) = try controller.create(model: todo)
         return try Response(content: todo)
     }
 

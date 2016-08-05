@@ -6,6 +6,7 @@
 [![Slack][slack-badge]][slack-url]
 [![Travis CI][travis-badge]][travis-url]
 [![Circle CI][circle-ci-badge]][circle-ci-url]
+[![Codecov][codecov-badge]][codecov-url]
 
 A Clean Web Framework for Modern Swift Applications
 
@@ -20,6 +21,12 @@ For guides and an overview of **Quark** read our beautiful [documentation](https
 ## Reference
 
 Want to dive deep inside **Quark**? Take a look at Quark's [reference](http://reference.quark.zewo.io).
+
+## Test Coverage
+
+[![Test Coverage][codecov-sunburst]][codecov-url]
+
+The inner-most circle is the entire project, moving away from the center are folders then, finally, a single file. The size and color of each slice is represented by the number of statements and the coverage, respectively.
 
 ## Installation
 
@@ -89,3 +96,6 @@ These are the amazing folks that have contributed to the development of **Quark*
 [travis-url]: https://travis-ci.org/QuarkX/Quark
 [circle-ci-badge]: https://circleci.com/gh/QuarkX/Quark.svg?style=shield
 [circle-ci-url]: https://circleci.com/gh/QuarkX/Quark
+[codecov-badge]: https://codecov.io/gh/QuarkX/Quark/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/QuarkX/Quark
+[codecov-sunburst]: https://codecov.io/gh/QuarkX/Quark/branch/master/graphs/sunburst.svg

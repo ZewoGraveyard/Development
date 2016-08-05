@@ -1,4 +1,4 @@
-public struct Cookie {
+public struct Cookie : CookieProtocol {
     public var name: String
     public var value: String
 
@@ -14,8 +14,10 @@ extension Cookie : Hashable {
     }
 }
 
-public func ==(lhs: Cookie, rhs: Cookie) -> Bool {
-    return lhs.name == rhs.name
+extension Cookie : Equatable {}
+
+public func == (lhs: Cookie, rhs: Cookie) -> Bool {
+    return lhs.hashValue == rhs.hashValue
 }
 
 extension Cookie : CustomStringConvertible {
@@ -24,10 +26,14 @@ extension Cookie : CustomStringConvertible {
     }
 }
 
-extension Cookie {
-    public static func parse(string: String) -> Set<Cookie>? {
-        var cookies = Set<Cookie>()
-        let tokens = string.split(separator: ";")
+public protocol CookieProtocol {
+    init(name: String, value: String)
+}
+
+extension Set where Element : CookieProtocol {
+    public init?(cookieHeader: String) {
+        var cookies = Set<Element>()
+        let tokens = cookieHeader.split(separator: ";")
 
         for token in tokens {
             let cookieTokens = token.split(separator: "=", maxSplits: 1)
@@ -36,9 +42,9 @@ extension Cookie {
                 return nil
             }
 
-            cookies.insert(Cookie(name: cookieTokens[0].trim(), value: cookieTokens[1].trim()))
+            cookies.insert(Element(name: cookieTokens[0].trim(), value: cookieTokens[1].trim()))
         }
-
-        return cookies
+        
+        self = cookies
     }
 }

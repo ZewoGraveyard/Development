@@ -22,7 +22,7 @@ public struct MediaType : CustomStringConvertible {
     public var description: String {
         var string = "\(type)/\(subtype)"
 
-        if parameters.count > 0 {
+        if !parameters.isEmpty {
             string += parameters.reduce(";") { $0 + " \($1.0)=\($1.1)" }
         }
 
@@ -92,8 +92,8 @@ extension MediaType : Hashable {
     }
 }
 
-public func ==(lhs: MediaType, rhs: MediaType) -> Bool {
-    return lhs.type == rhs.type && lhs.subtype == rhs.subtype
+public func == (lhs: MediaType, rhs: MediaType) -> Bool {
+    return lhs.hashValue == lhs.hashValue
 }
 
 let fileExtensionMediaTypeMapping: [String: String] = [

@@ -10,7 +10,7 @@ struct AppConfiguration : Configuration {
     let server: ServerConfiguration
 }
 
-configure { (configuration: AppConfiguration) in
+configure { (configuration: StructuredData) in
     let store = InMemoryStore()
     let app = Application(store: store)
     return Router(app: app)

@@ -1,25 +1,33 @@
-public struct StandardOutputAppender : Appender {
+public class StandardOutputAppender : Appender {
     public let name: String
-    public var closed: Bool
-    public var level: Log.Level
+    public var levels: Logger.Level
+    var lastMessage: String = ""
 
-    init(name: String = "Standard Output Appender", closed: Bool = false, level: Log.Level = .all) {
+    init(name: String = "Standard Output Appender", levels: Logger.Level = .all) {
         self.name = name
-        self.closed = closed
-        self.level = level
+        self.levels = levels
     }
 
-    public func append(_ event: LoggingEvent) {
+    public func append(event: Logger.Event) {
         var logMessage = ""
 
-        logMessage += "[\(event.timestamp)]"
-        logMessage += "[\(event.locationInfo.description)]"
+        defer {
+            lastMessage = logMessage
+        }
+
+        guard levels.contains(event.level) else {
+            return
+        }
+
+        logMessage += "[" + event.timestamp + "]"
+        logMessage += "[" + String(event.locationInfo) + "]"
 
         if let message = event.message {
-            logMessage += ": \(message)"
+            logMessage += ":" + String(message)
         }
+
         if let error = event.error {
-            logMessage += ": \(error)"
+            logMessage += ":" + String(error)
         }
 
         print(logMessage)

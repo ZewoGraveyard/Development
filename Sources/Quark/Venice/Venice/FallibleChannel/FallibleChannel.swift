@@ -108,8 +108,9 @@ public final class FallibleChannel<T> : Sequence {
     }
 
     /// Receive a value from channel.
+    @discardableResult
     public func receive() throws -> T? {
-        if closed && buffer.count <= 0 {
+        if closed && buffer.isEmpty {
             return nil
         }
         mill_chr(channel, "FallibleChannel receive")
@@ -124,8 +125,9 @@ public final class FallibleChannel<T> : Sequence {
     }
 
     /// Receive a result from channel.
+    @discardableResult
     public func receiveResult() -> ChannelResult<T>? {
-        if closed && buffer.count <= 0 {
+        if closed && buffer.isEmpty {
             return nil
         }
         mill_chr(channel, "FallibleChannel receiveResult")
@@ -137,7 +139,7 @@ public final class FallibleChannel<T> : Sequence {
     }
 
     func getResultFromBuffer() -> ChannelResult<T>? {
-        if closed && buffer.count <= 0 {
+        if closed && buffer.isEmpty {
             return nil
         }
         return buffer.removeFirst()

@@ -17,18 +17,22 @@ public enum JSONStructuredDataParseError : ErrorProtocol, CustomStringConvertibl
     public var description: String {
         switch self {
         case unexpectedTokenError(let r, let l, let c):
-            return "UnexpectedTokenError!\nLine: \(l)\nColumn: \(c)]\nReason: \(r)"
+            return "UnexpectedTokenError" + infoDescription(reason: r, line: l, column: c)
         case insufficientTokenError(let r, let l, let c):
-            return "InsufficientTokenError!\nLine: \(l)\nColumn: \(c)]\nReason: \(r)"
+            return "InsufficientTokenError" + infoDescription(reason: r, line: l, column: c)
         case extraTokenError(let r, let l, let c):
-            return "ExtraTokenError!\nLine: \(l)\nColumn: \(c)]\nReason: \(r)"
+            return "ExtraTokenError" + infoDescription(reason: r, line: l, column: c)
         case nonStringKeyError(let r, let l, let c):
-            return "NonStringKeyError!\nLine: \(l)\nColumn: \(c)]\nReason: \(r)"
+            return "NonStringKeyError" + infoDescription(reason: r, line: l, column: c)
         case invalidStringError(let r, let l, let c):
-            return "InvalidStringError!\nLine: \(l)\nColumn: \(c)]\nReason: \(r)"
+            return "InvalidStringError" + infoDescription(reason: r, line: l, column: c)
         case invalidNumberError(let r, let l, let c):
-            return "InvalidNumberError!\nLine: \(l)\nColumn: \(c)]\nReason: \(r)"
+            return "InvalidNumberError" + infoDescription(reason: r, line: l, column: c)
         }
+    }
+
+    func infoDescription(reason: String, line: Int, column: Int) -> String {
+        return "[Line: \(line), Column: \(column)]: \(reason)"
     }
 }
 
@@ -58,17 +62,36 @@ class GenericJSONStructuredDataParser<ByteSequence: Collection where ByteSequenc
     }
 
     func parse() throws -> StructuredData {
-        let JSON = try parseValue()
+        let data = try parseValue()
         skipWhitespaces()
-        if (cur == end) {
-            return JSON
-        } else {
-            throw JSONStructuredDataParseError.extraTokenError(
-                reason: "extra tokens found",
-                lineNumber: lineNumber,
-                columnNumber: columnNumber
-            )
+        if cur == end {
+            return data
         }
+        throw extraTokenError(reason: "extra tokens found")
+    }
+
+    func unexpectedTokenError(reason: String) -> ErrorProtocol {
+        return JSONStructuredDataParseError.unexpectedTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+    }
+
+    func insufficientTokenError(reason: String) -> ErrorProtocol {
+        return JSONStructuredDataParseError.insufficientTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+    }
+
+    func extraTokenError(reason: String) -> ErrorProtocol {
+        return JSONStructuredDataParseError.extraTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+    }
+
+    func nonStringKeyError(reason: String) -> ErrorProtocol {
+        return JSONStructuredDataParseError.nonStringKeyError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+    }
+
+    func invalidStringError(reason: String) -> ErrorProtocol {
+        return JSONStructuredDataParseError.invalidStringError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+    }
+
+    func invalidNumberError(reason: String) -> ErrorProtocol {
+        return JSONStructuredDataParseError.invalidNumberError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 }
 
@@ -78,11 +101,7 @@ extension GenericJSONStructuredDataParser {
     private func parseValue() throws -> StructuredData {
         skipWhitespaces()
         if cur == end {
-            throw JSONStructuredDataParseError.insufficientTokenError(
-                reason: "unexpected end of tokens",
-                lineNumber: lineNumber,
-                columnNumber: columnNumber
-            )
+            throw insufficientTokenError(reason: "unexpected end of tokens")
         }
 
         switch currentChar {
@@ -93,11 +112,7 @@ extension GenericJSONStructuredDataParser {
         case Char(ascii: "\""): return try parseString()
         case Char(ascii: "{"): return try parseObject()
         case Char(ascii: "["): return try parseArray()
-        case (let c): throw JSONStructuredDataParseError.unexpectedTokenError(
-            reason: "unexpected token: \(c)",
-            lineNumber: lineNumber,
-            columnNumber: columnNumber
-        )
+        case (let c): throw unexpectedTokenError(reason: "unexpected token: \(c)")
         }
     }
 
@@ -109,6 +124,10 @@ extension GenericJSONStructuredDataParser {
         return source[source.index(after: cur)]
     }
 
+    private var distanceToEnd: ByteSequence.IndexDistance {
+        return source.distance(from: cur, to: end)
+    }
+
     private var currentSymbol: Character {
         return Character(UnicodeScalar(currentChar))
     }
@@ -116,120 +135,150 @@ extension GenericJSONStructuredDataParser {
     private func parseSymbol(_ target: StaticString, _ iftrue: @autoclosure (Void) -> StructuredData) throws -> StructuredData {
         if expect(target) {
             return iftrue()
-        } else {
-            throw JSONStructuredDataParseError.unexpectedTokenError(
-                reason: "expected \"\(target)\" but \(currentSymbol)",
-                lineNumber: lineNumber,
-                columnNumber: columnNumber
-            )
         }
+        throw unexpectedTokenError(reason: "expected \"\(target)\" but \(currentSymbol)")
     }
 
     private func parseString() throws -> StructuredData {
-        assert(currentChar == Char(ascii: "\""), "points a double quote")
         advance()
-        var buffer: [CChar] = []
 
-        LOOP: while cur != end {
+        var buffer = [CChar]()
+
+        while cur != end && currentChar != Char(ascii: "\"") {
             switch currentChar {
             case Char(ascii: "\\"):
                 advance()
-                if (cur == end) {
-                    throw JSONStructuredDataParseError.invalidStringError(
-                        reason: "unexpected end of a string literal",
-                        lineNumber: lineNumber,
-                        columnNumber: columnNumber
-                    )
+
+                guard cur != end else {
+                    throw invalidStringError(reason: "missing double quote")
                 }
 
-                if let c = parseEscapedChar() {
-                    for u in String(c).utf8 {
-                        buffer.append(CChar(bitPattern: u))
-                    }
-                } else {
-                    throw JSONStructuredDataParseError.invalidStringError(
-                        reason: "invalid escape sequence",
-                        lineNumber: lineNumber,
-                        columnNumber: columnNumber
-                    )
+                guard let escapedChar = parseEscapedChar() else {
+                    throw invalidStringError(reason: "missing double quote")
                 }
-            case Char(ascii: "\""): break LOOP
-            default: buffer.append(CChar(bitPattern: currentChar))
+
+                String(escapedChar).utf8.forEach {
+                    buffer.append(CChar(bitPattern: $0))
+                }
+            default:
+                buffer.append(CChar(bitPattern: currentChar))
             }
+
             advance()
         }
 
-        if !expect("\"") {
-            throw JSONStructuredDataParseError.invalidStringError(
-                reason: "missing double quote",
-                lineNumber: lineNumber,
-                columnNumber: columnNumber
-            )
+        guard expect("\"") else {
+            throw invalidStringError(reason: "missing double quote")
         }
 
-        buffer.append(0)
-        let s = String(validatingUTF8: buffer)!
-        return .string(s)
+        buffer.append(0) // trailing nul
+        return .string(String(cString: buffer))
     }
 
     private func parseEscapedChar() -> UnicodeScalar? {
-        let c = UnicodeScalar(currentChar)
+        let character = UnicodeScalar(currentChar)
 
-        if c == "u" {
-            var length = 0
-            var value: UInt32 = 0
+        // 'u' indicates unicode
+        guard character == "u" else {
+            return unescapeMapping[character] ?? character
+        }
 
-            while let d = hexToDigit(nextChar) {
-                advance()
-                length += 1
+        guard let surrogateValue = parseEscapedUnicodeSurrogate() else {
+            return nil
+        }
 
-                if length > 8 {
-                    break
-                }
+        // two consecutive \u#### sequences represent 32 bit unicode characters
+        if distanceToEnd > 2 && nextChar == Char(ascii: "\\") && source[source.index(cur, offsetBy: 2)] == Char(ascii: "u") {
+            advance()
+            advance()
 
-                value = (value << 4) | d
-            }
-
-            if length < 2 {
+            guard let surrogatePairValue = parseEscapedUnicodeSurrogate() else {
                 return nil
             }
 
-            return UnicodeScalar(value)
-        } else {
-            let c = UnicodeScalar(currentChar)
-            return unescapeMapping[c] ?? c
+            guard isHighSurrogate(surrogateValue) else {
+                return nil
+            }
+
+            guard isLowSurrogate(surrogatePairValue) else {
+                return nil
+            }
+
+            let scalar = (UInt32(surrogateValue) << 10) + UInt32(surrogatePairValue) - 0x35fdc00
+            return UnicodeScalar(scalar)
         }
+
+        if isHighOrLowSurrogate(surrogateValue) {
+            return nil
+        }
+
+        return UnicodeScalar(surrogateValue)
+    }
+
+    private func isHighSurrogate(_ n: UInt32) -> Bool {
+        return 0xD800 ... 0xDBFF ~= Int(n)
+    }
+
+    private func isLowSurrogate(_ n: UInt32) -> Bool {
+        return 0xDC00 ... 0xDFFF ~= Int(n)
+    }
+
+    private func isHighOrLowSurrogate(_ n: UInt32) -> Bool {
+        return isHighSurrogate(n) || isLowSurrogate(n)
+    }
+
+    private func parseEscapedUnicodeSurrogate() -> UInt32? {
+        guard distanceToEnd > 4 else {
+            return nil
+        }
+
+        let requiredLength = 4
+
+        var length = 0
+        var value: UInt32 = 0
+        while true {
+            guard length < requiredLength else {
+                break
+            }
+            guard let d = hexToDigit(nextChar) else {
+                break
+            }
+            advance()
+            length += 1
+
+            value <<= 4
+            value |= d
+        }
+
+        guard length == requiredLength else { return nil }
+        return value
     }
 
     private func parseNumber() throws -> StructuredData {
         let sign = expect("-") ? -1.0 : 1.0
         var integer: Int64 = 0
+        var actualNumberStarted = false
 
-        switch currentChar {
-        case Char(ascii: "0"): advance()
-        case Char(ascii: "1") ... Char(ascii: "9"):
-            while cur != end {
-                if let value = digitToInt(currentChar) {
-                    integer = (integer * 10) + Int64(value)
-                } else {
-                    break
-                }
+        while cur != end {
+            if currentChar == Char(ascii: "0") && !actualNumberStarted {
                 advance()
+                continue
             }
-        default:
-            throw JSONStructuredDataParseError.invalidStringError(
-                reason: "missing double quote",
-                lineNumber: lineNumber,
-                columnNumber: columnNumber
-            )
+            actualNumberStarted = true
+            if let value = digitToInt(currentChar) {
+                let (n, overflowed) = Int64.multiplyWithOverflow(integer, 10)
+                if overflowed {
+                    throw invalidNumberError(reason: "too large number")
+                }
+                integer = n + Int64(value)
+            } else {
+                break
+            }
+            advance()
         }
 
         if integer != Int64(Double(integer)) {
-            throw JSONStructuredDataParseError.invalidNumberError(
-                reason: "too large number",
-                lineNumber: lineNumber,
-                columnNumber: columnNumber
-            )
+            throw invalidNumberError(reason: "too large number")
         }
 
         var fraction: Double = 0.0
@@ -252,22 +301,19 @@ extension GenericJSONStructuredDataParser {
             }
 
             if fractionLength == 0 {
-                throw JSONStructuredDataParseError.invalidNumberError(
-                    reason: "insufficient fraction part in number",
-                    lineNumber: lineNumber,
-                    columnNumber: columnNumber
-                )
+                throw invalidNumberError(reason: "insufficient fraction part in number")
             }
         }
 
         var exponent: Int64 = 0
+        var expSign: Int64 = 1
 
         if expect("e") || expect("E") {
-            var expSign: Int64 = 1
-
             if expect("-") {
                 expSign = -1
-            } else if expect("+") {}
+            } else {
+                _ = expect("+")
+            }
 
             exponent = 0
             var exponentLength = 0
@@ -283,25 +329,20 @@ extension GenericJSONStructuredDataParser {
             }
 
             if exponentLength == 0 {
-                throw JSONStructuredDataParseError.invalidNumberError(
-                    reason: "insufficient exponent part in number",
-                    lineNumber: lineNumber,
-                    columnNumber: columnNumber
-                )
+                throw invalidNumberError(reason: "insufficient exponent part in number")
             }
 
             exponent *= expSign
         }
 
-        if hasFraction {
+        if hasFraction || expSign == -1 {
             return .double(sign * (Double(integer) + fraction) * pow(10, Double(exponent)))
-        } else {
-            return .int(Int(sign * Double(integer) * pow(10, Double(exponent))))
         }
+
+        return .int(Int(sign * Double(integer) * pow(10, Double(exponent))))
     }
 
     private func parseObject() throws -> StructuredData {
-        assert(currentChar == Char(ascii: "{"), "points \"{\"")
         advance()
         skipWhitespaces()
         var object: [String: StructuredData] = [:]
@@ -314,11 +355,7 @@ extension GenericJSONStructuredDataParser {
                 skipWhitespaces()
 
                 if !expect(":") {
-                    throw JSONStructuredDataParseError.unexpectedTokenError(
-                        reason: "missing colon (:)",
-                        lineNumber: lineNumber,
-                        columnNumber: columnNumber
-                    )
+                    throw unexpectedTokenError(reason: "missing colon (:)")
                 }
 
                 skipWhitespaces()
@@ -331,18 +368,10 @@ extension GenericJSONStructuredDataParser {
                 } else if expect("}") {
                     break LOOP
                 } else {
-                    throw JSONStructuredDataParseError.unexpectedTokenError(
-                        reason: "missing comma (,)",
-                        lineNumber: lineNumber,
-                        columnNumber: columnNumber
-                    )
+                    throw unexpectedTokenError(reason: "missing comma (,)")
                 }
             default:
-                throw JSONStructuredDataParseError.nonStringKeyError(
-                    reason: "unexpected value for object key",
-                    lineNumber: lineNumber,
-                    columnNumber: columnNumber
-                )
+                throw nonStringKeyError(reason: "unexpected value for object key")
             }
         }
 
@@ -350,28 +379,22 @@ extension GenericJSONStructuredDataParser {
     }
 
     private func parseArray() throws -> StructuredData {
-        assert(currentChar == Char(ascii: "["), "points \"[\"")
         advance()
         skipWhitespaces()
 
         var array: [StructuredData] = []
 
         LOOP: while cur != end && !expect("]") {
-            let JSON = try parseValue()
+            let data = try parseValue()
             skipWhitespaces()
-            array.append(JSON)
+            array.append(data)
 
             if expect(",") {
                 continue
             } else if expect("]") {
                 break LOOP
-            } else {
-                throw JSONStructuredDataParseError.unexpectedTokenError(
-                    reason: "missing comma (,) (token: \(currentSymbol))",
-                    lineNumber: lineNumber,
-                    columnNumber: columnNumber
-                )
             }
+            throw unexpectedTokenError(reason: "missing comma (,) (token: \(currentSymbol))")
         }
 
         return .array(array)
@@ -387,9 +410,9 @@ extension GenericJSONStructuredDataParser {
             if target.utf8Start.pointee == currentChar {
                 advance()
                 return true
-            } else {
-                return false
             }
+
+            return false
         }
 
         let start = cur
@@ -424,7 +447,6 @@ extension GenericJSONStructuredDataParser {
     }
 
     private func advance() {
-        assert(cur != end, "out of range")
         cur = source.index(after: cur)
 
         if cur != end {
@@ -451,4 +473,63 @@ extension GenericJSONStructuredDataParser {
             advance()
         }
     }
+}
+
+let unescapeMapping: [UnicodeScalar: UnicodeScalar] = [
+    "t": "\t",
+    "r": "\r",
+    "n": "\n"
+]
+
+let escapeMapping: [Character: String] = [
+    "\r": "\\r",
+    "\n": "\\n",
+    "\t": "\\t",
+    "\\": "\\\\",
+    "\"": "\\\"",
+
+    "\u{2028}": "\\u2028",
+    "\u{2029}": "\\u2029",
+
+    "\r\n": "\\r\\n"
+]
+
+let hexMapping: [UnicodeScalar: UInt32] = [
+    "0": 0x0,
+    "1": 0x1,
+    "2": 0x2,
+    "3": 0x3,
+    "4": 0x4,
+    "5": 0x5,
+    "6": 0x6,
+    "7": 0x7,
+    "8": 0x8,
+    "9": 0x9,
+    "a": 0xA, "A": 0xA,
+    "b": 0xB, "B": 0xB,
+    "c": 0xC, "C": 0xC,
+    "d": 0xD, "D": 0xD,
+    "e": 0xE, "E": 0xE,
+    "f": 0xF, "F": 0xF
+]
+
+let digitMapping: [UnicodeScalar:Int] = [
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9
+]
+
+func digitToInt(_ byte: UInt8) -> Int? {
+    return digitMapping[UnicodeScalar(byte)]
+}
+
+func hexToDigit(_ byte: UInt8) -> UInt32? {
+    return hexMapping[UnicodeScalar(byte)]
 }

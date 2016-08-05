@@ -42,30 +42,30 @@ public struct Environment {
 
     public subscript(variable: String) -> String? {
         get {
-            return Environment.getEnvironmentVariable(variable)
+            return get(variable: variable)
         }
 
         nonmutating set(value) {
             if let value = value {
-                Environment.setEnvironmentVariable(variable, value: value, replace: true)
+                set(value: value, to: variable, replace: true)
             } else {
-                Environment.removeEnvironmentVariable(variable)
+                remove(variable: variable)
             }
         }
     }
 
-    private static func getEnvironmentVariable(_ variable: String) -> String? {
+    public func get(variable: String) -> String? {
         guard let value = getenv(variable) else {
             return nil
         }
         return String(validatingUTF8: value)
     }
 
-    private static func setEnvironmentVariable(_ variable: String, value: String, replace: Bool = true) {
+    public func set(value: String, to variable: String, replace: Bool = true) {
         setenv(variable, value, replace ? 1 : 0)
     }
 
-    private static func removeEnvironmentVariable(_ variable: String) {
+    public func remove(variable: String) {
         unsetenv(variable)
     }
 }

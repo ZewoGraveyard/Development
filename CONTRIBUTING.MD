@@ -18,19 +18,39 @@ Have a cool feature for Quark? Create an [issue](https://github.com/QuarkX/Quark
 
 ### Answering questions on issues
 
-If you know the answer to some question in an open issue. Please share it with the world!
+If you know the answer to some question in an open issue. Please share it with the world! Giving support is one of the most important things you could do. Now the person you just helped will be able to help others as well.
+
+### Writing Tests
+
+Another way to contribute is by writing unit tests for **Quark**. We strive to keep the test coverage very high. If you see a file doesn't have 100% coverage yet, there's your chance. Writing tests is an easy way to get comfortable with the API and to know about the internals.
+
+![Test Coverage](https://codecov.io/gh/QuarkX/Quark/branch/master/graphs/tree.svg)
+
+Each block represents a single file in the project. The size of the block represents the number of statements and the color represents the test coverage. You can open the detailed view of the files by clicking the blocks. The closer to red, the more attention the file needs.
 
 ### Documentation improvements
 
-We host our documentation at [quark-docs.readme.io](quark-docs.readme.io`). If you have a better way to express an idea or if you see a typo for example, you can click on the _suggest edits_ link at the top right to make your suggestions.
+We host our documentation at [quark-docs.readme.io](http://quark-docs.readme.io). If you have a better way to express an idea or if you see a typo for example, you can click on the **suggest edits** link at the top right to make your suggestions.
+
+![Suggest Edits](http://i63.tinypic.com/dz70oz.png)
+
+### Reference improvements
+
+Besides the documentation we also provide an API reference, which is located at [reference.quark.zewo.io](http://reference.quark.zewo.io). Our goal is to reach 100% coverage on the API reference. You can check the current coverage on the top left corner in the reference page.
+
+![Reference Coverage](http://i67.tinypic.com/331zot3.png)
 
 ### Reviewing Pull Requests
 
-Even if you're not part of the organization yet you can help reviewing pull requests. It's as simple as adding a comment on the PR body or in a file line. If you're already a member of the organization you're free to merge the PR directly if it's a trivial one. If it's a big PR it can only be merged after discussion with the team.
+Even if you're not part of the organization yet you can help reviewing pull requests. It's as simple as adding a comment on the PR body or in a file line. If you're already a member of the organization you're free to merge the PR directly if it's a trivial one and it passes all checks. If it's a big PR it can only be merged after discussion with the team.
+
+![Status Check](http://i65.tinypic.com/2aipmop.png)
 
 ### Managing labels and milestones
 
 We use Github for most of our workflow. Keeping labels and milestones up to date help a lot in the general organization of tasks.
+
+![Labels](http://i63.tinypic.com/aw4zdt.png)
 
 ## How do I become a member of the organization?
 

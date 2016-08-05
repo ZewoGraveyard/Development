@@ -1,3 +1,15 @@
+extension Version : Hashable {
+    public var hashValue: Int {
+        return major ^ minor
+    }
+}
+
+extension Version : Equatable {}
+
+public func == (lhs: Version, rhs: Version) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
 extension Message {
     public var contentType: MediaType? {
         get {
@@ -48,7 +60,7 @@ extension Message {
             return connection?.lowercased() == "keep-alive"
         }
 
-        return connection?.lowercased() == "close"
+        return connection?.lowercased() != "close"
     }
 
     public var isUpgrade: Bool {
@@ -70,16 +82,12 @@ extension Message {
     public var storageDescription: String {
         var string = "Storage:\n"
 
-        if storage.count == 0 {
+        if storage.isEmpty {
             string += "-"
         }
 
-        for (offset: index, element: (key: key, value: value)) in storage.enumerated() {
-            string += "\(key): \(value)"
-
-            if index < storage.count - 1 {
-                string += "\n"
-            }
+        for (key, value) in storage {
+            string += "\(key): \(value)\n"
         }
 
         return string

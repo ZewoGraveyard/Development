@@ -133,7 +133,7 @@ public protocol MustacheBoxable {
 // [MustacheBox] boxable via Box<C: Collection where C.Iterator.Element: MustacheBoxable>(collection: C?)
 // and dictionaries [String:MustacheBox] boxable via Box<T: MustacheBoxable>(dictionary: [String: T]?)
 
-extension MustacheBox {
+extension MustacheBox : MustacheBoxable {
     
     /**
     `MustacheBox` adopts the `MustacheBoxable` protocol so that it can feed

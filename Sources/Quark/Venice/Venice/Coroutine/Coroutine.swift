@@ -9,11 +9,24 @@ public extension Double {
 }
 
 /// Runs the expression in a lightweight coroutine.
-public func co(_ routine: (Void) -> Void) {
+public func coroutine(_ routine: (Void) -> Void) {
     var _routine = routine
     CLibvenice.co(&_routine, { routinePointer in
         UnsafeMutablePointer<((Void) -> Void)>(routinePointer!).pointee()
     }, "co")
+}
+
+/// Runs the expression in a lightweight coroutine.
+public func coroutine(_ routine: @autoclosure(escaping) (Void) -> Void) {
+    var _routine: (Void) -> Void = routine
+    CLibvenice.co(&_routine, { routinePointer in
+        UnsafeMutablePointer<((Void) -> Void)>(routinePointer!).pointee()
+    }, "co")
+}
+
+/// Runs the expression in a lightweight coroutine.
+public func co(_ routine: (Void) -> Void) {
+    coroutine(routine)
 }
 
 /// Runs the expression in a lightweight coroutine.

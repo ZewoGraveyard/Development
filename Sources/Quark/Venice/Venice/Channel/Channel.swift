@@ -13,11 +13,7 @@ public final class Channel<T> : Sequence {
     public var closed: Bool = false
     private var buffer: [T] = []
     public let bufferSize: Int
-
-    public var isBuffered: Bool {
-        return bufferSize > 0
-    }
-
+    
     public convenience init() {
         self.init(bufferSize: 0)
     }
@@ -66,8 +62,9 @@ public final class Channel<T> : Sequence {
     }
 
     /// Receives a value from the channel.
+    @discardableResult
     public func receive() -> T? {
-        if closed && buffer.count <= 0 {
+        if closed && buffer.isEmpty {
             return nil
         }
         mill_chr(channel, "Channel receive")
@@ -79,7 +76,7 @@ public final class Channel<T> : Sequence {
     }
 
     internal func getValueFromBuffer() -> T? {
-        if closed && buffer.count <= 0 {
+        if closed && buffer.isEmpty {
             return nil
         }
         return buffer.removeFirst()

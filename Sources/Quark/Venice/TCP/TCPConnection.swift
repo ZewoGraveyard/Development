@@ -13,21 +13,21 @@ public final class TCPConnection : Connection {
         self.closed = false
     }
 
-    public init(host: String, port: Int, timingOut deadline: Double = .never) throws {
+    public init(host: String, port: Int, deadline: Double = .never) throws {
         self.ip = try IP(remoteAddress: host, port: port, deadline: deadline)
     }
 
-    public func open(timingOut deadline: Double) throws {
+    public func open(deadline: Double) throws {
         self.socket = tcpconnect(ip.address, deadline.int64milliseconds)
         try ensureLastOperationSucceeded()
         self.closed = false
     }
 
-    public func send(_ data: Data, timingOut deadline: Double) throws {
-        try send(data, flushing: true, timingOut: deadline)
+    public func write(_ data: Data, deadline: Double) throws {
+        try write(data, flush: true, deadline: deadline)
     }
 
-    public func send(_ data: Data, flushing flush: Bool, timingOut deadline: Double) throws {
+    public func write(_ data: Data, flush: Bool, deadline: Double) throws {
         let socket = try getSocket()
         try ensureStreamIsOpen()
 
@@ -44,7 +44,7 @@ public final class TCPConnection : Connection {
         }
     }
 
-    public func flush(timingOut deadline: Double) throws {
+    public func flush(deadline: Double) throws {
         let socket = try getSocket()
         try ensureStreamIsOpen()
 
@@ -52,7 +52,7 @@ public final class TCPConnection : Connection {
         try ensureLastOperationSucceeded()
     }
 
-    public func receive(upTo byteCount: Int, timingOut deadline: Double = .never) throws -> Data {
+    public func read(upTo byteCount: Int, deadline: Double = .never) throws -> Data {
         let socket = try getSocket()
         try ensureStreamIsOpen()
 
@@ -73,7 +73,7 @@ public final class TCPConnection : Connection {
         return Data(data.prefix(received))
     }
 
-    public func receive(_ byteCount: Int, timingOut deadline: Double = .never) throws -> Data {
+    public func read(_ byteCount: Int, deadline: Double = .never) throws -> Data {
         let socket = try getSocket()
         try ensureStreamIsOpen()
 
@@ -122,12 +122,8 @@ public final class TCPConnection : Connection {
 }
 
 extension TCPConnection {
-    public func send(_ convertible: DataConvertible, timingOut deadline: Double = .never) throws {
-        try send(convertible.data, timingOut: deadline)
-    }
-
-    public func receiveString(upTo codeUnitCount: Int, timingOut deadline: Double = .never) throws -> String {
-        let result = try receive(upTo: codeUnitCount, timingOut: deadline)
+    public func readString(upTo codeUnitCount: Int, deadline: Double = .never) throws -> String {
+        let result = try read(upTo: codeUnitCount, deadline: deadline)
         return try String(data: result)
     }
 }

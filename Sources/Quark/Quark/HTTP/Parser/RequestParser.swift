@@ -37,13 +37,19 @@ public final class RequestParser : S4.RequestParser {
     let stream: Stream
     let context: RequestContext
     var parser = http_parser()
-    var request: Request?
+    var requests: [Request] = []
+    let bufferSize: Int
 
-    public init(stream: Stream) {
+    convenience public init(stream: Stream) {
+        self.init(stream: stream, bufferSize: 2048)
+    }
+
+    public init(stream: Stream, bufferSize: Int) {
         self.stream = stream
+        self.bufferSize = bufferSize
         self.context = RequestContext(allocatingCapacity: 1)
         self.context.initialize(with: RequestParserContext { request in
-            self.request = request
+            self.requests.insert(request, at: 0)
         })
 
         resetParser()
@@ -60,24 +66,16 @@ public final class RequestParser : S4.RequestParser {
 
     public func parse() throws -> Request {
         while true {
-            defer {
-                request = nil
+            if let request = requests.popLast() {
+                return request
             }
 
-            let data = try stream.receive(upTo: 2048)
+            let data = try stream.read(upTo: bufferSize)
             let bytesParsed = http_parser_execute(&parser, &requestSettings, UnsafePointer(data.bytes), data.count)
 
             guard bytesParsed == data.count else {
-                resetParser()
-                let errorName = http_errno_name(http_errno(parser.http_errno))!
-                let errorDescription = http_errno_description(http_errno(parser.http_errno))!
-                let error = ParseError(description: "\(String(validatingUTF8: errorName)!): \(String(validatingUTF8: errorDescription)!)")
-                throw error
-            }
-
-            if let request = request {
-                resetParser()
-                return request
+                defer { resetParser() }
+                throw http_errno(parser.http_errno)
             }
         }
     }
@@ -85,10 +83,7 @@ public final class RequestParser : S4.RequestParser {
 
 func onRequestURL(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
     return RequestContext(parser!.pointee.data).withPointee {
-        guard let uri = String(pointer: data!, length: length) else {
-            return 1
-        }
-
+        let uri = String(cString: data!, length: length)
         $0.currentURI += uri
         return 0
     }
@@ -96,9 +91,7 @@ func onRequestURL(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) ->
 
 func onRequestHeaderField(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
     return RequestContext(parser!.pointee.data).withPointee {
-        guard let headerName = String(pointer: data!, length: length) else {
-            return 1
-        }
+        let headerName = String(cString: data!, length: length)
 
         if $0.currentHeaderName != "" {
             $0.currentHeaderName = ""
@@ -111,16 +104,13 @@ func onRequestHeaderField(_ parser: Parser?, data: UnsafePointer<Int8>?, length:
 
 func onRequestHeaderValue(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
     return RequestContext(parser!.pointee.data).withPointee {
-        guard let headerValue = String(pointer: data!, length: length) else {
-            return 1
-        }
+        let headerValue = String(cString: data!, length: length)
 
         if $0.currentHeaderName == "" {
             $0.currentHeaderName = CaseInsensitiveString($0.buildingHeaderName)
             $0.buildingHeaderName = ""
 
-            if $0.headers[$0.currentHeaderName] != nil {
-                let previousHeaderValue = $0.headers[$0.currentHeaderName] ?? ""
+            if let previousHeaderValue = $0.headers[$0.currentHeaderName] {
                 $0.headers[$0.currentHeaderName] = previousHeaderValue + ", "
             }
         }
@@ -139,11 +129,7 @@ func onRequestHeadersComplete(_ parser: Parser?) -> Int32 {
         let minor = Int(parser!.pointee.http_minor)
         $0.version = Version(major: major, minor: minor)
 
-        guard let uri = try? URI($0.currentURI) else {
-            return 1
-        }
-
-        $0.uri = uri
+        $0.uri = try! URI($0.currentURI)
         $0.currentURI = ""
         $0.buildingHeaderName = ""
         $0.currentHeaderName = ""

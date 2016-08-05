@@ -1,10 +1,10 @@
 public typealias MainRouter = Router
 
 public protocol Router : RouterRepresentable {
-    var fileType: FileProtocol.Type { get }
     var staticFilesPath: String { get }
-
+    var fileType: C7.File.Type { get }
     var middleware: [Middleware] { get }
+
     func recover(error: ErrorProtocol) throws -> Response
     func custom(routes: Routes)
 }
@@ -13,7 +13,7 @@ public protocol Router : RouterRepresentable {
 // This will have to be deleted once we split Venice from Quark
 
 extension Router {
-    public var fileType: FileProtocol.Type {
+    public var fileType: C7.File.Type {
         return File.self
     }
 }
@@ -28,7 +28,7 @@ extension Router {
     }
 
     public func recover(error: ErrorProtocol) throws -> Response {
-        return try RecoveryMiddleware.defaultRecover(error: error)
+        return try RecoveryMiddleware.recover(error: error)
     }
 
     public func custom(routes: Routes) {}

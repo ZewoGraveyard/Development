@@ -20,18 +20,30 @@ extension StructuredData : MustacheBoxable {
         case .data(let data):
             return Box(boxable: String(data))
         case .array(let array):
-            return Box(boxable: array)
+            var arr: [MustacheBox] = []
+
+            for element in array {
+                arr.append(Box(boxable: element))
+            }
+
+            return Box(boxable: arr)
         case .dictionary(let dictionary):
-            return Box(boxable: dictionary)
+            var dict: [String: MustacheBox] = [:]
+
+            for (key, value) in dictionary {
+                dict[key] = Box(boxable: value)
+            }
+
+            return Box(boxable: dict)
         }
     }
 }
 
 public struct MustacheSerializer : StructuredDataSerializer {
     public let templatePath: String
-    let fileType: FileProtocol.Type
+    let fileType: C7.File.Type
 
-    public init(templatePath: String, fileType: FileProtocol.Type) {
+    public init(templatePath: String, fileType: C7.File.Type) {
         self.templatePath = templatePath
         self.fileType = fileType
     }
@@ -39,12 +51,12 @@ public struct MustacheSerializer : StructuredDataSerializer {
     public func serialize(_ structuredData: StructuredData) throws -> Data {
         let templateFile = try fileType.init(path: templatePath)
 
-        guard let templateString = try? String(data: templateFile.readAllBytes()) else {
+        guard let templateString = try? String(data: templateFile.readAll()) else {
             throw MustacheSerializerError.unsupportedTemplateEncoding
         }
 
         let template = try Template(string: templateString)
-        let rendering = try template.render(box: structuredData.mustacheBox)
+        let rendering = try template.render(box: Box(boxable: structuredData))
         return rendering.data
     }
 }

@@ -30,24 +30,22 @@ public func <<Element, Payload where Element : Comparable>(lhs: Trie<Element, Pa
 
 extension Trie : Comparable { }
 
-extension Trie {
-
-    var description: String {
+extension Trie : CustomStringConvertible {
+    public var description: String {
         return pretty(depth: 0)
     }
 
     func pretty(depth: Int) -> String {
-
         let key: String
         if let k = self.prefix {
-            key = "\(k)"
+            key = String(k)
         } else {
             key = "head"
         }
 
         let payload: String
         if let p = self.payload {
-            payload = ":\(p)"
+            payload = ":" + String(p)
         } else {
             payload = ""
         }
@@ -56,7 +54,7 @@ extension Trie {
             .map { $0.pretty(depth: depth + 1) }
             .reduce("", combine: { $0 + $1})
 
-        let pretty = "- \(key)\(payload)" + "\n" + "\(children)"
+        let pretty = "- \(key)\(payload)" + "\n" + String(children)
 
         let indentation = (0..<depth).reduce("", combine: {$0.0 + "  "})
 
@@ -101,10 +99,6 @@ extension Trie {
 }
 
 extension Trie {
-    func findLast<SequenceType : Sequence where SequenceType.Iterator.Element == Element>(_ sequence: SequenceType) -> Trie<Element, Payload>? {
-        return findLast(sequence.makeIterator())
-    }
-
     func findLast<Iterator : IteratorProtocol where Iterator.Element == Element>(_ iterator: Iterator) -> Trie<Element, Payload>? {
 
         var iterator = iterator
@@ -118,20 +112,20 @@ extension Trie {
         var lower = 0
         var higher = children.count - 1
 
-        while (lower <= higher) {
+        while lower <= higher {
             let middle = (lower + higher) / 2
             let child = children[middle]
             guard let current = child.prefix else { continue }
 
-            if (current == target) {
+            if current == target {
                 return child.findLast(iterator)
             }
 
-            if (current < target) {
+            if current < target {
                 lower = middle + 1
             }
 
-            if (current > target) {
+            if current > target {
                 higher = middle - 1
             }
         }
@@ -156,29 +150,6 @@ extension Trie {
 
     func contains<Iterator : IteratorProtocol where Iterator.Element == Element>(_ iterator: Iterator) -> Bool {
         return findLast(iterator) != nil
-    }
-}
-
-extension Trie where Payload: Equatable {
-    func findByPayload(_ payload: Payload) -> [Element]? {
-
-        if self.payload == payload {
-            // not sure what to do if it doesnt have a prefix
-            if let prefix = self.prefix {
-                return [prefix]
-            }
-            return []
-        }
-
-        for child in children {
-            if let prefixes = child.findByPayload(payload) {
-                if let prefix = self.prefix {
-                    return [prefix] + prefixes
-                }
-                return prefixes
-            }
-        }
-        return nil
     }
 }
 

@@ -382,6 +382,12 @@ extension SystemError {
     }
 }
 
+extension SystemError : Equatable {}
+
+public func == (lhs: SystemError, rhs: SystemError) -> Bool {
+    return lhs.errorNumber == rhs.errorNumber
+}
+
 extension SystemError {
     public static func description(for errorNumber: Int32) -> String {
         return String(cString: strerror(errorNumber))

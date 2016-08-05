@@ -8,43 +8,48 @@ public struct ResponseSerializer : S4.ResponseSerializer {
     public func serialize(_ response: Response) throws {
         let newLine: Data = [13, 10]
 
-        try stream.send("HTTP/\(response.version.major).\(response.version.minor) \(response.status.statusCode) \(response.status.reasonPhrase)".data)
-        try stream.send(newLine)
+        try stream.write("HTTP/\(response.version.major).\(response.version.minor) \(response.status.statusCode) \(response.status.reasonPhrase)")
+        try stream.write(newLine)
 
         for (name, value) in response.headers.headers {
-            try stream.send("\(name): \(value)".data)
-            try stream.send(newLine)
+            try stream.write("\(name): \(value)")
+            try stream.write(newLine)
         }
 
         for cookie in response.cookieHeaders {
-            try stream.send("Set-Cookie: \(cookie)".data)
-            try stream.send(newLine)
+            try stream.write("Set-Cookie: \(cookie)".data)
+            try stream.write(newLine)
         }
 
-        try stream.send(newLine)
+        try stream.write(newLine)
 
         switch response.body {
         case .buffer(let buffer):
-            try stream.send(buffer)
-        case .receiver(let receiver):
-            while !receiver.closed {
-                let data = try receiver.receive(upTo: 2014)
-                try stream.send(String(data.count, radix: 16).data)
-                try stream.send(newLine)
-                try stream.send(data)
-                try stream.send(newLine)
+            try stream.write(buffer)
+        case .reader(let reader):
+            while !reader.closed {
+                let data = try reader.read(upTo: 2014)
+
+                if data.isEmpty {
+                    break
+                }
+                
+                try stream.write(String(data.count, radix: 16).data)
+                try stream.write(newLine)
+                try stream.write(data)
+                try stream.write(newLine)
             }
 
-            try stream.send("0".data)
-            try stream.send(newLine)
-            try stream.send(newLine)
-        case .sender(let sender):
+            try stream.write("0")
+            try stream.write(newLine)
+            try stream.write(newLine)
+        case .writer(let writer):
             let body = BodyStream(stream)
-            try sender(body)
+            try writer(body)
 
-            try stream.send("0".data)
-            try stream.send(newLine)
-            try stream.send(newLine)
+            try stream.write("0")
+            try stream.write(newLine)
+            try stream.write(newLine)
         default:
             throw BodyError.inconvertibleType
         }
