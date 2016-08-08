@@ -4,7 +4,7 @@ language: generic
 sudo: required
 osx_image: xcode8
 install:
-  - source install_swift.sh 08-07
+  - source install-swift.sh
 #  - rvm install 2.2.3
 #  - gem install xcpretty
 script:
