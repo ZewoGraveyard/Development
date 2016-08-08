@@ -13,7 +13,7 @@ extension Metadata {
                     pointer.advance()
                     continue
                 }
-                string.append(UnicodeScalar(UInt8(bitPattern: pointer.pointee)))
+                string.append(String(UnicodeScalar(UInt8(bitPattern: pointer.pointee))))
                 pointer.advance()
             }
             return labels

@@ -18,7 +18,7 @@ public final class ReceivingChannel<T> : Sequence {
         channel.close()
     }
 
-    internal func registerReceive(_ clause: UnsafeMutablePointer<Void>, index: Int) {
+    internal func registerReceive(_ clause: UnsafeMutableRawPointer, index: Int) {
         return channel.registerReceive(clause, index: index)
     }
 

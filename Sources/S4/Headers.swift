@@ -6,7 +6,7 @@ public struct Headers {
     }
 }
 
-extension Headers: DictionaryLiteralConvertible {
+extension Headers : ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (CaseInsensitiveString, String)...) {
         var headers: [CaseInsensitiveString: String] = [:]
 
@@ -18,7 +18,7 @@ extension Headers: DictionaryLiteralConvertible {
     }
 }
 
-extension Headers: Sequence {
+extension Headers : Sequence {
     #if swift(>=3.0)
     public func makeIterator() -> DictionaryIterator<CaseInsensitiveString, String> {
         return headers.makeIterator()

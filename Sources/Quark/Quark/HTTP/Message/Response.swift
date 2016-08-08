@@ -23,7 +23,7 @@ extension Response {
         self.headers["Transfer-Encoding"] = "chunked"
     }
 
-    public init(status: Status = .ok, headers: Headers = [:], body: (C7.OutputStream) throws -> Void) {
+    public init(status: Status = .ok, headers: Headers = [:], body: @escaping (C7.OutputStream) throws -> Void) {
         self.init(
             version: Version(major: 1, minor: 1),
             status: status,
@@ -74,7 +74,7 @@ extension Response {
             var headers = Set<String>()
 
             for cookie in cookies {
-                let header = String(cookie)
+                let header = String(describing: cookie)
                 headers.insert(header)
             }
 

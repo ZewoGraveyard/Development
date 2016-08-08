@@ -2,7 +2,7 @@ public struct RedirectMiddleware : Middleware {
     let location: String
     let shouldRedirect: (Request) -> Bool
 
-    public init(redirectTo location: String, if shouldRedirect: (Request) -> Bool) {
+    public init(redirectTo location: String, if shouldRedirect: @escaping (Request) -> Bool) {
         self.location = location
         self.shouldRedirect = shouldRedirect
     }

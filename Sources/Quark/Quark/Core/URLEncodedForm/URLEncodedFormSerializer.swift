@@ -1,4 +1,4 @@
-enum URLEncodedFormSerializeError : ErrorProtocol {
+enum URLEncodedFormSerializeError : Error {
     case invalidStructuredData
 }
 

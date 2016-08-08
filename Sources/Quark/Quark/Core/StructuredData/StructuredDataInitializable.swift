@@ -1,7 +1,7 @@
 extension StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .dictionary(let dictionary) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Self.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Self.self, from: try type(of: structuredData.get()))
         }
         self = try construct { property in
             guard let initializable = property.type as? StructuredDataInitializable.Type else {
@@ -9,10 +9,10 @@ extension StructuredDataInitializable {
             }
             switch dictionary[property.key] ?? .null {
             case .null:
-                guard let nilLiteralConvertible = property.type as? NilLiteralConvertible.Type else {
+                guard let expressibleByNilLiteral = property.type as? ExpressibleByNilLiteral.Type else {
                     throw ReflectionError.requiredValueMissing(key: property.key)
                 }
-                return nilLiteralConvertible.init(nilLiteral: ())
+                return expressibleByNilLiteral.init(nilLiteral: ())
             case let x:
                 return try initializable.init(structuredData: x)
             }
@@ -29,7 +29,7 @@ extension StructuredData : StructuredDataInitializable {
 extension Bool : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .bool(let bool) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Bool.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Bool.self, from: try type(of: structuredData.get()))
         }
         self = bool
     }
@@ -38,7 +38,7 @@ extension Bool : StructuredDataInitializable {
 extension Double : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .double(let double) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Double.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Double.self, from: try type(of: structuredData.get()))
         }
         self = double
     }
@@ -47,7 +47,7 @@ extension Double : StructuredDataInitializable {
 extension Int : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .int(let int) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Int.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Int.self, from: try type(of: structuredData.get()))
         }
         self = int
     }
@@ -56,7 +56,7 @@ extension Int : StructuredDataInitializable {
 extension String : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .string(let string) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: String.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: String.self, from: try type(of: structuredData.get()))
         }
         self = string
     }
@@ -65,7 +65,7 @@ extension String : StructuredDataInitializable {
 extension Data : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .data(let data) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Data.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Data.self, from: try type(of: structuredData.get()))
         }
         self = data
     }
@@ -87,7 +87,7 @@ extension Optional : StructuredDataInitializable {
 extension Array : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .array(let array) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Array.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Array.self, from: try type(of: structuredData.get()))
         }
         guard let initializable = Element.self as? StructuredDataInitializable.Type else {
             throw StructuredDataError.notStructuredDataInitializable(Element.self)
@@ -116,10 +116,10 @@ extension String : StructuredDataDictionaryKeyInitializable {
 extension Dictionary : StructuredDataInitializable {
     public init(structuredData: StructuredData) throws {
         guard case .dictionary(let dictionary) = structuredData else {
-            throw StructuredDataError.cannotInitialize(type: Dictionary.self, from: try structuredData.get().dynamicType)
+            throw StructuredDataError.cannotInitialize(type: Dictionary.self, from: try type(of: structuredData.get()))
         }
         guard let keyInitializable = Key.self as? StructuredDataDictionaryKeyInitializable.Type else {
-            throw StructuredDataError.notStructuredDataDictionaryKeyInitializable(self.dynamicType)
+            throw StructuredDataError.notStructuredDataDictionaryKeyInitializable(type(of: self))
         }
         guard let valueInitializable = Value.self as? StructuredDataInitializable.Type else {
             throw StructuredDataError.notStructuredDataInitializable(Element.self)

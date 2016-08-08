@@ -3,7 +3,7 @@ public protocol Closable {
     func close() throws
 }
 
-public enum ClosableError: ErrorProtocol {
+public enum ClosableError: Error {
     case alreadyClosed
 }
 
@@ -27,11 +27,11 @@ extension Writable {
 }
 
 extension Writable {
-    public func write(_ data: Data, deadline: Double, completion: ((Void) throws -> Void) -> Void) {
+    public func write(_ data: Data, deadline: Double, completion: @escaping ((Void) throws -> Void) -> Void) {
         completion { try self.write(data, deadline: deadline) }
     }
 
-    public func flush(deadline: Double, completion: ((Void) throws -> Void) -> Void) {
+    public func flush(deadline: Double, completion: @escaping ((Void) throws -> Void) -> Void) {
         completion { try self.flush(deadline: deadline) }
     }
 }
@@ -47,7 +47,7 @@ extension Readable {
 }
 
 extension Readable {
-    public func read(upTo byteCount: Int, deadline: Double, completion: ((Void) throws -> Data) -> Void) {
+    public func read(upTo byteCount: Int, deadline: Double, completion: @escaping ((Void) throws -> Data) -> Void) {
         completion { try self.read(upTo: byteCount, deadline: deadline) }
     }
 }

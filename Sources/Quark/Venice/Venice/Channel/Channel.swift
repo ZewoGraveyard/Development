@@ -54,7 +54,7 @@ public final class Channel<T> : Sequence {
         }
     }
 
-    internal func send(_ value: T, clause: UnsafeMutablePointer<Void>, index: Int) {
+    internal func send(_ value: T, clause: UnsafeMutableRawPointer, index: Int) {
         if !closed {
             buffer.append(value)
             mill_choose_out(clause, channel, Int32(index))
@@ -71,7 +71,7 @@ public final class Channel<T> : Sequence {
         return getValueFromBuffer()
     }
 
-    internal func registerReceive(_ clause: UnsafeMutablePointer<Void>, index: Int) {
+    internal func registerReceive(_ clause: UnsafeMutableRawPointer, index: Int) {
         mill_choose_in(clause, channel, Int32(index))
     }
 

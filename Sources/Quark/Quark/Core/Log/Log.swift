@@ -34,7 +34,7 @@ public final class Logger {
         public let name: String
         public let logger: Logger
         public var message: Any? = nil
-        public var error: ErrorProtocol? = nil
+        public var error: Error? = nil
     }
 
     public struct LocationInfo {
@@ -60,7 +60,7 @@ extension Logger.LocationInfo : CustomStringConvertible {
 }
 
 extension Logger {
-    private func log(level: Level, item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    private func log(level: Level, item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         let event = Event(
             locationInfo: LocationInfo(
                 file: file,
@@ -80,7 +80,7 @@ extension Logger {
         }
     }
 
-    public func trace(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public func trace(_ item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         log(
             level: .trace,
             item: item,
@@ -92,7 +92,7 @@ extension Logger {
         )
     }
 
-    public func debug(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public func debug(_ item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         log(
             level: .debug,
             item: item,
@@ -104,7 +104,7 @@ extension Logger {
         )
     }
 
-    public func info(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public func info(_ item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         log(
             level: .info,
             item: item,
@@ -116,7 +116,7 @@ extension Logger {
         )
     }
 
-    public func warning(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public func warning(_ item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         log(
             level: .warning,
             item: item,
@@ -128,7 +128,7 @@ extension Logger {
         )
     }
 
-    public func error(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public func error(_ item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         log(
             level: .error,
             item: item,
@@ -140,7 +140,7 @@ extension Logger {
         )
     }
 
-    public func fatal(_ item: Any?, error: ErrorProtocol? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    public func fatal(_ item: Any?, error: Error? = nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         log(
             level: .fatal,
             item: item,

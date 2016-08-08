@@ -1,4 +1,4 @@
-public enum StructuredDataError : ErrorProtocol {
+public enum StructuredDataError : Error {
     case incompatibleType
     case outOfBounds
     case valueNotFound
@@ -309,7 +309,7 @@ extension StructuredData {
             return value
 
         case .data(let value):
-            return String(value)
+            return String(describing: value)
 
         case .array:
             throw StructuredDataError.incompatibleType
@@ -486,7 +486,7 @@ extension StructuredData {
         try set(value: value, merging: true, at: indexPath)
     }
 
-    private mutating func set<T : StructuredDataRepresentable>(value: T, merging: Bool, at indexPath: [IndexPathElement]) throws {
+    fileprivate mutating func set<T : StructuredDataRepresentable>(value: T, merging: Bool, at indexPath: [IndexPathElement]) throws {
         var indexPath = indexPath
 
         guard let first = indexPath.first else {
@@ -511,7 +511,8 @@ extension StructuredData {
                 if case .dictionary(var dictionary) = self {
                     let newValue = value.structuredData
                     if let existingDictionary = dictionary[key]?.asDictionary,
-                        newDictionary = newValue.asDictionary where merging {
+                        let newDictionary = newValue.asDictionary,
+                        merging {
                         var combinedDictionary: [String: StructuredData] = [:]
 
                         for (key, value) in existingDictionary {
@@ -556,7 +557,7 @@ extension StructuredData {
         indexPath.removeFirst()
 
         if indexPath.isEmpty {
-            guard case .dictionary(var dictionary) = self, .key(let key) = first.indexPathValue else {
+            guard case .dictionary(var dictionary) = self, case .key(let key) = first.indexPathValue else {
                 throw StructuredDataError.incompatibleType
             }
 
@@ -598,7 +599,7 @@ extension StructuredData {
                     try self.remove(at: indexPath)
                 }
             } catch {
-                fatalError(String(error))
+                fatalError(String(describing: error))
             }
         }
     }
@@ -624,31 +625,31 @@ public func == (lhs: StructuredData, rhs: StructuredData) -> Bool {
 
 // MARK: Literal Convertibles
 
-extension StructuredData : NilLiteralConvertible {
+extension StructuredData : ExpressibleByNilLiteral {
     public init(nilLiteral value: Void) {
         self = .null
     }
 }
 
-extension StructuredData : BooleanLiteralConvertible {
+extension StructuredData : ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: BooleanLiteralType) {
         self = .bool(value)
     }
 }
 
-extension StructuredData : IntegerLiteralConvertible {
+extension StructuredData : ExpressibleByIntegerLiteral {
     public init(integerLiteral value: IntegerLiteralType) {
         self = .int(value)
     }
 }
 
-extension StructuredData : FloatLiteralConvertible {
+extension StructuredData : ExpressibleByFloatLiteral {
     public init(floatLiteral value: FloatLiteralType) {
         self = .double(value)
     }
 }
 
-extension StructuredData : StringLiteralConvertible {
+extension StructuredData : ExpressibleByStringLiteral {
     public init(unicodeScalarLiteral value: String) {
         self = .string(value)
     }
@@ -662,23 +663,23 @@ extension StructuredData : StringLiteralConvertible {
     }
 }
 
-extension StructuredData : StringInterpolationConvertible {
+extension StructuredData : ExpressibleByStringInterpolation {
     public init(stringInterpolation strings: StructuredData...) {
         self = .string(strings.reduce("") { $0 + $1.asString! })
     }
 
     public init<T>(stringInterpolationSegment expr: T) {
-        self = .string(String(expr))
+        self = .string(String(describing: expr))
     }
 }
 
-extension StructuredData : ArrayLiteralConvertible {
+extension StructuredData : ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: StructuredData...) {
         self = .array(elements)
     }
 }
 
-extension StructuredData : DictionaryLiteralConvertible {
+extension StructuredData : ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (String, StructuredData)...) {
         var dictionary = [String: StructuredData](minimumCapacity: elements.count)
 
@@ -753,7 +754,7 @@ extension StructuredData : CustomStringConvertible {
             var string = "{"
             var index = 0
 
-            for (key, value) in dictionary.sorted(isOrderedBefore: {$0.0 < $1.0}) {
+            for (key, value) in dictionary.sorted(by: {$0.0 < $1.0}) {
                 string += escape(key) + ":" + serialize(data: value)
 
                 if index != dictionary.count - 1 {

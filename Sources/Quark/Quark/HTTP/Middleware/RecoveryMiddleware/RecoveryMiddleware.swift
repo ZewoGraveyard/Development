@@ -1,4 +1,4 @@
-public typealias Recover = (ErrorProtocol) throws -> Response
+public typealias Recover = (Error) throws -> Response
 
 public struct RecoveryMiddleware : Middleware {
     let recover: Recover
@@ -15,9 +15,9 @@ public struct RecoveryMiddleware : Middleware {
         }
     }
 
-    public static func recover(error: ErrorProtocol) throws -> Response {
+    public static func recover(error: Error) throws -> Response {
         switch error {
-        case let error as S4.Error:
+        case let error as HTTPError:
             return Response(status: error.status)
         default:
             throw error

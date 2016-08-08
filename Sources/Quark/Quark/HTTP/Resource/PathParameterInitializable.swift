@@ -5,7 +5,7 @@ public protocol PathParameterConvertible {
 
 extension String : PathParameterConvertible {
     public init(pathParameter: String) throws {
-        self.init(pathParameter)
+        self = pathParameter
     }
 
     public var pathParameter: String {

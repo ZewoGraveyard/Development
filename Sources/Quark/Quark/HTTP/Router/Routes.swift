@@ -52,7 +52,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -62,7 +62,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -73,7 +73,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -85,7 +85,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -95,7 +95,7 @@ extension Routes {
         _ path: String = "",
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -106,7 +106,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -118,7 +118,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -131,7 +131,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 
@@ -145,7 +145,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .get, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -170,7 +170,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -180,7 +180,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -191,7 +191,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -203,7 +203,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -213,7 +213,7 @@ extension Routes {
         _ path: String = "",
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -224,7 +224,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -236,7 +236,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -249,7 +249,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 
@@ -263,7 +263,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .head, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -288,7 +288,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -298,7 +298,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -309,7 +309,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -321,7 +321,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -331,7 +331,7 @@ extension Routes {
         _ path: String = "",
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -342,7 +342,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -354,7 +354,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -367,7 +367,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 
@@ -381,7 +381,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .post, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -406,7 +406,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -416,7 +416,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -427,7 +427,7 @@ extension Routes {
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -439,7 +439,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -449,7 +449,7 @@ extension Routes {
         _ path: String = "",
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -460,7 +460,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -472,7 +472,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -485,7 +485,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 
@@ -499,7 +499,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .put, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -524,7 +524,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -534,7 +534,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -545,7 +545,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -557,7 +557,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -567,7 +567,7 @@ extension Routes {
         _ path: String = "",
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -578,7 +578,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -590,7 +590,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -603,7 +603,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 
@@ -617,7 +617,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .patch, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -642,7 +642,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -652,7 +652,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -663,7 +663,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -675,7 +675,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -685,7 +685,7 @@ extension Routes {
         _ path: String = "",
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -696,7 +696,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -708,7 +708,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -721,7 +721,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 
@@ -735,7 +735,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .delete, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -760,7 +760,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -770,7 +770,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -781,7 +781,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -793,7 +793,7 @@ extension Routes {
         >(
         _ path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -803,7 +803,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, T) throws -> Response) {
+        respond: @escaping (Request, T) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -814,7 +814,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -826,7 +826,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -839,7 +839,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 
@@ -853,7 +853,7 @@ extension Routes {
         _ path: String,
         middleware: [Middleware] = [],
         content: T.Type = T.self,
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         add(method: .options, path: path, middleware: middleware, respond: respond)
     }
 }
@@ -877,7 +877,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A) throws -> Response) {
+        respond: @escaping (Request, A) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 1)
         let responder = BasicResponder { request in
             let parameters = try self.parseParameters(
@@ -900,7 +900,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B) throws -> Response) {
+        respond: @escaping (Request, A, B) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 2)
         let responder = BasicResponder { request in
             let parameters = try self.parseParameters(
@@ -925,7 +925,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C) throws -> Response) {
+        respond: @escaping (Request, A, B, C) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 3)
         let responder = BasicResponder { request in
             let parameters = try self.parseParameters(
@@ -952,7 +952,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 4)
         let responder = BasicResponder { request in
             let parameters = try self.parseParameters(
@@ -977,13 +977,13 @@ extension Routes {
         method: Method,
         path: String = "",
         middleware: [Middleware] = [],
-        respond: (request: Request, content: T) throws -> Response) {
+        respond: @escaping (_ request: Request, _ content: T) throws -> Response) {
         let contentMapper = ContentMapperMiddleware(mappingTo: T.self)
         let responder = BasicResponder { request in
             guard let content = request.storage[T.key] as? T else {
                 throw ClientError.badRequest
             }
-            return try respond(request: request, content: content)
+            return try respond(request, content)
         }
         add(method: method, path: path, middleware: [contentMapper] + middleware, responder: responder)
     }
@@ -995,7 +995,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, T) throws -> Response) {
+        respond: @escaping (Request, A, T) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 1)
         let contentMapper = ContentMapperMiddleware(mappingTo: T.self)
         let responder = BasicResponder { request in
@@ -1024,7 +1024,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, T) throws -> Response) {
+        respond: @escaping (Request, A, B, T) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 2)
         let contentMapper = ContentMapperMiddleware(mappingTo: T.self)
         let responder = BasicResponder { request in
@@ -1054,7 +1054,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, T) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 3)
         let contentMapper = ContentMapperMiddleware(mappingTo: T.self)
         let responder = BasicResponder { request in
@@ -1087,7 +1087,7 @@ extension Routes {
         method: Method,
         path: String,
         middleware: [Middleware] = [],
-        respond: (Request, A, B, C, D, T) throws -> Response) {
+        respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
         let keys = parseParameterKeys(path: path, count: 4)
         let contentMapper = ContentMapperMiddleware(mappingTo: T.self)
         let responder = BasicResponder { request in

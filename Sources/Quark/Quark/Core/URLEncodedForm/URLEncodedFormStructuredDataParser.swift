@@ -1,4 +1,4 @@
-enum URLEncodedFormStructuredDataParserError : ErrorProtocol {
+enum URLEncodedFormStructuredDataParserError : Error {
     case unsupportedEncoding
     case malformedURLEncodedForm
 }

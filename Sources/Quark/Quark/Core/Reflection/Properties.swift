@@ -26,7 +26,7 @@ public struct Property {
 
 /// Retrieve properties for `instance`
 public func properties(_ instance: Any) throws -> [Property] {
-    let properties = try Quark.properties(instance.dynamicType)
+    let properties = try Quark.properties(type(of: instance))
     var copy = instance
     return properties.map { nextPropertyForDescription($0, pointer: storageForInstance(&copy)) }
 }
@@ -44,7 +44,7 @@ public func properties(_ type: Any.Type) throws -> [Property.Description] {
         cachedProperties[HashedType(type)] = properties
         return properties
     } else {
-        throw ReflectionError.notStructOrClass(type: type)
+        throw ReflectionError.notStruct(type: type)
     }
 }
 

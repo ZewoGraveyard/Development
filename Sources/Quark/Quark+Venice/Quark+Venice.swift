@@ -1,7 +1,7 @@
 extension Server {
-    public init(host: String = "0.0.0.0", port: Int = 8080, reusePort: Bool = false, parser: S4.RequestParser.Type = RequestParser.self, serializer: S4.ResponseSerializer.Type = ResponseSerializer.self, middleware: [Middleware], responder: Responder, failure: (ErrorProtocol) -> Void = Server.logError) throws {
+    public init(host: String = "0.0.0.0", port: Int = 8080, reusePort: Bool = false, parser: S4.RequestParser.Type = RequestParser.self, serializer: S4.ResponseSerializer.Type = ResponseSerializer.self, middleware: [Middleware], responder: Responder, failure: @escaping (Error) -> Void = Server.logError) throws {
         try self.init(
-            host: try TCPHost(host: host, port: port, reusePort: reusePort),
+            host: try TCPHost(host: host, port: port, backlog: 128, reusePort: reusePort),
             port: port,
             parser: parser,
             serializer: serializer,
@@ -40,8 +40,8 @@ extension Server : ConfigurableServer {
     }
 }
 
-public func configure<AppConfiguration : Configuration>(configurationFile: String = "Configuration.swift", configure: (AppConfiguration) throws -> ResponderRepresentable) {
-    Quark.configure(configurationFile: configurationFile, server: Server.self, configure: configure)
+public func configure<AppConfiguration : Configuration>(configurationFile: String = "Configuration.swift", arguments: [String] = CommandLine.arguments, configuration: (AppConfiguration) throws -> ResponderRepresentable) {
+    configure(configurationFile: configurationFile, arguments: arguments, server: Server.self, configuration: configuration)
 }
 
 extension FileResponder {

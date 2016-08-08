@@ -5,7 +5,7 @@ public func get(_ key: String, from instance: Any) throws -> Any {
             return property.value
         }
     }
-    throw ReflectionError.instanceHasNoKey(type: instance.dynamicType, key: key)
+    throw ReflectionError.instanceHasNoKey(type: type(of: instance), key: key)
 }
 
 /// Get value for key from instance as type `T`

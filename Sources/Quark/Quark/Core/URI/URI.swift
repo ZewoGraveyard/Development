@@ -1,6 +1,6 @@
 import CURIParser
 
-public enum URIError : ErrorProtocol {
+public enum URIError : Error {
     case invalidURI
 }
 
@@ -104,7 +104,7 @@ extension URI {
                 } else if queryElements.count == 2 {
                     if let
                         key = try? String(percentEncoded: queryElements[0]),
-                        value = try? String(percentEncoded: queryElements[1]) {
+                        let value = try? String(percentEncoded: queryElements[1]) {
                         queries[key] = value
                     }
                 }
@@ -144,7 +144,7 @@ extension URI {
                 } else if queryElements.count == 2 {
                     if let
                         key = try? String(percentEncoded: queryElements[0]),
-                        value = try? String(percentEncoded: queryElements[1]) {
+                        let value = try? String(percentEncoded: queryElements[1]) {
                         queries[key] = value
                     }
                 }
@@ -187,9 +187,8 @@ extension URI {
                         queries[key] = values + [""]
                     }
                 } else if queryElements.count == 2 {
-                    if let
-                        key = try? String(percentEncoded: queryElements[0]),
-                        value = try? String(percentEncoded: queryElements[1]) {
+                    if let key = try? String(percentEncoded: queryElements[0]),
+                        let value = try? String(percentEncoded: queryElements[1]) {
                         let values = queries[key] ?? []
                         queries[key] = values + [value]
                     }
@@ -235,9 +234,8 @@ extension URI {
                         queries[key] = values + [nil]
                     }
                 } else if queryElements.count == 2 {
-                    if let
-                        key = try? String(percentEncoded: queryElements[0]),
-                        value = try? String(percentEncoded: queryElements[1]) {
+                    if let key = try? String(percentEncoded: queryElements[0]),
+                        let value = try? String(percentEncoded: queryElements[1]) {
                         let values = queries[key] ?? []
                         queries[key] = values + ([value] as [String?])
                     }
@@ -283,7 +281,7 @@ extension URI : CustomStringConvertible {
         }
 
         if let userInfo = userInfo {
-            string += String(userInfo) + "@"
+            string += String(describing: userInfo) + "@"
         }
 
         if let host = host {
@@ -298,7 +296,7 @@ extension URI : CustomStringConvertible {
             string += path
         }
 
-        if let query = query, decodedQuery = try? String(percentEncoded: query) {
+        if let query = query, let decodedQuery = try? String(percentEncoded: query) {
             string += "?" + decodedQuery
         }
 

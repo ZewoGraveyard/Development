@@ -4,7 +4,7 @@ public protocol MediaTypeRepresentor {
     static var serializer: StructuredDataSerializer { get }
 }
 
-enum MediaTypeError : ErrorProtocol {
+enum MediaTypeError : Error {
     case malformedMediaTypeString
 }
 

@@ -1,6 +1,6 @@
 /// Set value for key of an instance
 public func set(_ value: Any, key: String, for instance: inout Any) throws {
-    let property = try propertyForType(instance.dynamicType, withName: key)
+    let property = try propertyForType(type(of: instance), withName: key)
     try setValue(value, forKey: key, property: property, storage: mutableStorageForInstance(&instance))
 }
 

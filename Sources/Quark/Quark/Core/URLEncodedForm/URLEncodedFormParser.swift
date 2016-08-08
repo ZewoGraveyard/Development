@@ -1,4 +1,4 @@
-enum URLEncodedFormParseError : ErrorProtocol {
+enum URLEncodedFormParseError : Error {
     case unsupportedEncoding
     case malformedURLEncodedForm
 }

@@ -20,14 +20,14 @@ public class StandardOutputAppender : Appender {
         }
 
         logMessage += "[" + event.timestamp + "]"
-        logMessage += "[" + String(event.locationInfo) + "]"
+        logMessage += "[" + String(describing: event.locationInfo) + "]"
 
         if let message = event.message {
-            logMessage += ":" + String(message)
+            logMessage += ":" + String(describing: message)
         }
 
         if let error = event.error {
-            logMessage += ":" + String(error)
+            logMessage += ":" + String(describing: error)
         }
 
         print(logMessage)

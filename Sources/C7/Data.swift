@@ -34,7 +34,7 @@ extension Data: RangeReplaceableCollection, MutableCollection {
     }
 
     #if swift(>=3.0)
-        public init<S : Sequence where S.Iterator.Element == Byte>(_ elements: S) {
+        public init<S : Sequence>(_ elements: S) where S.Iterator.Element == Byte {
             self.init(Array(elements))
         }
     #else
@@ -44,7 +44,7 @@ extension Data: RangeReplaceableCollection, MutableCollection {
     #endif
 
     #if swift(>=3.0)
-        public mutating func replaceSubrange<C : Collection where C.Iterator.Element == Byte>(_ subRange: Range<Int>, with newElements: C) {
+        public mutating func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Byte {
             self.bytes.replaceSubrange(subRange, with: newElements)
         }
     #else
@@ -96,13 +96,13 @@ extension Data: RangeReplaceableCollection, MutableCollection {
     }
 }
 
-extension Data: ArrayLiteralConvertible {
+extension Data: ExpressibleByArrayLiteral {
     public init(arrayLiteral bytes: Byte...) {
         self.init(bytes)
     }
 }
 
-extension Data: StringLiteralConvertible {
+extension Data: ExpressibleByStringLiteral {
     public init(stringLiteral string: String) {
         self.init(string)
     }
@@ -123,7 +123,7 @@ public func == (lhs: Data, rhs: Data) -> Bool {
 }
 
 #if swift(>=3.0)
-    public func += <S : Sequence where S.Iterator.Element == Byte>(lhs: inout Data, rhs: S) {
+    public func += <S : Sequence>(lhs: inout Data, rhs: S) where S.Iterator.Element == Byte {
         return lhs.bytes += rhs
     }
 #else
@@ -167,24 +167,24 @@ public func + (lhs: DataRepresentable, rhs: Data) -> Data {
 extension String: DataConvertible {
     #if swift(>=3.0)
         public init(data: Data) throws {
-            struct Error: ErrorProtocol {}
+            struct StringError: Error {}
             var string = ""
             var decoder = UTF8()
             var generator = data.makeIterator()
 
             loop: while true {
                 switch decoder.decode(&generator) {
-                case .scalarValue(let char): string.append(char)
+                case .scalarValue(let char): string.append(String(char))
                 case .emptyInput: break loop
-                case .error: throw Error()
+                case .error: throw StringError()
                 }
             }
 
-            self.init(string)
+            self = string
         }
     #else
         public init(data: Data) throws {
-            struct Error: ErrorProtocol {}
+            struct Error: Error {}
             var string = ""
             var decoder = UTF8()
             var generator = data.generate()
@@ -207,11 +207,11 @@ extension String: DataConvertible {
 }
 
 extension Data {
-    public func withUnsafeBufferPointer<R>(body: @noescape (UnsafeBufferPointer<Byte>) throws -> R) rethrows -> R {
+    public func withUnsafeBufferPointer<R>(body: (UnsafeBufferPointer<Byte>) throws -> R) rethrows -> R {
         return try bytes.withUnsafeBufferPointer(body)
     }
 
-    public mutating func withUnsafeMutableBufferPointer<R>(body: @noescape (inout UnsafeMutableBufferPointer<Byte>) throws -> R) rethrows -> R {
+    public mutating func withUnsafeMutableBufferPointer<R>(body: (inout UnsafeMutableBufferPointer<Byte>) throws -> R) rethrows -> R {
        return try bytes.withUnsafeMutableBufferPointer(body)
     }
 

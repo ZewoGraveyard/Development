@@ -10,10 +10,10 @@ public class LogMiddleware : Middleware {
         let response = try next.respond(to: request)
         message = "================================================================================\n"
         message += "Request:\n\n"
-        message += (debug ? String(request.debugDescription) : String(request)) + "\n"
+        message += (debug ? String(describing: request.debugDescription) : String(describing: request)) + "\n"
         message += "--------------------------------------------------------------------------------\n"
         message += "Response:\n\n"
-        message += (debug ? String(response.debugDescription) : String(response)) + "\n"
+        message += (debug ? String(describing: response.debugDescription) : String(describing: response)) + "\n"
         message += "================================================================================\n"
         print(message)
         return response

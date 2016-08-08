@@ -1,6 +1,6 @@
 import Mustache
 
-public enum MustacheSerializerError : ErrorProtocol {
+public enum MustacheSerializerError : Error {
     case unsupportedTemplateEncoding
 }
 
@@ -18,7 +18,7 @@ extension StructuredData : MustacheBoxable {
         case .string(let string):
             return Box(boxable: string)
         case .data(let data):
-            return Box(boxable: String(data))
+            return Box(boxable: String(describing: data))
         case .array(let array):
             var arr: [MustacheBox] = []
 

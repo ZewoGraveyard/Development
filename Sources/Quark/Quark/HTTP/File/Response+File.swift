@@ -18,7 +18,7 @@ extension Response {
 
             self.init(status: status, headers: headers, body: file)
 
-            if let fileExtension = file.fileExtension, mediaType = mediaType(forFileExtension: fileExtension) {
+            if let fileExtension = file.fileExtension, let mediaType = mediaType(forFileExtension: fileExtension) {
                 self.contentType = mediaType
             }
         } catch {

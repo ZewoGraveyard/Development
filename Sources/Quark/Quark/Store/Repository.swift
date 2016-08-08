@@ -9,12 +9,12 @@ public protocol RepositoryProtocol {
 
 public final class Repository<Model> : RepositoryProtocol {
     private let erasedFetchAll: (Void) throws -> [Record<Model>]
-    private let erasedFetch: (id: String) throws -> Record<Model>
+    private let erasedFetch: (_ id: String) throws -> Record<Model>
     private let erasedSave: (Model) throws -> Record<Model>
-    private let erasedUpdate: (id: String, model: Model) throws -> Record<Model>
-    private let erasedRemove: (id: String) throws -> Record<Model>
+    private let erasedUpdate: (_ id: String, _ model: Model) throws -> Record<Model>
+    private let erasedRemove: (_ id: String) throws -> Record<Model>
 
-    public init<R: RepositoryProtocol where R.Model == Model>(_ record: R) {
+    public init<R: RepositoryProtocol>(_ record: R) where R.Model == Model {
         self.erasedFetchAll = record.fetchAll
         self.erasedFetch = record.fetch
         self.erasedSave = record.save
@@ -27,7 +27,7 @@ public final class Repository<Model> : RepositoryProtocol {
     }
 
     public func fetch(id: String) throws -> Record<Model> {
-        return try erasedFetch(id: id)
+        return try erasedFetch(id)
     }
 
     public func save(_ model: Model) throws -> Record<Model> {
@@ -35,10 +35,10 @@ public final class Repository<Model> : RepositoryProtocol {
     }
 
     public func update(id: String, model: Model) throws -> Record<Model> {
-        return try erasedUpdate(id: id, model: model)
+        return try erasedUpdate(id, model)
     }
 
     public func remove(id: String) throws -> Record<Model> {
-        return try erasedRemove(id: id)
+        return try erasedRemove(id)
     }
 }

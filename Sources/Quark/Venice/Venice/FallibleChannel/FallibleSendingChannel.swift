@@ -13,15 +13,15 @@ public final class FallibleSendingChannel<T> {
         return channel.send(value)
     }
 
-    func send(_ value: T, clause: UnsafeMutablePointer<Void>, index: Int) {
+    func send(_ value: T, clause: UnsafeMutableRawPointer, index: Int) {
         return channel.send(value, clause: clause, index: index)
     }
 
-    public func send(_ error: ErrorProtocol) {
+    public func send(_ error: Error) {
         return channel.send(error)
     }
 
-    func send(_ error: ErrorProtocol, clause: UnsafeMutablePointer<Void>, index: Int) {
+    func send(_ error: Error, clause: UnsafeMutableRawPointer, index: Int) {
         return channel.send(error, clause: clause, index: index)
     }
 

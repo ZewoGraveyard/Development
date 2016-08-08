@@ -5,7 +5,7 @@ public protocol Router : RouterRepresentable {
     var fileType: C7.File.Type { get }
     var middleware: [Middleware] { get }
 
-    func recover(error: ErrorProtocol) throws -> Response
+    func recover(error: Error) throws -> Response
     func custom(routes: Routes)
 }
 
@@ -27,7 +27,7 @@ extension Router {
         return []
     }
 
-    public func recover(error: ErrorProtocol) throws -> Response {
+    public func recover(error: Error) throws -> Response {
         return try RecoveryMiddleware.recover(error: error)
     }
 

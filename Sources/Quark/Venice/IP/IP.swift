@@ -1,6 +1,6 @@
 import CLibvenice
 
-public enum IPError : ErrorProtocol {
+public enum IPError : Error {
     case invalidPort
 }
 

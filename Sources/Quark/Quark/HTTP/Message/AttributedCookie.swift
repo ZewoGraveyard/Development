@@ -26,7 +26,7 @@ public struct AttributedCookie {
     public init?(_ string: String) {
         let cookieStringTokens = string.split(separator: ";")
 
-        guard let cookieTokens = cookieStringTokens.first?.split(separator: "=") where cookieTokens.count == 2 else {
+        guard let cookieTokens = cookieStringTokens.first?.split(separator: "="), cookieTokens.count == 2 else {
             return nil
         }
 

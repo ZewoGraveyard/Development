@@ -43,7 +43,7 @@ public struct JSONStructuredDataSerializer : StructuredDataSerializer {
         var index = 0
 
         if ordering {
-            for (key, value) in dictionary.sorted(isOrderedBefore: {$0.0 < $1.0}) {
+            for (key, value) in dictionary.sorted(by: {$0.0 < $1.0}) {
                 string += try "\(escape(key)):\(serialize(value))"
 
                 if index != dictionary.count - 1 {

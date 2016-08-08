@@ -5,14 +5,14 @@ public enum AuthenticationResult {
 }
 
 enum AuthenticationType {
-    case server(realm: String?, authenticate: (username: String, password: String) throws -> AuthenticationResult)
+    case server(realm: String?, authenticate: (_ username: String, _ password: String) throws -> AuthenticationResult)
     case client(username: String, password: String)
 }
 
 public struct BasicAuthMiddleware : Middleware {
     let type: AuthenticationType
 
-    public init(realm: String? = nil, authenticate: (username: String, password: String) throws -> AuthenticationResult) {
+    public init(realm: String? = nil, authenticate: @escaping (_ username: String, _ password: String) throws -> AuthenticationResult) {
         type = .server(realm: realm, authenticate: authenticate)
     }
 
@@ -29,7 +29,7 @@ public struct BasicAuthMiddleware : Middleware {
         }
     }
 
-    public func serverRespond(_ request: Request, chain: Responder, realm: String? = nil, authenticate: (username: String, password: String) throws -> AuthenticationResult) throws -> Response {
+    public func serverRespond(_ request: Request, chain: Responder, realm: String? = nil, authenticate: (_ username: String, _ password: String) throws -> AuthenticationResult) throws -> Response {
         var deniedResponse : Response
         if let realm = realm {
             deniedResponse = Response(status: .unauthorized, headers: ["WWW-Authenticate": "Basic realm=\"\(realm)\""])
@@ -60,7 +60,7 @@ public struct BasicAuthMiddleware : Middleware {
         let username = credentials[0]
         let password = credentials[1]
 
-        switch try authenticate(username: username, password: password) {
+        switch try authenticate(username, password) {
         case .accessDenied:
             return deniedResponse
         case .authenticated:

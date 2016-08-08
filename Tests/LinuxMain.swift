@@ -1,5 +1,5 @@
 import XCTest
-@testable import QuarkTestSuite
+@testable import QuarkTests
 
 XCTMain([
     // Controller

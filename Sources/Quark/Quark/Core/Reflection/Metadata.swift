@@ -4,10 +4,6 @@ struct Metadata : MetadataType {
     init(type: Any.Type) {
         self.init(pointer: unsafeBitCast(type, to: UnsafePointer<Int>.self))
     }
-
-    var isStructOrClass: Bool {
-        return kind == .struct || kind == .class
-    }
 }
 
 struct _Metadata {}

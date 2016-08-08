@@ -14,7 +14,7 @@ struct RequestParserContext {
     var currentHeaderName: CaseInsensitiveString = ""
     var completion: (Request) -> Void
 
-    init(completion: (Request) -> Void) {
+    init(completion: @escaping (Request) -> Void) {
         self.completion = completion
     }
 }
@@ -47,8 +47,8 @@ public final class RequestParser : S4.RequestParser {
     public init(stream: Stream, bufferSize: Int) {
         self.stream = stream
         self.bufferSize = bufferSize
-        self.context = RequestContext(allocatingCapacity: 1)
-        self.context.initialize(with: RequestParserContext { request in
+        self.context = RequestContext.allocate(capacity: 1)
+        self.context.initialize(to: RequestParserContext { request in
             self.requests.insert(request, at: 0)
         })
 
@@ -56,12 +56,12 @@ public final class RequestParser : S4.RequestParser {
     }
 
     deinit {
-        context.deallocateCapacity(1)
+        context.deallocate(capacity: 1)
     }
 
     func resetParser() {
         http_parser_init(&parser, HTTP_REQUEST)
-        parser.data = UnsafeMutablePointer<Void>(context)
+        parser.data = UnsafeMutableRawPointer(context)
     }
 
     public func parse() throws -> Request {
@@ -71,7 +71,8 @@ public final class RequestParser : S4.RequestParser {
             }
 
             let data = try stream.read(upTo: bufferSize)
-            let bytesParsed = http_parser_execute(&parser, &requestSettings, UnsafePointer(data.bytes), data.count)
+            let p = UnsafeRawPointer(data.bytes).assumingMemoryBound(to: Int8.self)
+            let bytesParsed = http_parser_execute(&parser, &requestSettings, p, data.count)
 
             guard bytesParsed == data.count else {
                 defer { resetParser() }
@@ -82,7 +83,7 @@ public final class RequestParser : S4.RequestParser {
 }
 
 func onRequestURL(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
-    return RequestContext(parser!.pointee.data).withPointee {
+    return parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
         let uri = String(cString: data!, length: length)
         $0.currentURI += uri
         return 0
@@ -90,7 +91,7 @@ func onRequestURL(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) ->
 }
 
 func onRequestHeaderField(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
-    return RequestContext(parser!.pointee.data).withPointee {
+    return parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
         let headerName = String(cString: data!, length: length)
 
         if $0.currentHeaderName != "" {
@@ -103,7 +104,7 @@ func onRequestHeaderField(_ parser: Parser?, data: UnsafePointer<Int8>?, length:
 }
 
 func onRequestHeaderValue(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
-    return RequestContext(parser!.pointee.data).withPointee {
+    return parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
         let headerValue = String(cString: data!, length: length)
 
         if $0.currentHeaderName == "" {
@@ -123,7 +124,7 @@ func onRequestHeaderValue(_ parser: Parser?, data: UnsafePointer<Int8>?, length:
 }
 
 func onRequestHeadersComplete(_ parser: Parser?) -> Int32 {
-    return RequestContext(parser!.pointee.data).withPointee {
+    return parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
         $0.method = Method(code: Int(parser!.pointee.method))
         let major = Int(parser!.pointee.http_major)
         let minor = Int(parser!.pointee.http_minor)
@@ -138,8 +139,8 @@ func onRequestHeadersComplete(_ parser: Parser?) -> Int32 {
 }
 
 func onRequestBody(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -> Int32 {
-    RequestContext(parser!.pointee.data).withPointee {
-        let buffer = UnsafeBufferPointer<UInt8>(start: UnsafePointer(data), count: length)
+    parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
+        let buffer = UnsafeBufferPointer(start: UnsafeRawPointer(data!).assumingMemoryBound(to: UInt8.self), count: length)
         $0.body += Data(Array(buffer))
         return
     }
@@ -148,7 +149,7 @@ func onRequestBody(_ parser: Parser?, data: UnsafePointer<Int8>?, length: Int) -
 }
 
 func onRequestMessageComplete(_ parser: Parser?) -> Int32 {
-    return RequestContext(parser!.pointee.data).withPointee {
+    return parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
         let request = Request(
             method: $0.method,
             uri: $0.uri,

@@ -1,9 +1,10 @@
-func relativePointer<T, U, V where U : Integer>(base: UnsafePointer<T>, offset: U) -> UnsafePointer<V> {
-    return UnsafePointer(UnsafePointer<Int8>(base).advanced(by: Int(integer: offset)))
+func relativePointer<T, U, V>(base: UnsafePointer<T>, offset: U) -> UnsafePointer<V> where U : Integer {
+    let p = UnsafeRawPointer(base).assumingMemoryBound(to: Int8.self)
+    return UnsafeRawPointer(p.advanced(by: Int(integer: offset))).assumingMemoryBound(to: V.self)
 }
 
 extension Int {
-    private init<T : Integer>(integer: T) {
+    fileprivate init<T : Integer>(integer: T) {
         switch integer {
         case let value as Int: self = value
         case let value as Int32: self = Int(value)

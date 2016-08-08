@@ -19,7 +19,7 @@ public protocol Resource : RouterRepresentable {
     func update(request: Request, id: UpdateID, content: UpdateInput) throws -> Response
     func destroy(request: Request, id: DestroyID) throws -> Response
 
-    func recover(error: ErrorProtocol) throws -> Response
+    func recover(error: Error) throws -> Response
     func custom(routes: ResourceRoutes)
 }
 
@@ -73,7 +73,7 @@ public extension Resource {
 }
 
 public extension Resource {
-    func recover(error: ErrorProtocol) throws -> Response {
+    func recover(error: Error) throws -> Response {
         return try RecoveryMiddleware.recover(error: error)
     }
 

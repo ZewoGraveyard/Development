@@ -2,7 +2,7 @@ struct NominalTypeDescriptor : PointerType {
     var pointer: UnsafePointer<_NominalTypeDescriptor>
 
     var mangledName: String {
-        return String(cString: relativePointer(base: pointer, offset: pointer.pointee.mangledName))
+        return String(cString: relativePointer(base: pointer, offset: pointer.pointee.mangledName) as UnsafePointer<CChar>)
     }
 
     var numberOfFields: Int {
@@ -14,7 +14,8 @@ struct NominalTypeDescriptor : PointerType {
     }
 
     var fieldNames: [String] {
-        return Array(utf8Strings: relativePointer(base: UnsafePointer<Int32>(self.pointer).advanced(by: 3), offset: self.pointer.pointee.fieldNames))
+        let p = UnsafeRawPointer(self.pointer).assumingMemoryBound(to: Int32.self)
+        return Array(utf8Strings: relativePointer(base: p.advanced(by: 3), offset: self.pointer.pointee.fieldNames))
     }
 
     typealias FieldsTypeAccessor = @convention(c) (UnsafePointer<Int>) -> UnsafePointer<UnsafePointer<Int>>
@@ -22,7 +23,8 @@ struct NominalTypeDescriptor : PointerType {
     var fieldTypesAccessor: FieldsTypeAccessor? {
         let offset = pointer.pointee.fieldTypesAccessor
         guard offset != 0 else { return nil }
-        let offsetPointer: UnsafePointer<Int> = relativePointer(base: UnsafePointer<Int32>(self.pointer).advanced(by: 4), offset: offset)
+        let p = UnsafeRawPointer(self.pointer).assumingMemoryBound(to: Int32.self)
+        let offsetPointer: UnsafePointer<Int> = relativePointer(base: p.advanced(by: 4), offset: offset)
         return unsafeBitCast(offsetPointer, to: FieldsTypeAccessor.self)
     }
 }

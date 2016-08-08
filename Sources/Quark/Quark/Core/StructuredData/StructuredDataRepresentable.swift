@@ -4,7 +4,7 @@ extension StructuredDataFallibleRepresentable {
         var dictionary = [String: StructuredData](minimumCapacity: props.count)
         for property in props {
             guard let representable = property.value as? StructuredDataFallibleRepresentable else {
-                throw StructuredDataError.notStructuredDataRepresentable(property.value.dynamicType)
+                throw StructuredDataError.notStructuredDataRepresentable(type(of: property.value))
             }
             dictionary[property.key] = try representable.asStructuredData()
         }

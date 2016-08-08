@@ -16,9 +16,9 @@ extension FileMode {
 }
 
 public final class File : C7.File {
-    private var file: mfile?
-    public private(set) var closed = false
-    public private(set) var path: String? = nil
+    fileprivate var file: mfile?
+    public fileprivate(set) var closed = false
+    public fileprivate(set) var path: String? = nil
     public var bufferSize: Int = 2048
 
     public func cursorPosition() throws -> Int {
@@ -69,7 +69,7 @@ public final class File : C7.File {
     }
 
     deinit {
-        if let file = file where !closed {
+        if let file = file, !closed {
             fileclose(file)
         }
     }
@@ -190,7 +190,7 @@ extension File {
         while let file = readdir(dir) {
             let entry: UnsafeMutablePointer<dirent> = file
 
-            if let entryName = withUnsafeMutablePointer(&entry.pointee.d_name, { (ptr) -> String? in
+            if let entryName = withUnsafeMutablePointer(to: &entry.pointee.d_name, { (ptr) -> String? in
                 let entryPointer = unsafeBitCast(ptr, to: UnsafePointer<CChar>.self)
                 return String(validatingUTF8: entryPointer)
             }) {

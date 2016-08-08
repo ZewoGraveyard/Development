@@ -1,7 +1,7 @@
 @_exported import C7
 @_exported import S4
 
-public enum QuarkError : ErrorProtocol {
+public enum QuarkError : Error {
     case invalidConfiguration(description: String)
     case invalidArgument(description: String)
 }
@@ -25,7 +25,7 @@ public var configuration: StructuredData = nil {
             let data = try serializer.serialize(configuration)
             try file.write(data)
         } catch {
-            fatalError(String(error))
+            fatalError(String(describing: error))
         }
     }
 }
@@ -37,17 +37,17 @@ public protocol ConfigurableServer {
     func start() throws
 }
 
-public func configure<AppConfiguration : Configuration>(configurationFile: String = "Configuration.swift", server: ConfigurableServer.Type, configure: (AppConfiguration) throws -> ResponderRepresentable) {
+public func configure<AppConfiguration : Configuration>(configurationFile: String = "Configuration.swift", arguments: [String] = CommandLine.arguments, server: ConfigurableServer.Type, configuration: (AppConfiguration) throws -> ResponderRepresentable) {
     do {
-        let configuration = try loadConfiguration(configurationFilePath: configurationFile)
-        let responder = try configure(AppConfiguration(structuredData: configuration))
-        try configureServer(server, responder: responder.responder, configuration: configuration)
+        let appConfiguration = try loadConfiguration(configurationFilePath: configurationFile, arguments: arguments)
+        let responder = try configuration(AppConfiguration(structuredData: appConfiguration))
+        try configure(server: server, responder: responder.responder, configuration: appConfiguration)
     } catch {
         print(error)
     }
 }
 
-private func configureServer(_ server: ConfigurableServer.Type, responder: Responder, configuration: StructuredData) throws {
+private func configure(server: ConfigurableServer.Type, responder: Responder, configuration: StructuredData) throws {
     var middleware: [Middleware] = []
 
     if configuration["server", "log"]?.asBool == true {
@@ -64,11 +64,8 @@ private func configureServer(_ server: ConfigurableServer.Type, responder: Respo
     ).start()
 }
 
-private var arguments: [String] {
-    return Process.argc > 0 ? Array(Process.arguments.suffix(from: 1)) : []
-}
-
-private func loadConfiguration(configurationFilePath: String) throws -> StructuredData {
+private func loadConfiguration(configurationFilePath: String, arguments: [String]) throws -> StructuredData {
+    let arguments = !arguments.isEmpty ? Array(arguments.suffix(from: 1)) : []
     let environmentVariables = try load(environmentVariables: environment.variables)
     let commandLineArguments = try load(commandLineArguments: arguments)
 
@@ -120,38 +117,43 @@ private func load(configurationFile: String) throws -> [String: StructuredData] 
     return try parser.parse(data).asDictionary()
 }
 
-func load(commandLineArguments: [String]) throws -> [String: StructuredData] {
+func load(commandLineArguments arguments: [String]) throws -> [String: StructuredData] {
     var parameters: StructuredData = [:]
 
     var currentParameter = ""
-    var shouldParseParameter = true
+    var hasParameter = false
+    var value: StructuredData = nil
+    var i = 0
 
-    for argument in commandLineArguments {
-        if shouldParseParameter {
-            if argument.has(prefix: "--") {
-                currentParameter = String(Array(argument.characters).suffix(from: 2))
-                shouldParseParameter = false
+    while i < arguments.count {
+        if arguments[i].has(prefix: "-") {
+            if !hasParameter {
+                currentParameter = String(Array(arguments[i].characters).suffix(from: 1))
+                hasParameter = true
+                i += 1
                 continue
-            } else if argument.has(prefix: "-") {
-                let flag = String(Array(argument.characters).suffix(from: 1))
-                let indexPath = flag.indexPath()
-                try parameters.set(value: true, at: indexPath)
+            } else {
+                value = true
+                let indexPath = currentParameter.indexPath()
+                try parameters.set(value: value, at: indexPath)
+                hasParameter = false
                 continue
             }
-            throw QuarkError.invalidArgument(description: "\(argument) is a malformed parameter. Parameters should be provided in the format --parameter value.")
-        } else { // parse value
-            if argument.has(prefix: "-") {
-                throw QuarkError.invalidArgument(description: "\(currentParameter) is missing the value. Parameters should be provided in the format --parameter value.")
-            }
-            let value = parse(value: argument)
+        }
+        if hasParameter {
+            let value = parse(value: arguments[i])
             let indexPath = currentParameter.indexPath()
             try parameters.set(value: value, at: indexPath)
-            shouldParseParameter = true
+            hasParameter = false
+            i += 1
+        } else {
+            throw QuarkError.invalidArgument(description: "\(arguments[i]) is a malformed parameter. Parameters should be provided in the format -parameter value.")
         }
     }
 
-    if !shouldParseParameter {
-        throw QuarkError.invalidArgument(description: "\(currentParameter) is missing the value. Parameters should be provided in the format --parameter value.")
+    if hasParameter {
+        let indexPath = currentParameter.indexPath()
+        try parameters.set(value: true, at: indexPath)
     }
 
     return parameters.asDictionary!
@@ -230,7 +232,7 @@ public enum BuildConfiguration {
     case release
     case fast
 
-    private static func currentConfiguration(suppressingWarning: Bool) -> BuildConfiguration {
+    fileprivate static func currentConfiguration(suppressingWarning: Bool) -> BuildConfiguration {
         if suppressingWarning && _isDebugAssertConfiguration() {
             return .debug
         }
@@ -257,7 +259,7 @@ public var buildConfiguration: BuildConfiguration {
 
 // TODO: refactor this
 
-public enum SpawnError : ErrorProtocol {
+public enum SpawnError : Error {
     case exitStatus(Int32, [String])
 }
 

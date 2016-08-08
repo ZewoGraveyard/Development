@@ -6,7 +6,7 @@
     import Darwin.C
 #endif
 
-public enum JSONStructuredDataParseError : ErrorProtocol, CustomStringConvertible {
+public enum JSONStructuredDataParseError : Error, CustomStringConvertible {
     case unexpectedTokenError(reason: String, lineNumber: Int, columnNumber: Int)
     case insufficientTokenError(reason: String, lineNumber: Int, columnNumber: Int)
     case extraTokenError(reason: String, lineNumber: Int, columnNumber: Int)
@@ -16,17 +16,17 @@ public enum JSONStructuredDataParseError : ErrorProtocol, CustomStringConvertibl
 
     public var description: String {
         switch self {
-        case unexpectedTokenError(let r, let l, let c):
+        case .unexpectedTokenError(let r, let l, let c):
             return "UnexpectedTokenError" + infoDescription(reason: r, line: l, column: c)
-        case insufficientTokenError(let r, let l, let c):
+        case .insufficientTokenError(let r, let l, let c):
             return "InsufficientTokenError" + infoDescription(reason: r, line: l, column: c)
-        case extraTokenError(let r, let l, let c):
+        case .extraTokenError(let r, let l, let c):
             return "ExtraTokenError" + infoDescription(reason: r, line: l, column: c)
-        case nonStringKeyError(let r, let l, let c):
+        case .nonStringKeyError(let r, let l, let c):
             return "NonStringKeyError" + infoDescription(reason: r, line: l, column: c)
-        case invalidStringError(let r, let l, let c):
+        case .invalidStringError(let r, let l, let c):
             return "InvalidStringError" + infoDescription(reason: r, line: l, column: c)
-        case invalidNumberError(let r, let l, let c):
+        case .invalidNumberError(let r, let l, let c):
             return "InvalidNumberError" + infoDescription(reason: r, line: l, column: c)
         }
     }
@@ -44,7 +44,7 @@ public struct JSONStructuredDataParser : StructuredDataParser {
     }
 }
 
-class GenericJSONStructuredDataParser<ByteSequence: Collection where ByteSequence.Iterator.Element == UInt8> {
+class GenericJSONStructuredDataParser<ByteSequence: Collection> where ByteSequence.Iterator.Element == UInt8 {
     typealias Source = ByteSequence
     typealias Char = Source.Iterator.Element
 
@@ -70,27 +70,27 @@ class GenericJSONStructuredDataParser<ByteSequence: Collection where ByteSequenc
         throw extraTokenError(reason: "extra tokens found")
     }
 
-    func unexpectedTokenError(reason: String) -> ErrorProtocol {
+    func unexpectedTokenError(reason: String) -> Error {
         return JSONStructuredDataParseError.unexpectedTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
-    func insufficientTokenError(reason: String) -> ErrorProtocol {
+    func insufficientTokenError(reason: String) -> Error {
         return JSONStructuredDataParseError.insufficientTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
-    func extraTokenError(reason: String) -> ErrorProtocol {
+    func extraTokenError(reason: String) -> Error {
         return JSONStructuredDataParseError.extraTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
-    func nonStringKeyError(reason: String) -> ErrorProtocol {
+    func nonStringKeyError(reason: String) -> Error {
         return JSONStructuredDataParseError.nonStringKeyError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
-    func invalidStringError(reason: String) -> ErrorProtocol {
+    func invalidStringError(reason: String) -> Error {
         return JSONStructuredDataParseError.invalidStringError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
-    func invalidNumberError(reason: String) -> ErrorProtocol {
+    func invalidNumberError(reason: String) -> Error {
         return JSONStructuredDataParseError.invalidNumberError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 }
@@ -98,7 +98,7 @@ class GenericJSONStructuredDataParser<ByteSequence: Collection where ByteSequenc
 // MARK: - Private
 
 extension GenericJSONStructuredDataParser {
-    private func parseValue() throws -> StructuredData {
+    fileprivate func parseValue() throws -> StructuredData {
         skipWhitespaces()
         if cur == end {
             throw insufficientTokenError(reason: "unexpected end of tokens")
@@ -462,7 +462,7 @@ extension GenericJSONStructuredDataParser {
         }
     }
 
-    private func skipWhitespaces() {
+    fileprivate func skipWhitespaces() {
         while cur != end {
             switch currentChar {
             case Char(ascii: " "), Char(ascii: "\t"), Char(ascii: "\r"), Char(ascii: "\n"):

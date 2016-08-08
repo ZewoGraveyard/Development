@@ -10,16 +10,16 @@ public struct FallibleChannelGenerator<T> : IteratorProtocol {
 
 public enum ChannelResult<T> {
     case value(T)
-    case error(ErrorProtocol)
+    case error(Error)
 
-    public func success(_ closure: @noescape (T) -> Void) {
+    public func success(_ closure: (T) -> Void) {
         switch self {
         case .value(let value): closure(value)
         default: break
         }
     }
 
-    public func failure(_ closure: @noescape (ErrorProtocol) -> Void) {
+    public func failure(_ closure: (Error) -> Void) {
         switch self {
         case .error(let error): closure(error)
         default: break
@@ -82,7 +82,7 @@ public final class FallibleChannel<T> : Sequence {
         }
     }
 
-    func send(_ value: T, clause: UnsafeMutablePointer<Void>, index: Int) {
+    func send(_ value: T, clause: UnsafeMutableRawPointer, index: Int) {
         if !closed {
             let result = ChannelResult<T>.value(value)
             buffer.append(result)
@@ -91,7 +91,7 @@ public final class FallibleChannel<T> : Sequence {
     }
 
     /// Send an error to the channel.
-    public func send(_ error: ErrorProtocol) {
+    public func send(_ error: Error) {
         if !closed {
             let result = ChannelResult<T>.error(error)
             buffer.append(result)
@@ -99,7 +99,7 @@ public final class FallibleChannel<T> : Sequence {
         }
     }
 
-    func send(_ error: ErrorProtocol, clause: UnsafeMutablePointer<Void>, index: Int) {
+    func send(_ error: Error, clause: UnsafeMutableRawPointer, index: Int) {
         if !closed {
             let result = ChannelResult<T>.error(error)
             buffer.append(result)
@@ -134,7 +134,7 @@ public final class FallibleChannel<T> : Sequence {
         return getResultFromBuffer()
     }
 
-    func registerReceive(_ clause: UnsafeMutablePointer<Void>, index: Int) {
+    func registerReceive(_ clause: UnsafeMutableRawPointer, index: Int) {
         mill_choose_in(clause, channel, Int32(index))
     }
 

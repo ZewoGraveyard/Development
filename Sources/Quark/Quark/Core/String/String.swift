@@ -4,7 +4,7 @@
     import Darwin.C
 #endif
 
-public enum StringError : ErrorProtocol {
+public enum StringError : Error {
     case invalidString
     case utf8EncodingFailed
 }
@@ -23,7 +23,7 @@ extension String {
     public init(cString: UnsafePointer<Int8>, length: Int) {
         var buffer = [Int8](repeating: 0, count: length + 1)
         strncpy(&buffer, cString, length)
-        self.init(String(cString: buffer))
+        self.init(String(cString: buffer))!
     }
 
     public func capitalizedWord() -> String {
@@ -108,11 +108,11 @@ extension String.CharacterView {
     }
 }
 
-public enum CharactersError : ErrorProtocol {
+public enum CharactersError : Error {
     case characterIsNotUTF8
 }
 
-public struct Characters: ArrayLiteralConvertible {
+public struct Characters : ExpressibleByArrayLiteral {
 	public static let whitespaceAndNewline: Characters = [" ", "\t", "\r", "\n"]
 
 	public static let digits: Characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -225,7 +225,7 @@ func decode(encoded: [UInt8]) throws -> String {
 
     while !finished {
         switch decoder.decode(&iterator) {
-        case .scalarValue(let char): decoded.append(char)
+        case .scalarValue(let char): decoded.unicodeScalars.append(char)
         case .emptyInput: finished = true
         case .error: throw StringError.utf8EncodingFailed
         }
@@ -260,7 +260,7 @@ extension String {
 
         for codeUnit in self.utf8 {
             if allowed.contains(codeUnit) {
-                string.append(UnicodeScalar(codeUnit))
+                string.append(String(UnicodeScalar(codeUnit)))
             } else {
                 string.append("%")
                 string.append(codeUnit.hexadecimal())
@@ -275,7 +275,7 @@ extension String {
 
         for codeUnit in self.utf8 {
             if allowed.contains(codeUnit) {
-                string.append(UnicodeScalar(codeUnit))
+                string.append(String(UnicodeScalar(codeUnit)))
             } else {
                 string.append("%")
                 string.append(codeUnit.hexadecimal())

@@ -81,7 +81,7 @@ public struct TrieRouteMatcher {
             }
 
             // matched parameter
-            if let prefix = child.prefix where prefix.characters.first == ":" {
+            if let prefix = child.prefix, prefix.characters.first == ":" {
                 let param = String(prefix.characters.dropFirst())
                 paths.append((node: child, param: param))
                 continue
@@ -98,7 +98,7 @@ public struct TrieRouteMatcher {
         // any of them match, the route has been matched
         for (node, param) in paths {
 
-            if let route = node.payload where node.prefix == "*" {
+            if let route = node.payload, node.prefix == "*" {
                 return route
             }
 

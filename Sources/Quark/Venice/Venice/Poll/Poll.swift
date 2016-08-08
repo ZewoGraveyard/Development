@@ -2,7 +2,7 @@ import CLibvenice
 
 public typealias FileDescriptor = Int32
 
-public enum PollError : ErrorProtocol {
+public enum PollError : Error {
     case timeout
     case failure
 }

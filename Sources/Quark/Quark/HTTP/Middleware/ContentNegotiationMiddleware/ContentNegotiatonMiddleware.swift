@@ -1,4 +1,4 @@
-public enum ContentNegotiationMiddlewareError : ErrorProtocol {
+public enum ContentNegotiationMiddlewareError : Error {
     case noSuitableParser
     case noSuitableSerializer
 }
@@ -34,7 +34,7 @@ public struct ContentNegotiationMiddleware : Middleware {
     }
 
     public func parse(_ data: Data, mediaType: MediaType) throws -> (MediaType, StructuredData) {
-        var lastError: ErrorProtocol?
+        var lastError: Error?
 
         for (mediaType, parser) in parsersFor(mediaType) {
             do {
@@ -69,7 +69,7 @@ public struct ContentNegotiationMiddleware : Middleware {
     }
 
     func serialize(_ content: StructuredData, mediaTypes: [MediaType]) throws -> (MediaType, Data) {
-        var lastError: ErrorProtocol?
+        var lastError: Error?
 
         for acceptedType in mediaTypes {
             for (mediaType, serializer) in serializersFor(acceptedType) {
@@ -103,7 +103,7 @@ public struct ContentNegotiationMiddleware : Middleware {
 
         let body = try request.body.becomeBuffer()
 
-        if let contentType = request.contentType where !body.isEmpty {
+        if let contentType = request.contentType, !body.isEmpty {
             do {
                 let (_, content) = try parse(body, mediaType: contentType)
                 request.content = content

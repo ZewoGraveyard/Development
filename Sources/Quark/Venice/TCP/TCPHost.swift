@@ -9,7 +9,7 @@ public final class TCPHost : Host {
         try ensureLastOperationSucceeded()
     }
 
-    public func accept(deadline: Double = .never) throws -> Stream {
+    public func accept(deadline: Double) throws -> Stream {
         let socket = tcpaccept(self.socket, deadline.int64milliseconds)
         try ensureLastOperationSucceeded()
         return try TCPConnection(with: socket!)

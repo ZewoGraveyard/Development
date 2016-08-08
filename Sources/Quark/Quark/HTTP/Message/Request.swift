@@ -23,7 +23,7 @@ extension Request {
         self.headers["Transfer-Encoding"] = "chunked"
     }
 
-    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: (C7.OutputStream) throws -> Void) {
+    public init(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], body: @escaping (C7.OutputStream) throws -> Void) {
         self.init(
             method: method,
             uri: uri,
@@ -66,7 +66,7 @@ extension Request {
         )
     }
 
-    public init(method: Method = .get, uri: String, headers: Headers = [:], body: (C7.OutputStream) throws -> Void) throws {
+    public init(method: Method = .get, uri: String, headers: Headers = [:], body: @escaping (C7.OutputStream) throws -> Void) throws {
         self.init(
             method: method,
             uri: try URI(uri),
@@ -181,7 +181,7 @@ extension Request {
 
 extension Request : CustomStringConvertible {
     public var requestLineDescription: String {
-        return String(method) + " " + String(uri) + " HTTP/" + String(version.major) + "." + String(version.minor) + "\n"
+        return String(describing: method) + " " + String(describing: uri) + " HTTP/" + String(describing: version.major) + "." + String(describing: version.minor) + "\n"
     }
 
     public var description: String {

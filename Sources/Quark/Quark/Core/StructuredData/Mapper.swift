@@ -1,15 +1,15 @@
-public final class Mapper {
-    public enum Error: ErrorProtocol {
-        case cantInitFromRawValue
-        case noStrutcuredData(key: String)
-        case incompatibleSequence
-    }
+public enum MapperError : Error {
+    case cantInitFromRawValue
+    case noStrutcuredData(key: String)
+    case incompatibleSequence
+}
 
+public final class Mapper {
     public init(structuredData: StructuredData) {
         self.structuredData = structuredData
     }
 
-    private let structuredData: StructuredData
+    fileprivate let structuredData: StructuredData
 }
 
 extension Mapper {
@@ -22,17 +22,17 @@ extension Mapper {
         if let nested = structuredData[key] {
             return try unwrap(T(structuredData: nested))
         }
-        throw Error.noStrutcuredData(key: key)
+        throw MapperError.noStrutcuredData(key: key)
     }
 
-    public func map<T: RawRepresentable where T.RawValue: StructuredDataInitializable>(from key: String) throws -> T {
+    public func map<T: RawRepresentable>(from key: String) throws -> T where T.RawValue: StructuredDataInitializable {
         guard let rawValue = try structuredData[key].flatMap({ try T.RawValue(structuredData: $0) }) else {
-            throw Error.cantInitFromRawValue
+            throw MapperError.cantInitFromRawValue
         }
         if let value = T(rawValue: rawValue) {
             return value
         }
-        throw Error.cantInitFromRawValue
+        throw MapperError.cantInitFromRawValue
     }
 }
 
@@ -41,12 +41,12 @@ extension Mapper {
         return try structuredData.flatMapThrough(key) { try $0.get() as T }
     }
 
-    public func map<T where T: StructuredDataInitializable>(arrayFrom key: String) throws -> [T] {
+    public func map<T>(arrayFrom key: String) throws -> [T] where T: StructuredDataInitializable {
         return try structuredData.flatMapThrough(key) { try? T(structuredData: $0) }
     }
 
-    public func map<T: RawRepresentable where
-                    T.RawValue: StructuredDataInitializable>(arrayFrom key: String) throws -> [T] {
+    public func map<T: RawRepresentable>(arrayFrom key: String) throws -> [T] where
+        T.RawValue: StructuredDataInitializable {
         return try structuredData.flatMapThrough(key) {
             return (try? T.RawValue(structuredData: $0)).flatMap({ T(rawValue: $0) })
         }
@@ -69,10 +69,10 @@ extension Mapper {
         return nil
     }
 
-    public func map<T: RawRepresentable where T.RawValue: StructuredDataInitializable>(optionalFrom key: String) -> T? {
+    public func map<T: RawRepresentable>(optionalFrom key: String) -> T? where T.RawValue: StructuredDataInitializable {
         do {
             if let rawValue = try structuredData[key].flatMap({ try T.RawValue(structuredData: $0) }),
-                value = T(rawValue: rawValue) {
+                let value = T(rawValue: rawValue) {
                 return value
             }
             return nil
@@ -87,24 +87,24 @@ extension Mapper {
         return try? structuredData.flatMapThrough(key) { try $0.get() as T }
     }
 
-    public func map<T where T: StructuredDataInitializable>(optionalArrayFrom key: String) -> [T]? {
+    public func map<T>(optionalArrayFrom key: String) -> [T]? where T: StructuredDataInitializable {
         return try?  structuredData.flatMapThrough(key) { try? T(structuredData: $0) }
     }
 
-    public func map<T: RawRepresentable where
-                    T.RawValue: StructuredDataInitializable>(optionalArrayFrom key: String) -> [T]? {
+    public func map<T: RawRepresentable>(optionalArrayFrom key: String) -> [T]? where
+        T.RawValue: StructuredDataInitializable {
         return try? structuredData.flatMapThrough(key) {
             return (try? T.RawValue(structuredData: $0)).flatMap({ T(rawValue: $0) })
         }
     }
 }
 
-public enum UnwrapError: ErrorProtocol {
+public enum UnwrapError: Error {
     case tryingToUnwrapNil
 }
 
 extension Mapper {
-    private func unwrap<T>(_ optional: T?) throws -> T {
+    fileprivate func unwrap<T>(_ optional: T?) throws -> T {
         if let nonoptional = optional {
             return nonoptional
         }

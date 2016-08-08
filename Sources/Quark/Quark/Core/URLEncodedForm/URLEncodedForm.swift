@@ -2,7 +2,7 @@ public struct URLEncodedForm {
     public var values: [String: String]
 }
 
-extension URLEncodedForm : DictionaryLiteralConvertible {
+extension URLEncodedForm : ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (String, String)...) {
         var values: [String: String] = [:]
 

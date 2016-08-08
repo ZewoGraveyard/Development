@@ -5,7 +5,7 @@ struct AnyExistentialContainer {
     init(type: Any.Type, pointer: UnsafePointer<UInt8>) {
         self.type = type
         if sizeof(type) <= 3 * sizeof(Int.self) {
-            self.buffer = UnsafePointer<(Int, Int, Int)>(pointer).pointee
+            self.buffer = UnsafeRawPointer(pointer).assumingMemoryBound(to: (Int, Int, Int).self).pointee
         } else {
             self.buffer = (pointer.hashValue, 0, 0)
         }

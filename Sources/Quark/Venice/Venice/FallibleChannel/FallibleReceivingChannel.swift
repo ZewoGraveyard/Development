@@ -23,7 +23,7 @@ public final class FallibleReceivingChannel<T> : Sequence {
         channel.close()
     }
 
-    func registerReceive(_ clause: UnsafeMutablePointer<Void>, index: Int) {
+    func registerReceive(_ clause: UnsafeMutableRawPointer, index: Int) {
         return channel.registerReceive(clause, index: index)
     }
 
