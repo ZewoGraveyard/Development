@@ -4,7 +4,7 @@ big_pr = lines_of_code > 500
 github = env.request_source.client
 organization, repository = env.ci_source.repo_slug.split("/")
 
-message "Ahoy, @#{pr_author}!! Thanks for your contribution mate!"
+message "Ahoy, @#{pr_author}!! Thanks for your contribution!"
 
 unless github.organization_member?(organization, pr_author)
     message "Hey @#{pr_author}, you're not a member of #{organization} yet. Would you like to join the #{organization} Github organization?\nYou can also join our [Slack](http://slack.zewo.io) and interact with a great community of developers. 😊"
