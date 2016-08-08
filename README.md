@@ -30,7 +30,7 @@ The inner-most circle is the entire project, moving away from the center are fol
 
 ## Installation
 
-**Quark** works best with **June 20, 2016** Swift 3 Development Snapshot.
+**Quark** works best with [**August 07, 2016**](https://swiftsnapshots.s3-ap-south-1.amazonaws.com/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a-osx.tar.gz) Swift 3 Nightly Build.
 
 ```swift
 import PackageDescription
