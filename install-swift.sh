@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 
+set -e
+set -o pipefail
+
 snapshot_host="https://zewo-swift-snapshots.s3.amazonaws.com"
-snapshot=$(head -n 1 .swift-version)
+
+if [ -f ".swift-version" ]; then
+    snapshot=$(head -n 1 .swift-version)
+else
+    if [ -z "$1" ]; then
+        echo "No snapshot version supplied."
+        exit 1
+    fi
+
+    snapshot=$1
+fi
+
 swiftenv_was_just_installed=false
 
 if [ ! -d "$HOME/.swiftenv" ]; then

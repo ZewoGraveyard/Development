@@ -30,7 +30,11 @@ The inner-most circle is the entire project, moving away from the center are fol
 
 ## Installation
 
-**Quark** works best with [**August 07, 2016**](https://swiftsnapshots.s3-ap-south-1.amazonaws.com/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a-osx.tar.gz) Swift 3 Nightly Build.
+**Quark** works best with [**August 07, 2016**](https://swiftsnapshots.s3-ap-south-1.amazonaws.com/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a-osx.tar.gz) Swift 3 Nightly Build. To install it do:
+
+```sh
+bash <(curl -s https://raw.githubusercontent.com/QuarkX/Quark/master/install-swift.sh) DEVELOPMENT-SNAPSHOT-2016-08-07-a
+```
 
 ```swift
 import PackageDescription
