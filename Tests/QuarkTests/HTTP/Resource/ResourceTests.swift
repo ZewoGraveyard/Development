@@ -32,7 +32,7 @@ struct TestResource : Resource {
         return Response()
     }
 
-    func create(request: Request, content: StructuredData) throws -> Response {
+    func create(request: Request, content: Map) throws -> Response {
         XCTAssertEqual(content, 420)
         return Response()
     }
@@ -42,7 +42,7 @@ struct TestResource : Resource {
         return Response()
     }
 
-    func update(request: Request, id: String, content: StructuredData) throws -> Response {
+    func update(request: Request, id: String, content: Map) throws -> Response {
         XCTAssertEqual(id, "foo")
         XCTAssertEqual(content, 420)
         return Response()

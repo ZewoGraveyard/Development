@@ -1,10 +1,10 @@
 import XCTest
 @testable import Quark
 
-class StructuredDataTests : XCTestCase {
+class MapTests : XCTestCase {
     func testCreation() {
         let nullValue: Bool? = nil
-        let null = StructuredData(nullValue)
+        let null = Map(nullValue)
         XCTAssertEqual(null, nil)
         XCTAssertEqual(null, .null)
         XCTAssertEqual(null, .infer(nullValue))
@@ -32,7 +32,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try null.asDictionary())
 
         let nullArrayValue: [Bool]? = nil
-        let nullArray = StructuredData(nullArrayValue)
+        let nullArray = Map(nullArrayValue)
         XCTAssertEqual(nullArray, nil)
         XCTAssertEqual(nullArray, .null)
         XCTAssertEqual(nullArray, .infer(nullArrayValue))
@@ -60,7 +60,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try null.asDictionary())
 
         let nullArrayOfNullValue: [Bool?]? = nil
-        let nullArrayOfNull = StructuredData(nullArrayOfNullValue)
+        let nullArrayOfNull = Map(nullArrayOfNullValue)
         XCTAssertEqual(nullArrayOfNull, nil)
         XCTAssertEqual(nullArrayOfNull, .null)
         XCTAssertEqual(nullArrayOfNull, .infer(nullArrayOfNullValue))
@@ -88,7 +88,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try null.asDictionary())
 
         let nullDictionaryValue: [String: Bool]? = nil
-        let nullDictionary = StructuredData(nullDictionaryValue)
+        let nullDictionary = Map(nullDictionaryValue)
         XCTAssertEqual(nullDictionary, nil)
         XCTAssertEqual(nullDictionary, .null)
         XCTAssertEqual(nullDictionary, .infer(nullDictionaryValue))
@@ -116,7 +116,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try null.asDictionary())
 
         let nullDictionaryOfNullValue: [String: Bool?]? = nil
-        let nullDictionaryOfNull = StructuredData(nullDictionaryOfNullValue)
+        let nullDictionaryOfNull = Map(nullDictionaryOfNullValue)
         XCTAssertEqual(nullDictionaryOfNull, nil)
         XCTAssertEqual(nullDictionaryOfNull, .null)
         XCTAssertEqual(nullDictionaryOfNull, .infer(nullDictionaryOfNullValue))
@@ -144,7 +144,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try null.asDictionary())
 
         let boolValue = true
-        let bool = StructuredData(boolValue)
+        let bool = Map(boolValue)
         XCTAssertEqual(bool, true)
         XCTAssertEqual(bool, .bool(boolValue))
         XCTAssertEqual(bool, .infer(boolValue))
@@ -172,7 +172,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try bool.asDictionary())
 
         let doubleValue = 4.20
-        let double = StructuredData(doubleValue)
+        let double = Map(doubleValue)
         XCTAssertEqual(double, 4.20)
         XCTAssertEqual(double, .double(doubleValue))
         XCTAssertEqual(double, .infer(doubleValue))
@@ -200,7 +200,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try double.asDictionary())
 
         let intValue = 1969
-        let int = StructuredData(intValue)
+        let int = Map(intValue)
         XCTAssertEqual(int, 1969)
         XCTAssertEqual(int, .int(intValue))
         XCTAssertEqual(int, .infer(intValue))
@@ -228,7 +228,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try null.asDictionary())
 
         let stringValue = "foo"
-        let string = StructuredData(stringValue)
+        let string = Map(stringValue)
         XCTAssertEqual(string, "foo")
         XCTAssertEqual(string, .string(stringValue))
         XCTAssertEqual(string, .infer(stringValue))
@@ -256,7 +256,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try string.asDictionary())
 
         let dataValue: C7.Data = "foo"
-        let data = StructuredData(dataValue)
+        let data = Map(dataValue)
         XCTAssertEqual(data, .data(dataValue))
         XCTAssertEqual(data, .infer(dataValue))
         XCTAssertFalse(data.isNull)
@@ -283,7 +283,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try data.asDictionary())
 
         let arrayValue = 1969
-        let array = StructuredData([arrayValue])
+        let array = Map([arrayValue])
         XCTAssertEqual(array, [1969])
         XCTAssertEqual(array, .array([.int(arrayValue)]))
         XCTAssertEqual(array, .infer([arrayValue]))
@@ -315,7 +315,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try array.asDictionary())
 
         let arrayOfOptionalValue: Int? = arrayValue
-        let arrayOfOptional = StructuredData([arrayOfOptionalValue])
+        let arrayOfOptional = Map([arrayOfOptionalValue])
         XCTAssertEqual(arrayOfOptional, [1969])
         XCTAssertEqual(arrayOfOptional, .array([.int(arrayValue)]))
         XCTAssertEqual(arrayOfOptional, .infer([arrayOfOptionalValue]))
@@ -347,7 +347,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try arrayOfOptional.asDictionary())
 
         let arrayOfNullValue: Int? = nil
-        let arrayOfNull = StructuredData([arrayOfNullValue])
+        let arrayOfNull = Map([arrayOfNullValue])
         XCTAssertEqual(arrayOfNull, [nil])
         XCTAssertEqual(arrayOfNull, .array([.null]))
         XCTAssertEqual(arrayOfNull, .infer([arrayOfNullValue]))
@@ -379,7 +379,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try arrayOfNull.asDictionary())
 
         let dictionaryValue = 1969
-        let dictionary = StructuredData(["foo": dictionaryValue])
+        let dictionary = Map(["foo": dictionaryValue])
         XCTAssertEqual(dictionary, ["foo": 1969])
         XCTAssertEqual(dictionary, .dictionary(["foo": .int(dictionaryValue)]))
         XCTAssertEqual(dictionary, .infer(["foo": dictionaryValue]))
@@ -411,7 +411,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertEqual(try dictionary.asDictionary(), ["foo": .int(dictionaryValue)])
 
         let dictionaryOfOptionalValue: Int? = dictionaryValue
-        let dictionaryOfOptional = StructuredData(["foo": dictionaryOfOptionalValue])
+        let dictionaryOfOptional = Map(["foo": dictionaryOfOptionalValue])
         XCTAssertEqual(dictionaryOfOptional, ["foo": 1969])
         XCTAssertEqual(dictionaryOfOptional, .dictionary(["foo": .int(dictionaryValue)]))
         XCTAssertEqual(dictionaryOfOptional, .infer(["foo": dictionaryOfOptionalValue]))
@@ -443,7 +443,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertEqual(try dictionaryOfOptional.asDictionary(), ["foo": .int(dictionaryValue)])
 
         let dictionaryOfNullValue: Int? = nil
-        let dictionaryOfNull = StructuredData(["foo": dictionaryOfNullValue])
+        let dictionaryOfNull = Map(["foo": dictionaryOfNullValue])
         XCTAssertEqual(dictionaryOfNull, ["foo": nil])
         XCTAssertEqual(dictionaryOfNull, .dictionary(["foo": .null]))
         XCTAssertEqual(dictionaryOfNull, .infer(["foo": dictionaryOfNullValue]))
@@ -476,7 +476,7 @@ class StructuredDataTests : XCTestCase {
     }
 
     func testConversion() {
-        let null: StructuredData = nil
+        let null: Map = nil
         XCTAssertEqual(try null.asBool(converting: true), false)
         XCTAssertEqual(try null.asDouble(converting: true), 0)
         XCTAssertEqual(try null.asInt(converting: true), 0)
@@ -485,7 +485,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertEqual(try null.asArray(converting: true), [])
         XCTAssertEqual(try null.asDictionary(converting: true), [:])
 
-        let `true`: StructuredData = true
+        let `true`: Map = true
         XCTAssertEqual(try `true`.asBool(converting: true), true)
         XCTAssertEqual(try `true`.asDouble(converting: true), 1.0)
         XCTAssertEqual(try `true`.asInt(converting: true), 1)
@@ -494,7 +494,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try `true`.asArray(converting: true))
         XCTAssertThrowsError(try `true`.asDictionary(converting: true))
 
-        let `false`: StructuredData = false
+        let `false`: Map = false
         XCTAssertEqual(try `false`.asBool(converting: true), false)
         XCTAssertEqual(try `false`.asDouble(converting: true), 0.0)
         XCTAssertEqual(try `false`.asInt(converting: true), 0)
@@ -503,7 +503,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try `false`.asArray(converting: true))
         XCTAssertThrowsError(try `false`.asDictionary(converting: true))
 
-        let double: StructuredData = 4.20
+        let double: Map = 4.20
         XCTAssertEqual(try double.asBool(converting: true), true)
         XCTAssertEqual(try double.asDouble(converting: true), 4.20)
         XCTAssertEqual(try double.asInt(converting: true), 4)
@@ -512,7 +512,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try double.asArray(converting: true))
         XCTAssertThrowsError(try double.asDictionary(converting: true))
 
-        let doubleZero: StructuredData = 0.0
+        let doubleZero: Map = 0.0
         XCTAssertEqual(try doubleZero.asBool(converting: true), false)
         XCTAssertEqual(try doubleZero.asDouble(converting: true), 0.0)
         XCTAssertEqual(try doubleZero.asInt(converting: true), 0)
@@ -521,7 +521,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try doubleZero.asArray(converting: true))
         XCTAssertThrowsError(try doubleZero.asDictionary(converting: true))
 
-        let int: StructuredData = 1969
+        let int: Map = 1969
         XCTAssertEqual(try int.asBool(converting: true), true)
         XCTAssertEqual(try int.asDouble(converting: true), 1969.0)
         XCTAssertEqual(try int.asInt(converting: true), 1969)
@@ -530,7 +530,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try int.asArray(converting: true))
         XCTAssertThrowsError(try int.asDictionary(converting: true))
 
-        let intZero: StructuredData = 0
+        let intZero: Map = 0
         XCTAssertEqual(try intZero.asBool(converting: true), false)
         XCTAssertEqual(try intZero.asDouble(converting: true), 0.0)
         XCTAssertEqual(try intZero.asInt(converting: true), 0)
@@ -539,7 +539,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try intZero.asArray(converting: true))
         XCTAssertThrowsError(try intZero.asDictionary(converting: true))
 
-        let string: StructuredData = "foo"
+        let string: Map = "foo"
         XCTAssertThrowsError(try string.asBool(converting: true))
         XCTAssertThrowsError(try string.asDouble(converting: true))
         XCTAssertThrowsError(try string.asInt(converting: true))
@@ -548,7 +548,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try string.asArray(converting: true))
         XCTAssertThrowsError(try string.asDictionary(converting: true))
 
-        let stringTrue: StructuredData = "TRUE"
+        let stringTrue: Map = "TRUE"
         XCTAssertEqual(try stringTrue.asBool(converting: true), true)
         XCTAssertThrowsError(try stringTrue.asDouble(converting: true))
         XCTAssertThrowsError(try stringTrue.asInt(converting: true))
@@ -557,7 +557,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try stringTrue.asArray(converting: true))
         XCTAssertThrowsError(try stringTrue.asDictionary(converting: true))
 
-        let stringFalse: StructuredData = "FALSE"
+        let stringFalse: Map = "FALSE"
         XCTAssertEqual(try stringFalse.asBool(converting: true), false)
         XCTAssertThrowsError(try stringFalse.asDouble(converting: true))
         XCTAssertThrowsError(try stringFalse.asInt(converting: true))
@@ -566,7 +566,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try stringFalse.asArray(converting: true))
         XCTAssertThrowsError(try stringFalse.asDictionary(converting: true))
 
-        let stringDouble: StructuredData = "4.20"
+        let stringDouble: Map = "4.20"
         XCTAssertThrowsError(try stringDouble.asBool(converting: true))
         XCTAssertEqual(try stringDouble.asDouble(converting: true), 4.20)
         XCTAssertThrowsError(try stringDouble.asInt(converting: true))
@@ -575,7 +575,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try stringDouble.asArray(converting: true))
         XCTAssertThrowsError(try stringDouble.asDictionary(converting: true))
 
-        let stringInt: StructuredData = "1969"
+        let stringInt: Map = "1969"
         XCTAssertThrowsError(try stringInt.asBool(converting: true))
         XCTAssertEqual(try stringInt.asDouble(converting: true), 1969.0)
         XCTAssertEqual(try stringInt.asInt(converting: true), 1969)
@@ -584,7 +584,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try stringInt.asArray(converting: true))
         XCTAssertThrowsError(try stringInt.asDictionary(converting: true))
 
-        let data: StructuredData = .data("foo")
+        let data: Map = .data("foo")
         XCTAssertEqual(try data.asBool(converting: true), true)
         XCTAssertThrowsError(try data.asDouble(converting: true))
         XCTAssertThrowsError(try data.asInt(converting: true))
@@ -593,7 +593,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try data.asArray(converting: true))
         XCTAssertThrowsError(try data.asDictionary(converting: true))
 
-        let dataEmpty: StructuredData = .data([])
+        let dataEmpty: Map = .data([])
         XCTAssertEqual(try dataEmpty.asBool(converting: true), false)
         XCTAssertThrowsError(try dataEmpty.asDouble(converting: true))
         XCTAssertThrowsError(try dataEmpty.asInt(converting: true))
@@ -602,7 +602,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try dataEmpty.asArray(converting: true))
         XCTAssertThrowsError(try dataEmpty.asDictionary(converting: true))
 
-        let array: StructuredData = [1969]
+        let array: Map = [1969]
         XCTAssertEqual(try array.asBool(converting: true), true)
         XCTAssertThrowsError(try array.asDouble(converting: true))
         XCTAssertThrowsError(try array.asInt(converting: true))
@@ -611,7 +611,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertEqual(try array.asArray(converting: true), [1969])
         XCTAssertThrowsError(try array.asDictionary(converting: true))
 
-        let arrayEmpty: StructuredData = []
+        let arrayEmpty: Map = []
         XCTAssertEqual(try arrayEmpty.asBool(converting: true), false)
         XCTAssertThrowsError(try arrayEmpty.asDouble(converting: true))
         XCTAssertThrowsError(try arrayEmpty.asInt(converting: true))
@@ -620,7 +620,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertEqual(try arrayEmpty.asArray(converting: true), [])
         XCTAssertThrowsError(try arrayEmpty.asDictionary(converting: true))
 
-        let dictionary: StructuredData = ["foo": "bar"]
+        let dictionary: Map = ["foo": "bar"]
         XCTAssertEqual(try dictionary.asBool(converting: true), true)
         XCTAssertThrowsError(try dictionary.asDouble(converting: true))
         XCTAssertThrowsError(try dictionary.asInt(converting: true))
@@ -629,7 +629,7 @@ class StructuredDataTests : XCTestCase {
         XCTAssertThrowsError(try dictionary.asArray(converting: true))
         XCTAssertEqual(try dictionary.asDictionary(converting: true), ["foo": "bar"])
 
-        let dictionaryEmpty: StructuredData = [:]
+        let dictionaryEmpty: Map = [:]
         XCTAssertEqual(try dictionaryEmpty.asBool(converting: true), false)
         XCTAssertThrowsError(try dictionaryEmpty.asDouble(converting: true))
         XCTAssertThrowsError(try dictionaryEmpty.asInt(converting: true))
@@ -640,7 +640,7 @@ class StructuredDataTests : XCTestCase {
     }
 
     func testDescription() {
-        let data: StructuredData = [
+        let data: Map = [
             "array": [
                 [],
                 true,
@@ -675,22 +675,22 @@ class StructuredDataTests : XCTestCase {
     }
 
     func testStringInterpolationLiteral() {
-        var data: StructuredData = "\(1969)+\(4.20)"
+        var data: Map = "\(1969)+\(4.20)"
         XCTAssertEqual(data, .string("1969+4.2"))
-        data = StructuredData(unicodeScalarLiteral: "foo")
+        data = Map(unicodeScalarLiteral: "foo")
         XCTAssertEqual(data, .string("foo"))
-        data = StructuredData(extendedGraphemeClusterLiteral: "foo")
+        data = Map(extendedGraphemeClusterLiteral: "foo")
         XCTAssertEqual(data, .string("foo"))
     }
 
     func testEquality() {
-        let a: StructuredData = "foo"
-        let b: StructuredData = 1968
+        let a: Map = "foo"
+        let b: Map = 1968
         XCTAssertNotEqual(a, b)
     }
 
     func testIndexPath() throws {
-        var data: StructuredData
+        var data: Map
 
         data = [["foo"]]
         XCTAssertEqual(try data.get(at: 0, 0), "foo")
@@ -718,101 +718,101 @@ class StructuredDataTests : XCTestCase {
         XCTAssertEqual(data, ["foo": ["yoo": "uhu"]])
     }
 
-    func testStructuredDataInitializable() throws {
-        struct Bar : StructuredDataInitializable {
+    func testMapInitializable() throws {
+        struct Bar : MapInitializable {
             let bar: String
         }
-        struct Foo : StructuredDataInitializable {
+        struct Foo : MapInitializable {
             let foo: Bar
         }
         struct Baz {
             let baz: String
         }
-        struct Fuu : StructuredDataInitializable {
+        struct Fuu : MapInitializable {
             let fuu: Baz
         }
-        struct Fou : StructuredDataInitializable {
+        struct Fou : MapInitializable {
             let fou: String?
         }
 
-        XCTAssertEqual(try Bar(structuredData: ["bar": "bar"]).bar, "bar")
-        XCTAssertThrowsError(try Bar(structuredData: "bar"))
-        XCTAssertThrowsError(try Bar(structuredData: ["bar": nil]))
-        XCTAssertEqual(try Foo(structuredData: ["foo": ["bar": "bar"]]).foo.bar, "bar")
-        XCTAssertThrowsError(try Fuu(structuredData: ["fuu": ["baz": "baz"]]))
-        XCTAssertEqual(try Fou(structuredData: [:]).fou, nil)
+        XCTAssertEqual(try Bar(map: ["bar": "bar"]).bar, "bar")
+        XCTAssertThrowsError(try Bar(map: "bar"))
+        XCTAssertThrowsError(try Bar(map: ["bar": nil]))
+        XCTAssertEqual(try Foo(map: ["foo": ["bar": "bar"]]).foo.bar, "bar")
+        XCTAssertThrowsError(try Fuu(map: ["fuu": ["baz": "baz"]]))
+        XCTAssertEqual(try Fou(map: [:]).fou, nil)
 
-        XCTAssertEqual(try StructuredData(structuredData: nil), nil)
-        XCTAssertEqual(try Bool(structuredData: true), true)
-        XCTAssertThrowsError(try Bool(structuredData: nil))
-        XCTAssertEqual(try Double(structuredData: 4.2), 4.2)
-        XCTAssertThrowsError(try Double(structuredData: nil))
-        XCTAssertEqual(try Int(structuredData: 4), 4)
-        XCTAssertThrowsError(try Int(structuredData: nil))
-        XCTAssertEqual(try String(structuredData: "foo"), "foo")
-        XCTAssertThrowsError(try String(structuredData: nil))
-        XCTAssertEqual(try Data(structuredData: .data("foo")), Data("foo"))
-        XCTAssertThrowsError(try Data(structuredData: nil))
-        XCTAssertEqual(try Optional<Int>(structuredData: nil), nil)
-        XCTAssertEqual(try Optional<Int>(structuredData: 1969), 1969)
-        XCTAssertThrowsError(try Optional<Baz>(structuredData: nil))
+        XCTAssertEqual(try Map(map: nil), nil)
+        XCTAssertEqual(try Bool(map: true), true)
+        XCTAssertThrowsError(try Bool(map: nil))
+        XCTAssertEqual(try Double(map: 4.2), 4.2)
+        XCTAssertThrowsError(try Double(map: nil))
+        XCTAssertEqual(try Int(map: 4), 4)
+        XCTAssertThrowsError(try Int(map: nil))
+        XCTAssertEqual(try String(map: "foo"), "foo")
+        XCTAssertThrowsError(try String(map: nil))
+        XCTAssertEqual(try Data(map: .data("foo")), Data("foo"))
+        XCTAssertThrowsError(try Data(map: nil))
+        XCTAssertEqual(try Optional<Int>(map: nil), nil)
+        XCTAssertEqual(try Optional<Int>(map: 1969), 1969)
+        XCTAssertThrowsError(try Optional<Baz>(map: nil))
 
-        XCTAssertEqual(try Array<Int>(structuredData: [1969]), [1969])
-        XCTAssertThrowsError(try Array<Int>(structuredData: nil))
-        XCTAssertThrowsError(try Array<Baz>(structuredData: []))
+        XCTAssertEqual(try Array<Int>(map: [1969]), [1969])
+        XCTAssertThrowsError(try Array<Int>(map: nil))
+        XCTAssertThrowsError(try Array<Baz>(map: []))
 
-        XCTAssertEqual(try Dictionary<String, Int>(structuredData: ["foo": 1969]), ["foo": 1969])
-        XCTAssertThrowsError(try Dictionary<String, Int>(structuredData: nil))
-        XCTAssertThrowsError(try Dictionary<Int, Int>(structuredData: [:]))
-        XCTAssertThrowsError(try Dictionary<String, Baz>(structuredData: [:]))
+        XCTAssertEqual(try Dictionary<String, Int>(map: ["foo": 1969]), ["foo": 1969])
+        XCTAssertThrowsError(try Dictionary<String, Int>(map: nil))
+        XCTAssertThrowsError(try Dictionary<Int, Int>(map: [:]))
+        XCTAssertThrowsError(try Dictionary<String, Baz>(map: [:]))
     }
 
-    func testStructuredDataRepresentable() throws {
-        struct Bar : StructuredDataFallibleRepresentable {
+    func testMapRepresentable() throws {
+        struct Bar : MapFallibleRepresentable {
             let bar: String
         }
-        struct Foo : StructuredDataFallibleRepresentable {
+        struct Foo : MapFallibleRepresentable {
             let foo: Bar
         }
         struct Baz {
             let baz: String
         }
-        struct Fuu : StructuredDataFallibleRepresentable {
+        struct Fuu : MapFallibleRepresentable {
             let fuu: Baz
         }
 
-        XCTAssertEqual(try Foo(foo: Bar(bar: "bar")).asStructuredData(), ["foo": ["bar": "bar"]])
-        XCTAssertThrowsError(try Fuu(fuu: Baz(baz: "baz")).asStructuredData())
-        XCTAssertEqual(StructuredData(1969).structuredData, 1969)
-        XCTAssertEqual(true.structuredData, true)
-        XCTAssertEqual(4.2.structuredData, 4.2)
-        XCTAssertEqual(1969.structuredData, 1969)
-        XCTAssertEqual("foo".structuredData, "foo")
-        XCTAssertEqual(Data("foo").structuredData, .data("foo"))
+        XCTAssertEqual(try Foo(foo: Bar(bar: "bar")).asMap(), ["foo": ["bar": "bar"]])
+        XCTAssertThrowsError(try Fuu(fuu: Baz(baz: "baz")).asMap())
+        XCTAssertEqual(Map(1969).map, 1969)
+        XCTAssertEqual(true.map, true)
+        XCTAssertEqual(4.2.map, 4.2)
+        XCTAssertEqual(1969.map, 1969)
+        XCTAssertEqual("foo".map, "foo")
+        XCTAssertEqual(Data("foo").map, .data("foo"))
         let optional: Int? = nil
-        XCTAssertEqual(optional.structuredData, nil)
-        XCTAssertEqual(Int?(1969).structuredData, 1969)
-        XCTAssertEqual([1969].structuredData, [1969])
-        XCTAssertEqual([1969].structuredDataArray, [.int(1969)])
-        XCTAssertEqual(["foo": 1969].structuredData, ["foo": 1969])
-        XCTAssertEqual(["foo": 1969].structuredDataDictionary, ["foo": .int(1969)])
-        XCTAssertEqual(try optional.asStructuredData(), nil)
-        XCTAssertEqual(try Int?(1969).asStructuredData(), 1969)
+        XCTAssertEqual(optional.map, nil)
+        XCTAssertEqual(Int?(1969).map, 1969)
+        XCTAssertEqual([1969].map, [1969])
+        XCTAssertEqual([1969].mapArray, [.int(1969)])
+        XCTAssertEqual(["foo": 1969].map, ["foo": 1969])
+        XCTAssertEqual(["foo": 1969].mapDictionary, ["foo": .int(1969)])
+        XCTAssertEqual(try optional.asMap(), nil)
+        XCTAssertEqual(try Int?(1969).asMap(), 1969)
         let fuuOptional: Baz? = nil
-        XCTAssertThrowsError(try fuuOptional.asStructuredData())
-        XCTAssertEqual(try [1969].asStructuredData(), [1969])
+        XCTAssertThrowsError(try fuuOptional.asMap())
+        XCTAssertEqual(try [1969].asMap(), [1969])
         let fuuArray: [Baz] = []
-        XCTAssertThrowsError(try fuuArray.asStructuredData())
-        XCTAssertEqual(try ["foo": 1969].asStructuredData(), ["foo": 1969])
+        XCTAssertThrowsError(try fuuArray.asMap())
+        XCTAssertEqual(try ["foo": 1969].asMap(), ["foo": 1969])
         let fuuDictionaryA: [Int: Foo] = [:]
-        XCTAssertThrowsError(try fuuDictionaryA.asStructuredData())
+        XCTAssertThrowsError(try fuuDictionaryA.asMap())
         let fuuDictionaryB: [String: Baz] = [:]
-        XCTAssertThrowsError(try fuuDictionaryB.asStructuredData())
+        XCTAssertThrowsError(try fuuDictionaryB.asMap())
     }
 }
 
-extension StructuredDataTests {
-    static var allTests: [(String, (StructuredDataTests) -> () throws -> Void)] {
+extension MapTests {
+    static var allTests: [(String, (MapTests) -> () throws -> Void)] {
         return [
            ("testCreation", testCreation),
            ("testConversion", testConversion),
@@ -820,8 +820,8 @@ extension StructuredDataTests {
            ("testStringInterpolationLiteral", testStringInterpolationLiteral),
            ("testEquality", testEquality),
            ("testIndexPath", testIndexPath),
-           ("testStructuredDataInitializable", testStructuredDataInitializable),
-           ("testStructuredDataRepresentable", testStructuredDataRepresentable),
+           ("testMapInitializable", testMapInitializable),
+           ("testMapRepresentable", testMapRepresentable),
         ]
     }
 }

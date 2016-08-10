@@ -12,11 +12,6 @@ public enum JSON {
     case null
 }
 
-//
-// TODO: refactor with
-// https://github.com/apple/swift-evolution/blob/master/proposals/0080-failable-numeric-initializers.md
-//
-
 extension Int {
     public init?(_ number: JSON.Number) {
         switch number {

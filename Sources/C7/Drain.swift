@@ -1,4 +1,4 @@
-public final class Drain: DataRepresentable, Stream {
+public final class Drain : DataRepresentable, Stream {
     var buffer: Data
     public var closed = false
 

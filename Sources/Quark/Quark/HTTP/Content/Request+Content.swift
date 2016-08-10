@@ -1,7 +1,7 @@
 extension Request {
-    public var content: StructuredData? {
+    public var content: Map? {
         get {
-            return storage["content"] as? StructuredData
+            return storage["content"] as? Map
         }
 
         set(content) {
@@ -11,7 +11,7 @@ extension Request {
 }
 
 extension Request {
-    public init<T : StructuredDataRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: T) {
+    public init<T : MapRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: T) {
         self.init(
             method: method,
             uri: uri,
@@ -19,10 +19,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T: StructuredDataRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: T?) {
+    public init<T: MapRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: T?) {
         self.init(
             method: method,
             uri: uri,
@@ -30,10 +30,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T: StructuredDataRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: [T]) {
+    public init<T: MapRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: [T]) {
         self.init(
             method: method,
             uri: uri,
@@ -41,10 +41,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T: StructuredDataRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: [String: T]) {
+    public init<T: MapRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: [String: T]) {
         self.init(
             method: method,
             uri: uri,
@@ -52,10 +52,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T : StructuredDataFallibleRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: T) throws {
+    public init<T : MapFallibleRepresentable>(method: Method = .get, uri: URI = URI(path: "/"), headers: Headers = [:], content: T) throws {
         self.init(
             method: method,
             uri: uri,
@@ -63,12 +63,12 @@ extension Request {
             body: []
         )
 
-        self.content = try content.asStructuredData()
+        self.content = try content.asMap()
     }
 }
 
 extension Request {
-    public init<T : StructuredDataRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: T) throws {
+    public init<T : MapRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: T) throws {
         self.init(
             method: method,
             uri: try URI(uri),
@@ -76,10 +76,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T: StructuredDataRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: T?) throws {
+    public init<T: MapRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: T?) throws {
         self.init(
             method: method,
             uri: try URI(uri),
@@ -87,10 +87,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T: StructuredDataRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: [T]) throws {
+    public init<T: MapRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: [T]) throws {
         self.init(
             method: method,
             uri: try URI(uri),
@@ -98,10 +98,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T: StructuredDataRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: [String: T]) throws {
+    public init<T: MapRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: [String: T]) throws {
         self.init(
             method: method,
             uri: try URI(uri),
@@ -109,10 +109,10 @@ extension Request {
             body: []
         )
 
-        self.content = content.structuredData
+        self.content = content.map
     }
 
-    public init<T : StructuredDataFallibleRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: T) throws {
+    public init<T : MapFallibleRepresentable>(method: Method = .get, uri: String, headers: Headers = [:], content: T) throws {
         self.init(
             method: method,
             uri: try URI(uri),
@@ -120,6 +120,6 @@ extension Request {
             body: []
         )
 
-        self.content = try content.asStructuredData()
+        self.content = try content.asMap()
     }
 }

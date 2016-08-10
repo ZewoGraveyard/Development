@@ -17,11 +17,11 @@ extension QuarkError : CustomStringConvertible {
     }
 }
 
-public var configuration: StructuredData = nil {
+public var configuration: Map = nil {
     willSet(configuration) {
         do {
             let file = try File(path: "/tmp/QuarkConfiguration", mode: .truncateWrite)
-            let serializer = JSONStructuredDataSerializer()
+            let serializer = JSONMapSerializer()
             let data = try serializer.serialize(configuration)
             try file.write(data)
         } catch {
@@ -30,24 +30,24 @@ public var configuration: StructuredData = nil {
     }
 }
 
-public typealias Configuration = StructuredDataInitializable
+public typealias Configuration = MapInitializable
 
 public protocol ConfigurableServer {
-    init(middleware: [Middleware], responder: Responder, configuration: StructuredData) throws
+    init(middleware: [Middleware], responder: Responder, configuration: Map) throws
     func start() throws
 }
 
 public func configure<AppConfiguration : Configuration>(configurationFile: String = "Configuration.swift", arguments: [String] = CommandLine.arguments, server: ConfigurableServer.Type, configuration: (AppConfiguration) throws -> ResponderRepresentable) {
     do {
         let appConfiguration = try loadConfiguration(configurationFilePath: configurationFile, arguments: arguments)
-        let responder = try configuration(AppConfiguration(structuredData: appConfiguration))
+        let responder = try configuration(AppConfiguration(map: appConfiguration))
         try configure(server: server, responder: responder.responder, configuration: appConfiguration)
     } catch {
         print(error)
     }
 }
 
-private func configure(server: ConfigurableServer.Type, responder: Responder, configuration: StructuredData) throws {
+private func configure(server: ConfigurableServer.Type, responder: Responder, configuration: Map) throws {
     var middleware: [Middleware] = []
 
     if configuration["server", "log"]?.asBool == true {
@@ -64,7 +64,7 @@ private func configure(server: ConfigurableServer.Type, responder: Responder, co
     ).start()
 }
 
-private func loadConfiguration(configurationFilePath: String, arguments: [String]) throws -> StructuredData {
+private func loadConfiguration(configurationFilePath: String, arguments: [String]) throws -> Map {
     let arguments = !arguments.isEmpty ? Array(arguments.suffix(from: 1)) : []
     let environmentVariables = try load(environmentVariables: environment.variables)
     let commandLineArguments = try load(commandLineArguments: arguments)
@@ -74,7 +74,7 @@ private func loadConfiguration(configurationFilePath: String, arguments: [String
     }
 
     let configurationFile = try load(configurationFile: configurationFilePath)
-    var configuration: StructuredData = [:]
+    var configuration: Map = [:]
 
     for (key, value) in configurationFile {
         try configuration.set(value: value, at: key)
@@ -91,7 +91,7 @@ private func loadConfiguration(configurationFilePath: String, arguments: [String
     return configuration
 }
 
-private func load(configurationFile: String) throws -> [String: StructuredData] {
+private func load(configurationFile: String) throws -> [String: Map] {
     let libraryDirectory = ".build/" + buildConfiguration.buildPath
     let moduleName = "Quark"
     var arguments = ["swiftc"]
@@ -112,17 +112,17 @@ private func load(configurationFile: String) throws -> [String: StructuredData] 
     try sys(arguments)
 
     let file = try File(path: "/tmp/QuarkConfiguration")
-    let parser = JSONStructuredDataParser()
+    let parser = JSONMapParser()
     let data = try file.readAll()
     return try parser.parse(data).asDictionary()
 }
 
-func load(commandLineArguments arguments: [String]) throws -> [String: StructuredData] {
-    var parameters: StructuredData = [:]
+func load(commandLineArguments arguments: [String]) throws -> [String: Map] {
+    var parameters: Map = [:]
 
     var currentParameter = ""
     var hasParameter = false
-    var value: StructuredData = nil
+    var value: Map = nil
     var i = 0
 
     while i < arguments.count {
@@ -159,8 +159,8 @@ func load(commandLineArguments arguments: [String]) throws -> [String: Structure
     return parameters.asDictionary!
 }
 
-func load(environmentVariables: [String: String]) throws -> [String: StructuredData] {
-    var variables: [String: StructuredData] = [:]
+func load(environmentVariables: [String: String]) throws -> [String: Map] {
+    var variables: [String: Map] = [:]
 
     for (key, value) in environmentVariables {
         let key = convertEnvironmentVariableKeyToCamelCase(key)
@@ -170,7 +170,7 @@ func load(environmentVariables: [String: String]) throws -> [String: StructuredD
     return variables
 }
 
-func parse(value: String) -> StructuredData {
+func parse(value: String) -> Map {
     if isNull(value) {
         return .null
     }

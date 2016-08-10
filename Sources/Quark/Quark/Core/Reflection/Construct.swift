@@ -11,7 +11,7 @@ private func constructValueType<T>(_ constructor: (Property.Description) throws 
     guard Metadata(type: T.self)?.kind == .struct else { throw ReflectionError.notStruct(type: T.self) }
     let pointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
     defer { pointer.deallocate(capacity: 1) }
-    var values = [Any]()
+    var values: [Any] = []
     let p = UnsafeMutableRawPointer(pointer).assumingMemoryBound(to: UInt8.self)
     try constructType(storage: p, values: &values, properties: properties(T.self), constructor: constructor)
     return pointer.move()

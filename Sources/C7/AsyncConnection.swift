@@ -1,4 +1,4 @@
-public protocol AsyncConnection: AsyncStream {
+public protocol AsyncConnection : AsyncStream {
     func open(deadline: Double, completion: ((Void) throws -> AsyncConnection) -> Void) throws
 }
 

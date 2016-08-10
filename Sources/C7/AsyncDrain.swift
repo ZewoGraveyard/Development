@@ -1,4 +1,4 @@
-public final class AsyncDrain: DataRepresentable, AsyncStream {
+public final class AsyncDrain : DataRepresentable, AsyncStream {
     var buffer: Data = []
     public var closed = false
     

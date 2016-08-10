@@ -90,7 +90,7 @@ extension Routes {
     }
 
     public func get<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
@@ -101,7 +101,7 @@ extension Routes {
 
     public func get<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -113,7 +113,7 @@ extension Routes {
     public func get<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -126,7 +126,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -140,7 +140,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -208,7 +208,7 @@ extension Routes {
     }
 
     public func head<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
@@ -219,7 +219,7 @@ extension Routes {
 
     public func head<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -231,7 +231,7 @@ extension Routes {
     public func head<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -244,7 +244,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -258,7 +258,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -326,7 +326,7 @@ extension Routes {
     }
 
     public func post<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
@@ -337,7 +337,7 @@ extension Routes {
 
     public func post<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -349,7 +349,7 @@ extension Routes {
     public func post<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -362,7 +362,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -376,7 +376,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -444,7 +444,7 @@ extension Routes {
     }
 
     public func put<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
@@ -455,7 +455,7 @@ extension Routes {
 
     public func put<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -467,7 +467,7 @@ extension Routes {
     public func put<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -480,7 +480,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -494,7 +494,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -562,7 +562,7 @@ extension Routes {
     }
 
     public func patch<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
@@ -573,7 +573,7 @@ extension Routes {
 
     public func patch<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -585,7 +585,7 @@ extension Routes {
     public func patch<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -598,7 +598,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -612,7 +612,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -680,7 +680,7 @@ extension Routes {
     }
 
     public func delete<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String = "",
         middleware: [Middleware] = [],
@@ -691,7 +691,7 @@ extension Routes {
 
     public func delete<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -703,7 +703,7 @@ extension Routes {
     public func delete<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -716,7 +716,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -730,7 +730,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -798,7 +798,7 @@ extension Routes {
     }
 
     public func options<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -809,7 +809,7 @@ extension Routes {
 
     public func options<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -821,7 +821,7 @@ extension Routes {
     public func options<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -834,7 +834,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -848,7 +848,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         _ path: String,
         middleware: [Middleware] = [],
@@ -972,7 +972,7 @@ extension Routes {
     }
 
     public func add<
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         method: Method,
         path: String = "",
@@ -990,7 +990,7 @@ extension Routes {
 
     public func add<
         A: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         method: Method,
         path: String,
@@ -1019,7 +1019,7 @@ extension Routes {
     public func add<
         A: PathParameterConvertible,
         B: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         method: Method,
         path: String,
@@ -1049,7 +1049,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible,
         C: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         method: Method,
         path: String,
@@ -1082,7 +1082,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible,
         D: PathParameterConvertible,
-        T: StructuredDataInitializable
+        T: MapInitializable
         >(
         method: Method,
         path: String,

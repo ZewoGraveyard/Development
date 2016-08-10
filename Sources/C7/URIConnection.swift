@@ -1,4 +1,4 @@
 public protocol URIConnection: Connection {
-    init(to uri: URI) throws
+    init(uri: URI) throws
     var uri: URI { get }
 }

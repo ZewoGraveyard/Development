@@ -1,3 +1,8 @@
+public enum StreamError : Error {
+    case closedStream(data: Data)
+    case timeout(data: Data)
+}
+
 public protocol Closable {
     var closed: Bool { get }
     func close() throws
@@ -7,7 +12,7 @@ public enum ClosableError: Error {
     case alreadyClosed
 }
 
-public protocol Writable: AsyncWritable {
+public protocol Writable : AsyncWritable {
     func write(_ data: Data, deadline: Double) throws
     func flush(deadline: Double) throws
 }
@@ -36,7 +41,7 @@ extension Writable {
     }
 }
 
-public protocol Readable: AsyncReadable {
+public protocol Readable : AsyncReadable {
     func read(upTo byteCount: Int, deadline: Double) throws -> Data
 }
 
@@ -52,6 +57,6 @@ extension Readable {
     }
 }
 
-public protocol OutputStream: Closable, Writable, AsyncOutputStream {}
-public protocol InputStream: Closable, Readable, AsyncInputStream {}
-public protocol Stream: OutputStream, InputStream, AsyncStream {}
+public protocol OutputStream : Closable, Writable, AsyncOutputStream {}
+public protocol InputStream : Closable, Readable, AsyncInputStream {}
+public protocol Stream : OutputStream, InputStream, AsyncStream {}

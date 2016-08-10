@@ -6,7 +6,7 @@ class MustacheSerializerTests : XCTestCase {
         let templateFile = try File(path: "/tmp/ZewoTemplate", mode: .truncateWrite)
         try templateFile.write("{{null}}\n{{bool}}\n{{double}}\n{{int}}\n{{string}}\n{{data}}\n{{#array}}{{.}}{{/array}}\n{{#dictionary}}{{foo}}{{/dictionary}}")
         let serializer = MustacheSerializer(templatePath: "/tmp/ZewoTemplate", fileType: File.self)
-        let templateData: StructuredData = [
+        let templateData: Map = [
             "null": nil,
             "bool": true,
             "double": 4.2,

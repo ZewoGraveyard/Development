@@ -6,29 +6,17 @@ public struct CaseInsensitiveString {
     }
 }
 
-extension CaseInsensitiveString: Hashable {
-#if swift(>=3.0)
+extension CaseInsensitiveString : Hashable {
     public var hashValue: Int {
         return string.lowercased().hashValue
     }
-#else
-    public var hashValue: Int {
-        return string.lowercaseString.hashValue
-    }
-#endif
 }
 
-#if swift(>=3.0)
-    public func == (lhs: CaseInsensitiveString, rhs: CaseInsensitiveString) -> Bool {
-        return lhs.string.lowercased() == rhs.string.lowercased()
-    }
-#else
-    public func == (lhs: CaseInsensitiveString, rhs: CaseInsensitiveString) -> Bool {
-        return lhs.string.lowercaseString == rhs.string.lowercaseString
-    }
-#endif
+public func == (lhs: CaseInsensitiveString, rhs: CaseInsensitiveString) -> Bool {
+    return lhs.string.lowercased() == rhs.string.lowercased()
+}
 
-extension CaseInsensitiveString: ExpressibleByStringLiteral {
+extension CaseInsensitiveString : ExpressibleByStringLiteral {
     public init(stringLiteral string: String) {
         self.init(string)
     }
@@ -42,7 +30,7 @@ extension CaseInsensitiveString: ExpressibleByStringLiteral {
     }
 }
 
-extension CaseInsensitiveString: CustomStringConvertible {
+extension CaseInsensitiveString : CustomStringConvertible {
     public var description: String {
         return string
     }
@@ -58,7 +46,7 @@ public protocol CaseInsensitiveStringRepresentable {
     var caseInsensitiveString: CaseInsensitiveString { get }
 }
 
-extension String: CaseInsensitiveStringRepresentable {
+extension String : CaseInsensitiveStringRepresentable {
     public var caseInsensitiveString: CaseInsensitiveString {
         return CaseInsensitiveString(self)
     }

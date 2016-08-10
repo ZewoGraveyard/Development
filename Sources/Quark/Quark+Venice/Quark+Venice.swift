@@ -25,7 +25,7 @@ extension Server {
 }
 
 extension Server : ConfigurableServer {
-    public init(middleware: [Middleware], responder: Responder, configuration: StructuredData) throws {
+    public init(middleware: [Middleware], responder: Responder, configuration: Map) throws {
         let host = configuration["server", "host"]?.asString ?? "127.0.0.1"
         let port = configuration["server", "port"]?.asInt ?? 8080
         let reusePort = configuration["server", "reusePort"]?.asBool ?? false

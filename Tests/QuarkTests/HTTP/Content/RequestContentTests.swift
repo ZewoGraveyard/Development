@@ -1,9 +1,9 @@
 import XCTest
 @testable import Quark
 
-struct Foo : StructuredDataFallibleRepresentable {
-    let content: StructuredData
-    func asStructuredData() throws -> StructuredData {
+struct Foo : MapFallibleRepresentable {
+    let content: Map
+    func asMap() throws -> Map {
         return content
     }
 }
@@ -16,7 +16,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testOptionalContent() throws {
@@ -26,7 +26,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testArrayContent() throws {
@@ -36,7 +36,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testDictionaryContent() throws {
@@ -46,7 +46,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testFallibleContent() throws {
@@ -57,7 +57,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testContentStringURI() throws {
@@ -67,7 +67,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testOptionalContentStringURI() throws {
@@ -77,7 +77,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testArrayContentStringURI() throws {
@@ -87,7 +87,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testDictionaryContentStringURI() throws {
@@ -97,7 +97,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 
     func testFallibleContentStringURI() throws {
@@ -108,7 +108,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
         XCTAssertEqual(request.body, .buffer([]))
-        XCTAssertEqual(request.content, StructuredData(content))
+        XCTAssertEqual(request.content, Map(content))
     }
 }
 

@@ -4,7 +4,7 @@ public enum MustacheSerializerError : Error {
     case unsupportedTemplateEncoding
 }
 
-extension StructuredData : MustacheBoxable {
+extension Map : MustacheBoxable {
     public var mustacheBox: MustacheBox {
         switch self {
         case .null:
@@ -39,7 +39,7 @@ extension StructuredData : MustacheBoxable {
     }
 }
 
-public struct MustacheSerializer : StructuredDataSerializer {
+public struct MustacheSerializer : MapSerializer {
     public let templatePath: String
     let fileType: C7.File.Type
 
@@ -48,7 +48,7 @@ public struct MustacheSerializer : StructuredDataSerializer {
         self.fileType = fileType
     }
 
-    public func serialize(_ structuredData: StructuredData) throws -> Data {
+    public func serialize(_ map: Map) throws -> Data {
         let templateFile = try fileType.init(path: templatePath)
 
         guard let templateString = try? String(data: templateFile.readAll()) else {
@@ -56,7 +56,7 @@ public struct MustacheSerializer : StructuredDataSerializer {
         }
 
         let template = try Template(string: templateString)
-        let rendering = try template.render(box: Box(boxable: structuredData))
+        let rendering = try template.render(box: Box(boxable: map))
         return rendering.data
     }
 }

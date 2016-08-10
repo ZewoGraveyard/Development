@@ -1,4 +1,4 @@
-public protocol AsyncURIConnection: AsyncConnection {
-    init(to uri: URI) throws
+public protocol AsyncURIConnection : AsyncConnection {
+    init(uri: URI) throws
     var uri: URI { get }
 }

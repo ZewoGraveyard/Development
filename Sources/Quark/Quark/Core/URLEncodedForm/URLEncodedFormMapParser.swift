@@ -1,17 +1,17 @@
-enum URLEncodedFormStructuredDataParserError : Error {
+enum URLEncodedFormMapParserError : Error {
     case unsupportedEncoding
     case malformedURLEncodedForm
 }
 
-public struct URLEncodedFormStructuredDataParser : StructuredDataParser {
+public struct URLEncodedFormMapParser : MapParser {
     public init() {}
 
-    public func parse(_ data: Data) throws -> StructuredData {
+    public func parse(_ data: Data) throws -> Map {
         guard let string = try? String(data: data) else {
-            throw URLEncodedFormStructuredDataParserError.unsupportedEncoding
+            throw URLEncodedFormMapParserError.unsupportedEncoding
         }
 
-        var structuredData: StructuredData = [:]
+        var map: Map = [:]
 
         for parameter in string.split(separator: "&") {
             let tokens = parameter.split(separator: "=")
@@ -20,12 +20,12 @@ public struct URLEncodedFormStructuredDataParser : StructuredDataParser {
                 let key = try String(percentEncoded: tokens[0])
                 let value = try String(percentEncoded: tokens[1])
 
-                structuredData[key] = .string(value)
+                map[key] = .string(value)
             } else {
-                throw URLEncodedFormStructuredDataParserError.malformedURLEncodedForm
+                throw URLEncodedFormMapParserError.malformedURLEncodedForm
             }
         }
 
-        return structuredData
+        return map
     }
 }

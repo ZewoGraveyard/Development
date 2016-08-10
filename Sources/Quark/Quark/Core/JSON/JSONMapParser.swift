@@ -6,7 +6,7 @@
     import Darwin.C
 #endif
 
-public enum JSONStructuredDataParseError : Error, CustomStringConvertible {
+public enum JSONMapParseError : Error, CustomStringConvertible {
     case unexpectedTokenError(reason: String, lineNumber: Int, columnNumber: Int)
     case insufficientTokenError(reason: String, lineNumber: Int, columnNumber: Int)
     case extraTokenError(reason: String, lineNumber: Int, columnNumber: Int)
@@ -36,15 +36,15 @@ public enum JSONStructuredDataParseError : Error, CustomStringConvertible {
     }
 }
 
-public struct JSONStructuredDataParser : StructuredDataParser {
+public struct JSONMapParser : MapParser {
     public init() {}
 
-    public func parse(_ data: Data) throws -> StructuredData {
-        return try GenericJSONStructuredDataParser(data).parse()
+    public func parse(_ data: Data) throws -> Map {
+        return try GenericJSONMapParser(data).parse()
     }
 }
 
-class GenericJSONStructuredDataParser<ByteSequence: Collection> where ByteSequence.Iterator.Element == UInt8 {
+class GenericJSONMapParser<ByteSequence: Collection> where ByteSequence.Iterator.Element == UInt8 {
     typealias Source = ByteSequence
     typealias Char = Source.Iterator.Element
 
@@ -61,7 +61,7 @@ class GenericJSONStructuredDataParser<ByteSequence: Collection> where ByteSequen
         self.end = source.endIndex
     }
 
-    func parse() throws -> StructuredData {
+    func parse() throws -> Map {
         let data = try parseValue()
         skipWhitespaces()
         if cur == end {
@@ -71,34 +71,34 @@ class GenericJSONStructuredDataParser<ByteSequence: Collection> where ByteSequen
     }
 
     func unexpectedTokenError(reason: String) -> Error {
-        return JSONStructuredDataParseError.unexpectedTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+        return JSONMapParseError.unexpectedTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
     func insufficientTokenError(reason: String) -> Error {
-        return JSONStructuredDataParseError.insufficientTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+        return JSONMapParseError.insufficientTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
     func extraTokenError(reason: String) -> Error {
-        return JSONStructuredDataParseError.extraTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+        return JSONMapParseError.extraTokenError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
     func nonStringKeyError(reason: String) -> Error {
-        return JSONStructuredDataParseError.nonStringKeyError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+        return JSONMapParseError.nonStringKeyError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
     func invalidStringError(reason: String) -> Error {
-        return JSONStructuredDataParseError.invalidStringError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+        return JSONMapParseError.invalidStringError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 
     func invalidNumberError(reason: String) -> Error {
-        return JSONStructuredDataParseError.invalidNumberError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
+        return JSONMapParseError.invalidNumberError(reason: reason, lineNumber: lineNumber, columnNumber: columnNumber)
     }
 }
 
 // MARK: - Private
 
-extension GenericJSONStructuredDataParser {
-    fileprivate func parseValue() throws -> StructuredData {
+extension GenericJSONMapParser {
+    fileprivate func parseValue() throws -> Map {
         skipWhitespaces()
         if cur == end {
             throw insufficientTokenError(reason: "unexpected end of tokens")
@@ -132,14 +132,14 @@ extension GenericJSONStructuredDataParser {
         return Character(UnicodeScalar(currentChar))
     }
 
-    private func parseSymbol(_ target: StaticString, _ iftrue: @autoclosure (Void) -> StructuredData) throws -> StructuredData {
+    private func parseSymbol(_ target: StaticString, _ iftrue: @autoclosure (Void) -> Map) throws -> Map {
         if expect(target) {
             return iftrue()
         }
         throw unexpectedTokenError(reason: "expected \"\(target)\" but \(currentSymbol)")
     }
 
-    private func parseString() throws -> StructuredData {
+    private func parseString() throws -> Map {
         advance()
 
         var buffer = [CChar]()
@@ -254,7 +254,7 @@ extension GenericJSONStructuredDataParser {
         return value
     }
 
-    private func parseNumber() throws -> StructuredData {
+    private func parseNumber() throws -> Map {
         let sign = expect("-") ? -1.0 : 1.0
         var integer: Int64 = 0
         var actualNumberStarted = false
@@ -342,10 +342,10 @@ extension GenericJSONStructuredDataParser {
         return .int(Int(sign * Double(integer) * pow(10, Double(exponent))))
     }
 
-    private func parseObject() throws -> StructuredData {
+    private func parseObject() throws -> Map {
         advance()
         skipWhitespaces()
-        var object: [String: StructuredData] = [:]
+        var object: [String: Map] = [:]
 
         LOOP: while cur != end && !expect("}") {
             let keyValue = try parseValue()
@@ -378,11 +378,11 @@ extension GenericJSONStructuredDataParser {
         return .dictionary(object)
     }
 
-    private func parseArray() throws -> StructuredData {
+    private func parseArray() throws -> Map {
         advance()
         skipWhitespaces()
 
-        var array: [StructuredData] = []
+        var array: [Map] = []
 
         LOOP: while cur != end && !expect("]") {
             let data = try parseValue()

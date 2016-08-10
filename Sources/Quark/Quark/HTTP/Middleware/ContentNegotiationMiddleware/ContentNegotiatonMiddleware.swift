@@ -21,8 +21,8 @@ public struct ContentNegotiationMiddleware : Middleware {
         self.mode = mode
     }
 
-    public func parsersFor(_ mediaType: MediaType) -> [(MediaType, StructuredDataParser)] {
-        var parsers: [(MediaType, StructuredDataParser)] = []
+    public func parsersFor(_ mediaType: MediaType) -> [(MediaType, MapParser)] {
+        var parsers: [(MediaType, MapParser)] = []
 
         for type in types {
             if type.mediaType.matches(other: mediaType) {
@@ -33,7 +33,7 @@ public struct ContentNegotiationMiddleware : Middleware {
         return parsers
     }
 
-    public func parse(_ data: Data, mediaType: MediaType) throws -> (MediaType, StructuredData) {
+    public func parse(_ data: Data, mediaType: MediaType) throws -> (MediaType, Map) {
         var lastError: Error?
 
         for (mediaType, parser) in parsersFor(mediaType) {
@@ -52,8 +52,8 @@ public struct ContentNegotiationMiddleware : Middleware {
         }
     }
 
-    func serializersFor(_ mediaType: MediaType) -> [(MediaType, StructuredDataSerializer)] {
-        var serializers: [(MediaType, StructuredDataSerializer)] = []
+    func serializersFor(_ mediaType: MediaType) -> [(MediaType, MapSerializer)] {
+        var serializers: [(MediaType, MapSerializer)] = []
 
         for type in types {
             if type.mediaType.matches(other: mediaType) {
@@ -64,11 +64,11 @@ public struct ContentNegotiationMiddleware : Middleware {
         return serializers
     }
 
-    public func serialize(_ content: StructuredData) throws -> (MediaType, Data) {
+    public func serialize(_ content: Map) throws -> (MediaType, Data) {
         return try serialize(content, mediaTypes: mediaTypes)
     }
 
-    func serialize(_ content: StructuredData, mediaTypes: [MediaType]) throws -> (MediaType, Data) {
+    func serialize(_ content: Map, mediaTypes: [MediaType]) throws -> (MediaType, Data) {
         var lastError: Error?
 
         for acceptedType in mediaTypes {

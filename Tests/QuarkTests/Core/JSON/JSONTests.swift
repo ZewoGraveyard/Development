@@ -3,12 +3,12 @@ import XCTest
 
 class JSONTests : XCTestCase {
     func testJSON() throws {
-        let parser = JSONStructuredDataParser()
-        let serializer = JSONStructuredDataSerializer(ordering: true)
+        let parser = JSONMapParser()
+        let serializer = JSONMapSerializer(ordering: true)
 
         let data: C7.Data = "{\"array\":[true,-4.2,-1969,null,\"hey! 😊\"],\"boolean\":false,\"dictionaryOfEmptyStuff\":{\"emptyArray\":[],\"emptyDictionary\":{},\"emptyString\":\"\"},\"double\":4.2,\"integer\":1969,\"null\":null,\"string\":\"yoo! 😎\"}"
 
-        let structuredData: StructuredData = [
+        let map: Map = [
             "array": [
                 true,
                 -4.2,
@@ -29,90 +29,90 @@ class JSONTests : XCTestCase {
         ]
 
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
 
-        let serialized = try serializer.serialize(structuredData)
+        let serialized = try serializer.serialize(map)
         XCTAssertEqual(serialized, data)
     }
 
     func testNumberWithExponent() throws {
-        let parser = JSONStructuredDataParser()
+        let parser = JSONMapParser()
         let data: C7.Data = "[1E3]"
-        let structuredData: StructuredData = [1_000]
+        let map: Map = [1_000]
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
     }
 
     func testNumberWithNegativeExponent() throws {
-        let parser = JSONStructuredDataParser()
+        let parser = JSONMapParser()
         let data: C7.Data = "[1E-3]"
-        let structuredData: StructuredData = [1E-3]
+        let map: Map = [1E-3]
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
     }
 
     func testWhitespaces() throws {
-        let parser = JSONStructuredDataParser()
+        let parser = JSONMapParser()
         let data: C7.Data = "[ \n\t\r1 \n\t\r]"
-        let structuredData: StructuredData = [1]
+        let map: Map = [1]
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
     }
 
     func testNumberStartingWithZero() throws {
-        let parser = JSONStructuredDataParser()
+        let parser = JSONMapParser()
         let data: C7.Data = "[0001000]"
-        let structuredData: StructuredData = [1000]
+        let map: Map = [1000]
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
     }
 
     func testEscapedSlash() throws {
-        let parser = JSONStructuredDataParser()
-        let serializer = JSONStructuredDataSerializer()
+        let parser = JSONMapParser()
+        let serializer = JSONMapSerializer()
 
         let data: C7.Data = "{\"foo\":\"\\\"\"}"
 
-        let structuredData: StructuredData = [
+        let map: Map = [
             "foo": "\""
         ]
 
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
 
-        let serialized = try serializer.serialize(structuredData)
+        let serialized = try serializer.serialize(map)
         XCTAssertEqual(serialized, data)
     }
 
     func testSmallDictionary() throws {
-        let parser = JSONStructuredDataParser()
-        let serializer = JSONStructuredDataSerializer()
+        let parser = JSONMapParser()
+        let serializer = JSONMapSerializer()
 
         let data: C7.Data = "{\"foo\":\"bar\",\"fuu\":\"baz\"}"
 
-        let structuredData: StructuredData = [
+        let map: Map = [
             "foo": "bar",
             "fuu": "baz",
         ]
 
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
 
-        let serialized = try serializer.serialize(structuredData)
+        let serialized = try serializer.serialize(map)
         XCTAssert(serialized == data || serialized == "{\"fuu\":\"baz\",\"foo\":\"bar\"}")
     }
 
-    func testInvalidStructuredData() throws {
-        let serializer = JSONStructuredDataSerializer()
+    func testInvalidMap() throws {
+        let serializer = JSONMapSerializer()
 
-        let structuredData: StructuredData = [
+        let map: Map = [
             "foo": .data("yo!")
         ]
 
         var called = false
 
         do {
-            _ = try serializer.serialize(structuredData)
+            _ = try serializer.serialize(map)
             XCTFail("Should've throwed error")
         } catch {
             called = true
@@ -122,35 +122,35 @@ class JSONTests : XCTestCase {
     }
 
     func testEscapedEmoji() throws {
-        let parser = JSONStructuredDataParser()
-        let serializer = JSONStructuredDataSerializer()
+        let parser = JSONMapParser()
+        let serializer = JSONMapSerializer()
 
         let data: C7.Data = "[\"\\ud83d\\ude0e\"]"
-        let structuredData: StructuredData = ["😎"]
+        let map: Map = ["😎"]
 
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
 
-        let serialized = try serializer.serialize(structuredData)
+        let serialized = try serializer.serialize(map)
         XCTAssertEqual(serialized, "[\"😎\"]")
     }
 
     func testEscapedSymbol() throws {
-        let parser = JSONStructuredDataParser()
-        let serializer = JSONStructuredDataSerializer()
+        let parser = JSONMapParser()
+        let serializer = JSONMapSerializer()
 
         let data: C7.Data = "[\"\\u221e\"]"
-        let structuredData: StructuredData = ["∞"]
+        let map: Map = ["∞"]
 
         let parsed = try parser.parse(data)
-        XCTAssertEqual(parsed, structuredData)
+        XCTAssertEqual(parsed, map)
 
-        let serialized = try serializer.serialize(structuredData)
+        let serialized = try serializer.serialize(map)
         XCTAssertEqual(serialized, "[\"∞\"]")
     }
 
     func testFailures() throws {
-        let parser = JSONStructuredDataParser()
+        let parser = JSONMapParser()
         var data: C7.Data
 
         data = ""
@@ -225,12 +225,12 @@ class JSONTests : XCTestCase {
     }
 
     func testDescription() throws {
-        XCTAssertEqual(String(describing: JSONStructuredDataParseError.unexpectedTokenError(reason: "foo", lineNumber: 0, columnNumber: 0)), "UnexpectedTokenError[Line: 0, Column: 0]: foo")
-        XCTAssertEqual(String(describing: JSONStructuredDataParseError.insufficientTokenError(reason: "foo", lineNumber: 0, columnNumber: 0)), "InsufficientTokenError[Line: 0, Column: 0]: foo")
-        XCTAssertEqual(String(describing: JSONStructuredDataParseError.extraTokenError(reason: "foo", lineNumber: 0, columnNumber: 0)), "ExtraTokenError[Line: 0, Column: 0]: foo")
-        XCTAssertEqual(String(describing: JSONStructuredDataParseError.nonStringKeyError(reason: "foo", lineNumber: 0, columnNumber: 0)), "NonStringKeyError[Line: 0, Column: 0]: foo")
-        XCTAssertEqual(String(describing: JSONStructuredDataParseError.invalidStringError(reason: "foo", lineNumber: 0, columnNumber: 0)), "InvalidStringError[Line: 0, Column: 0]: foo")
-        XCTAssertEqual(String(describing: JSONStructuredDataParseError.invalidNumberError(reason: "foo", lineNumber: 0, columnNumber: 0)), "InvalidNumberError[Line: 0, Column: 0]: foo")
+        XCTAssertEqual(String(describing: JSONMapParseError.unexpectedTokenError(reason: "foo", lineNumber: 0, columnNumber: 0)), "UnexpectedTokenError[Line: 0, Column: 0]: foo")
+        XCTAssertEqual(String(describing: JSONMapParseError.insufficientTokenError(reason: "foo", lineNumber: 0, columnNumber: 0)), "InsufficientTokenError[Line: 0, Column: 0]: foo")
+        XCTAssertEqual(String(describing: JSONMapParseError.extraTokenError(reason: "foo", lineNumber: 0, columnNumber: 0)), "ExtraTokenError[Line: 0, Column: 0]: foo")
+        XCTAssertEqual(String(describing: JSONMapParseError.nonStringKeyError(reason: "foo", lineNumber: 0, columnNumber: 0)), "NonStringKeyError[Line: 0, Column: 0]: foo")
+        XCTAssertEqual(String(describing: JSONMapParseError.invalidStringError(reason: "foo", lineNumber: 0, columnNumber: 0)), "InvalidStringError[Line: 0, Column: 0]: foo")
+        XCTAssertEqual(String(describing: JSONMapParseError.invalidNumberError(reason: "foo", lineNumber: 0, columnNumber: 0)), "InvalidNumberError[Line: 0, Column: 0]: foo")
     }
 }
 
@@ -244,7 +244,7 @@ extension JSONTests {
             ("testJSON", testNumberStartingWithZero),
             ("testJSON", testEscapedSlash),
             ("testJSON", testSmallDictionary),
-            ("testJSON", testInvalidStructuredData),
+            ("testJSON", testInvalidMap),
             ("testJSON", testEscapedEmoji),
             ("testEscapedSymbol", testEscapedSymbol),
             ("testJSON", testFailures),

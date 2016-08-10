@@ -1,4 +1,4 @@
-struct Credentials : ResourceConvertible {
+struct Credentials : Mappable {
     let email: String
     let password: String
 }

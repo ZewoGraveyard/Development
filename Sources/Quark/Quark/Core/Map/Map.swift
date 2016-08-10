@@ -1,58 +1,64 @@
-public enum StructuredDataError : Error {
+// MARK: MapError
+
+public enum MapError : Error {
     case incompatibleType
     case outOfBounds
     case valueNotFound
-    case notStructuredDataInitializable(Any.Type)
-    case notStructuredDataRepresentable(Any.Type)
-    case notStructuredDataDictionaryKeyInitializable(Any.Type)
-    case notStructuredDataDictionaryKeyRepresentable(Any.Type)
+    case notMapInitializable(Any.Type)
+    case notMapRepresentable(Any.Type)
+    case notMapDictionaryKeyInitializable(Any.Type)
+    case notMapDictionaryKeyRepresentable(Any.Type)
     case cannotInitialize(type: Any.Type, from: Any.Type)
 }
 
+// MARK: Mappable
+
+public protocol Mappable : MapInitializable, MapFallibleRepresentable {}
+
 // MARK: Parser/Serializer Protocols
 
-public protocol StructuredDataParser {
-    func parse(_ data: Data) throws -> StructuredData
+public protocol MapParser {
+    func parse(_ data: Data) throws -> Map
 }
 
-extension StructuredDataParser {
-    public func parse(_ convertible: DataConvertible) throws -> StructuredData {
+extension MapParser {
+    public func parse(_ convertible: DataConvertible) throws -> Map {
         return try parse(convertible.data)
     }
 }
 
-public protocol StructuredDataSerializer {
-    func serialize(_ structuredData: StructuredData) throws -> Data
+public protocol MapSerializer {
+    func serialize(_ map: Map) throws -> Data
 }
 
 // MARK: Initializers
 
-extension StructuredData {
-    public init<T: StructuredDataRepresentable>(_ value: T?) {
-        self = value?.structuredData ?? .null
+extension Map {
+    public init<T: MapRepresentable>(_ value: T?) {
+        self = value?.map ?? .null
     }
 
-    public init<T: StructuredDataRepresentable>(_ values: [T]?) {
+    public init<T: MapRepresentable>(_ values: [T]?) {
         if let values = values {
-            self = .array(values.map({$0.structuredData}))
+            self = .array(values.map({$0.map}))
         } else {
             self = .null
         }
     }
 
-    public init<T: StructuredDataRepresentable>(_ values: [T?]?) {
+    public init<T: MapRepresentable>(_ values: [T?]?) {
         if let values = values {
-            self = .array(values.map({$0?.structuredData ?? .null}))
+            self = .array(values.map({$0?.map ?? .null}))
         } else {
             self = .null
         }
     }
 
-    public init<T: StructuredDataRepresentable>(_ values: [String: T]?) {
+    public init<T: MapRepresentable>(_ values: [String: T]?) {
         if let values = values {
-            var dictionary: [String: StructuredData] = [:]
+            var dictionary: [String: Map] = [:]
 
-            for (key, value) in values.map({($0.key, $0.value.structuredData)}) {
+            for (key, value) in values.map({($0.key, $0.value.map)}) {
                 dictionary[key] = value
             }
 
@@ -62,11 +68,11 @@ extension StructuredData {
         }
     }
 
-    public init<T: StructuredDataRepresentable>(_ values: [String: T?]?) {
+    public init<T: MapRepresentable>(_ values: [String: T?]?) {
         if let values = values {
-            var dictionary: [String: StructuredData] = [:]
+            var dictionary: [String: Map] = [:]
 
-            for (key, value) in values.map({($0.key, $0.value?.structuredData ?? .null)}) {
+            for (key, value) in values.map({($0.key, $0.value?.map ?? .null)}) {
                 dictionary[key] = value
             }
 
@@ -79,31 +85,31 @@ extension StructuredData {
 
 // MARK: Type Inference
 
-extension StructuredData {
-    public static func infer<T: StructuredDataRepresentable>(_ value: T?) -> StructuredData {
-        return StructuredData(value)
+extension Map {
+    public static func infer<T: MapRepresentable>(_ value: T?) -> Map {
+        return Map(value)
     }
 
-    public static func infer<T: StructuredDataRepresentable>(_ values: [T]?) -> StructuredData {
-        return StructuredData(values)
+    public static func infer<T: MapRepresentable>(_ values: [T]?) -> Map {
+        return Map(values)
     }
 
-    public static func infer<T: StructuredDataRepresentable>(_ values: [T?]?) -> StructuredData {
-        return StructuredData(values)
+    public static func infer<T: MapRepresentable>(_ values: [T?]?) -> Map {
+        return Map(values)
     }
 
-    public static func infer<T: StructuredDataRepresentable>(_ values: [String: T]?) -> StructuredData {
-        return StructuredData(values)
+    public static func infer<T: MapRepresentable>(_ values: [String: T]?) -> Map {
+        return Map(values)
     }
 
-    public static func infer<T: StructuredDataRepresentable>(_ values: [String: T?]?) -> StructuredData {
-        return StructuredData(values)
+    public static func infer<T: MapRepresentable>(_ values: [String: T?]?) -> Map {
+        return Map(values)
     }
 }
 
 // MARK: is<Type>
 
-extension StructuredData {
+extension Map {
     public var isNull: Bool {
         if case .null = self {
             return true
@@ -163,7 +169,7 @@ extension StructuredData {
 
 // MARK: as<type>?
 
-extension StructuredData {
+extension Map {
     public var asBool: Bool? {
         return try? get()
     }
@@ -184,18 +190,18 @@ extension StructuredData {
         return try? get()
     }
 
-    public var asArray: [StructuredData]? {
+    public var asArray: [Map]? {
         return try? get()
     }
 
-    public var asDictionary: [String: StructuredData]? {
+    public var asDictionary: [String: Map]? {
         return try? get()
     }
 }
 
 // MARK: try as<type>()
 
-extension StructuredData {
+extension Map {
     public func asBool(converting: Bool = false) throws -> Bool {
         guard converting else {
             return try get()
@@ -215,7 +221,7 @@ extension StructuredData {
             switch value.lowercased() {
             case "true": return true
             case "false": return false
-            default: throw StructuredDataError.incompatibleType
+            default: throw MapError.incompatibleType
             }
 
         case .data(let value):
@@ -251,13 +257,13 @@ extension StructuredData {
             if let int = Int(value) {
                 return int
             }
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
 
         case .null:
             return 0
 
         default:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
         }
     }
 
@@ -280,13 +286,13 @@ extension StructuredData {
             if let double = Double(value) {
                 return double
             }
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
 
         case .null:
             return 0
 
         default:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
         }
     }
 
@@ -312,10 +318,10 @@ extension StructuredData {
             return String(describing: value)
 
         case .array:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
 
         case .dictionary:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
 
         case .null:
             return "null"
@@ -341,11 +347,11 @@ extension StructuredData {
             return []
 
         default:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
         }
     }
 
-    public func asArray(converting: Bool = false) throws -> [StructuredData] {
+    public func asArray(converting: Bool = false) throws -> [Map] {
         guard converting else {
             return try get()
         }
@@ -358,11 +364,11 @@ extension StructuredData {
             return []
 
         default:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
         }
     }
     
-    public func asDictionary(converting: Bool = false) throws -> [String: StructuredData] {
+    public func asDictionary(converting: Bool = false) throws -> [String: Map] {
         guard converting else {
             return try get()
         }
@@ -375,7 +381,7 @@ extension StructuredData {
             return [:]
             
         default:
-            throw StructuredDataError.incompatibleType
+            throw MapError.incompatibleType
         }
     }
 }
@@ -405,7 +411,7 @@ public protocol IndexPathElement {
 }
 
 extension IndexPathElement {
-    var constructEmptyContainer: StructuredData {
+    var constructEmptyContainer: Map {
         switch indexPathValue {
         case .index: return []
         case .key: return [:]
@@ -427,7 +433,7 @@ extension String : IndexPathElement {
 
 // MARK: Get
 
-extension StructuredData {
+extension Map {
     public func get<T>(at indexPath: IndexPathElement...) throws -> T {
         if indexPath.isEmpty {
             switch self {
@@ -438,18 +444,18 @@ extension StructuredData {
             case .data(let value as T): return value
             case .array(let value as T): return value
             case .dictionary(let value as T): return value
-            default: throw StructuredDataError.incompatibleType
+            default: throw MapError.incompatibleType
             }
         }
         return try get(at: indexPath).get()
     }
 
-    public func get(at indexPath: IndexPathElement...) throws -> StructuredData {
+    public func get(at indexPath: IndexPathElement...) throws -> Map {
         return try get(at: indexPath)
     }
 
-    public func get(at indexPath: IndexPath) throws -> StructuredData {
-        var value: StructuredData = self
+    public func get(at indexPath: IndexPath) throws -> Map {
+        var value: Map = self
 
         for element in indexPath {
             switch element.indexPathValue {
@@ -458,7 +464,7 @@ extension StructuredData {
                 if array.indices.contains(index) {
                     value = array[index]
                 } else {
-                    throw StructuredDataError.outOfBounds
+                    throw MapError.outOfBounds
                 }
 
             case .key(let key):
@@ -466,7 +472,7 @@ extension StructuredData {
                 if let newValue = dictionary[key] {
                     value = newValue
                 } else {
-                    throw StructuredDataError.valueNotFound
+                    throw MapError.valueNotFound
                 }
             }
         }
@@ -477,20 +483,20 @@ extension StructuredData {
 
 // MARK: Set
 
-extension StructuredData {
-    public mutating func set<T : StructuredDataRepresentable>(value: T, at indexPath: IndexPathElement...) throws {
+extension Map {
+    public mutating func set<T : MapRepresentable>(value: T, at indexPath: IndexPathElement...) throws {
         try set(value: value, at: indexPath)
     }
 
-    public mutating func set<T : StructuredDataRepresentable>(value: T, at indexPath: [IndexPathElement]) throws {
+    public mutating func set<T : MapRepresentable>(value: T, at indexPath: [IndexPathElement]) throws {
         try set(value: value, merging: true, at: indexPath)
     }
 
-    fileprivate mutating func set<T : StructuredDataRepresentable>(value: T, merging: Bool, at indexPath: [IndexPathElement]) throws {
+    fileprivate mutating func set<T : MapRepresentable>(value: T, merging: Bool, at indexPath: [IndexPathElement]) throws {
         var indexPath = indexPath
 
         guard let first = indexPath.first else {
-            return self = value.structuredData
+            return self = value.map
         }
 
         indexPath.removeFirst()
@@ -500,20 +506,20 @@ extension StructuredData {
             case .index(let index):
                 if case .array(var array) = self {
                     if !array.indices.contains(index) {
-                        throw StructuredDataError.outOfBounds
+                        throw MapError.outOfBounds
                     }
-                    array[index] = value.structuredData
+                    array[index] = value.map
                     self = .array(array)
                 } else {
-                    throw StructuredDataError.incompatibleType
+                    throw MapError.incompatibleType
                 }
             case .key(let key):
                 if case .dictionary(var dictionary) = self {
-                    let newValue = value.structuredData
+                    let newValue = value.map
                     if let existingDictionary = dictionary[key]?.asDictionary,
                         let newDictionary = newValue.asDictionary,
                         merging {
-                        var combinedDictionary: [String: StructuredData] = [:]
+                        var combinedDictionary: [String: Map] = [:]
 
                         for (key, value) in existingDictionary {
                             combinedDictionary[key] = value
@@ -529,7 +535,7 @@ extension StructuredData {
                     }
                     self = .dictionary(dictionary)
                 } else {
-                    throw StructuredDataError.incompatibleType
+                    throw MapError.incompatibleType
                 }
             }
         } else {
@@ -542,7 +548,7 @@ extension StructuredData {
 
 // MARK: Remove
 
-extension StructuredData {
+extension Map {
     public mutating func remove(at indexPath: IndexPathElement...) throws {
         try self.remove(at: indexPath)
     }
@@ -558,14 +564,14 @@ extension StructuredData {
 
         if indexPath.isEmpty {
             guard case .dictionary(var dictionary) = self, case .key(let key) = first.indexPathValue else {
-                throw StructuredDataError.incompatibleType
+                throw MapError.incompatibleType
             }
 
             dictionary[key] = nil
             self = .dictionary(dictionary)
         } else {
             guard var next = try? self.get(at: first) else {
-                throw StructuredDataError.valueNotFound
+                throw MapError.valueNotFound
             }
             try next.remove(at: indexPath)
             try self.set(value: next, merging: false, at: [first])
@@ -575,8 +581,8 @@ extension StructuredData {
 
 // MARK: Subscripts
 
-extension StructuredData {
-    public subscript(indexPath: IndexPathElement...) -> StructuredData? {
+extension Map {
+    public subscript(indexPath: IndexPathElement...) -> Map? {
         get {
             return self[indexPath]
         }
@@ -586,7 +592,7 @@ extension StructuredData {
         }
     }
 
-    public subscript(indexPath: [IndexPathElement]) -> StructuredData? {
+    public subscript(indexPath: [IndexPathElement]) -> Map? {
         get {
             return try? self.get(at: indexPath)
         }
@@ -607,9 +613,9 @@ extension StructuredData {
 
 // MARK: Equatable
 
-extension StructuredData : Equatable {}
+extension Map : Equatable {}
 
-public func == (lhs: StructuredData, rhs: StructuredData) -> Bool {
+public func == (lhs: Map, rhs: Map) -> Bool {
     switch (lhs, rhs) {
     case (.null, .null): return true
     case let (.int(l), .int(r)) where l == r: return true
@@ -625,31 +631,31 @@ public func == (lhs: StructuredData, rhs: StructuredData) -> Bool {
 
 // MARK: Literal Convertibles
 
-extension StructuredData : ExpressibleByNilLiteral {
+extension Map : ExpressibleByNilLiteral {
     public init(nilLiteral value: Void) {
         self = .null
     }
 }
 
-extension StructuredData : ExpressibleByBooleanLiteral {
+extension Map : ExpressibleByBooleanLiteral {
     public init(booleanLiteral value: BooleanLiteralType) {
         self = .bool(value)
     }
 }
 
-extension StructuredData : ExpressibleByIntegerLiteral {
+extension Map : ExpressibleByIntegerLiteral {
     public init(integerLiteral value: IntegerLiteralType) {
         self = .int(value)
     }
 }
 
-extension StructuredData : ExpressibleByFloatLiteral {
+extension Map : ExpressibleByFloatLiteral {
     public init(floatLiteral value: FloatLiteralType) {
         self = .double(value)
     }
 }
 
-extension StructuredData : ExpressibleByStringLiteral {
+extension Map : ExpressibleByStringLiteral {
     public init(unicodeScalarLiteral value: String) {
         self = .string(value)
     }
@@ -663,8 +669,8 @@ extension StructuredData : ExpressibleByStringLiteral {
     }
 }
 
-extension StructuredData : ExpressibleByStringInterpolation {
-    public init(stringInterpolation strings: StructuredData...) {
+extension Map : ExpressibleByStringInterpolation {
+    public init(stringInterpolation strings: Map...) {
         self = .string(strings.reduce("") { $0 + $1.asString! })
     }
 
@@ -673,15 +679,15 @@ extension StructuredData : ExpressibleByStringInterpolation {
     }
 }
 
-extension StructuredData : ExpressibleByArrayLiteral {
-    public init(arrayLiteral elements: StructuredData...) {
+extension Map : ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: Map...) {
         self = .array(elements)
     }
 }
 
-extension StructuredData : ExpressibleByDictionaryLiteral {
-    public init(dictionaryLiteral elements: (String, StructuredData)...) {
-        var dictionary = [String: StructuredData](minimumCapacity: elements.count)
+extension Map : ExpressibleByDictionaryLiteral {
+    public init(dictionaryLiteral elements: (String, Map)...) {
+        var dictionary = [String: Map](minimumCapacity: elements.count)
 
         for (key, value) in elements {
             dictionary[key] = value
@@ -693,7 +699,7 @@ extension StructuredData : ExpressibleByDictionaryLiteral {
 
 // MARK: CustomStringConvertible
 
-extension StructuredData : CustomStringConvertible {
+extension Map : CustomStringConvertible {
     public var description: String {
         let escapeMapping: [Character: String] = [
              "\r": "\\r",
@@ -723,8 +729,8 @@ extension StructuredData : CustomStringConvertible {
             return string
         }
 
-        func serialize(data: StructuredData) -> String {
-            switch data {
+        func serialize(map: Map) -> String {
+            switch map {
             case .null: return "null"
             case .bool(let bool): return String(bool)
             case .double(let number): return String(number)
@@ -736,11 +742,11 @@ extension StructuredData : CustomStringConvertible {
             }
         }
 
-        func serialize(array: [StructuredData]) -> String {
+        func serialize(array: [Map]) -> String {
             var string = "["
 
             for index in 0 ..< array.count {
-                string += serialize(data: array[index])
+                string += serialize(map: array[index])
 
                 if index != array.count - 1 {
                     string += ","
@@ -750,12 +756,12 @@ extension StructuredData : CustomStringConvertible {
             return string + "]"
         }
 
-        func serialize(dictionary: [String: StructuredData]) -> String {
+        func serialize(dictionary: [String: Map]) -> String {
             var string = "{"
             var index = 0
 
             for (key, value) in dictionary.sorted(by: {$0.0 < $1.0}) {
-                string += escape(key) + ":" + serialize(data: value)
+                string += escape(key) + ":" + serialize(map: value)
 
                 if index != dictionary.count - 1 {
                     string += ","
@@ -767,6 +773,6 @@ extension StructuredData : CustomStringConvertible {
             return string + "}"
         }
 
-        return serialize(data: self)
+        return serialize(map: self)
     }
 }

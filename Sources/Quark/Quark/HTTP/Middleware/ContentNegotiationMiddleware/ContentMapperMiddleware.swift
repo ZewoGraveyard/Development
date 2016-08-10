@@ -1,13 +1,13 @@
-extension StructuredDataInitializable {
+extension MapInitializable {
     public static var key: String {
         return String(reflecting: self)
     }
 }
 
 public struct ContentMapperMiddleware : Middleware {
-    let type: StructuredDataInitializable.Type
+    let type: MapInitializable.Type
 
-    public init(mappingTo type: StructuredDataInitializable.Type) {
+    public init(mappingTo type: MapInitializable.Type) {
         self.type = type
     }
 
@@ -19,9 +19,9 @@ public struct ContentMapperMiddleware : Middleware {
         var request = request
 
         do {
-            let target = try type.init(structuredData: content)
+            let target = try type.init(map: content)
             request.storage[type.key] = target
-        } catch StructuredDataError.incompatibleType {
+        } catch MapError.incompatibleType {
             throw ClientError.badRequest
         }
 

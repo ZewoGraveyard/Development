@@ -1,13 +1,13 @@
 public protocol Resource : RouterRepresentable {
     associatedtype ID : PathParameterConvertible = String
-    associatedtype Model : StructuredDataInitializable = StructuredData
+    associatedtype Model : MapInitializable = Map
 
     associatedtype DetailID : PathParameterConvertible = ID
     associatedtype UpdateID : PathParameterConvertible = ID
     associatedtype DestroyID : PathParameterConvertible = ID
 
-    associatedtype CreateInput : StructuredDataInitializable = Model
-    associatedtype UpdateInput : StructuredDataInitializable = Model
+    associatedtype CreateInput : MapInitializable = Model
+    associatedtype UpdateInput : MapInitializable = Model
 
     var staticFilesPath: String { get }
     var fileType: C7.File.Type { get }

@@ -65,11 +65,6 @@ extension Number {
     }
 }
 
-//
-// Waiting for:
-// https://github.com/apple/swift-evolution/blob/master/proposals/0080-failable-numeric-initializers.md
-//
-
 extension Int {
     init?(_ number: Number) {
         switch number {

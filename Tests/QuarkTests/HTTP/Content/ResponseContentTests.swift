@@ -1,9 +1,9 @@
 import XCTest
 @testable import Quark
 
-struct Fuu : StructuredDataFallibleRepresentable {
-    let content: StructuredData
-    func asStructuredData() throws -> StructuredData {
+struct Fuu : MapFallibleRepresentable {
+    let content: Map
+    func asMap() throws -> Map {
         return content
     }
 }
@@ -15,7 +15,7 @@ class ResponseContentTests : XCTestCase {
         XCTAssertEqual(response.status, .ok)
         XCTAssertEqual(response.headers, ["Content-Length": "0"])
         XCTAssertEqual(response.body, .buffer([]))
-        XCTAssertEqual(response.content, StructuredData(content))
+        XCTAssertEqual(response.content, Map(content))
     }
 
     func testOptionalContent() throws {
@@ -24,7 +24,7 @@ class ResponseContentTests : XCTestCase {
         XCTAssertEqual(response.status, .ok)
         XCTAssertEqual(response.headers, ["Content-Length": "0"])
         XCTAssertEqual(response.body, .buffer([]))
-        XCTAssertEqual(response.content, StructuredData(content))
+        XCTAssertEqual(response.content, Map(content))
     }
 
     func testArrayContent() throws {
@@ -33,7 +33,7 @@ class ResponseContentTests : XCTestCase {
         XCTAssertEqual(response.status, .ok)
         XCTAssertEqual(response.headers, ["Content-Length": "0"])
         XCTAssertEqual(response.body, .buffer([]))
-        XCTAssertEqual(response.content, StructuredData(content))
+        XCTAssertEqual(response.content, Map(content))
     }
 
     func testDictionaryContent() throws {
@@ -42,7 +42,7 @@ class ResponseContentTests : XCTestCase {
         XCTAssertEqual(response.status, .ok)
         XCTAssertEqual(response.headers, ["Content-Length": "0"])
         XCTAssertEqual(response.body, .buffer([]))
-        XCTAssertEqual(response.content, StructuredData(content))
+        XCTAssertEqual(response.content, Map(content))
     }
 
     func testFallibleContent() throws {
@@ -52,7 +52,7 @@ class ResponseContentTests : XCTestCase {
         XCTAssertEqual(response.status, .ok)
         XCTAssertEqual(response.headers, ["Content-Length": "0"])
         XCTAssertEqual(response.body, .buffer([]))
-        XCTAssertEqual(response.content, StructuredData(content))
+        XCTAssertEqual(response.content, Map(content))
     }
 }
 

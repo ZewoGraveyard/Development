@@ -1,4 +1,4 @@
-public protocol Connection: Stream {
+public protocol Connection : Stream {
     func open(deadline: Double) throws
 }
 

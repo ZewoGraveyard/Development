@@ -5,7 +5,7 @@ struct TestServer : ConfigurableServer {
     let middleware: [Middleware]
     let responder: Responder
 
-    init(middleware: [Middleware], responder: Responder, configuration: StructuredData) throws {
+    init(middleware: [Middleware], responder: Responder, configuration: Map) throws {
         self.middleware = middleware
         self.responder = responder
         XCTAssertEqual(configuration["server", "log"], true)
@@ -33,7 +33,7 @@ class QuarkTests : XCTestCase {
     func testConfiguration() throws {
         let file = try File(path: "/tmp/TestConfiguration.swift", mode: .truncateWrite)
         try file.write("import Quark\n\nconfiguration = [\"server\": [\"log\": true]]")
-        Quark.configure(configurationFile: "/tmp/TestConfiguration.swift", arguments: [], server: TestServer.self) { (configuration: StructuredData) in
+        Quark.configure(configurationFile: "/tmp/TestConfiguration.swift", arguments: [], server: TestServer.self) { (configuration: Map) in
             XCTAssertEqual(configuration["server", "log"], true)
             return TestResponderRepresentable()
         }
@@ -43,7 +43,7 @@ class QuarkTests : XCTestCase {
     func testConfigurationFailure() throws {
         let file = try File(path: "/tmp/TestConfiguration.swift", mode: .truncateWrite)
         try file.write("import Quark\n\nconfiguration = [\"server\": [\"log\": true]]")
-        configure(configurationFile: "/tmp/TestConfiguration.swift", server: TestServer.self) { (configuration: StructuredData) in
+        configure(configurationFile: "/tmp/TestConfiguration.swift", server: TestServer.self) { (configuration: Map) in
             XCTAssertEqual(configuration["server", "log"], true)
             throw ServerError.internalServerError
         }
@@ -57,7 +57,7 @@ class QuarkTests : XCTestCase {
     func testConfigurationProperty() throws {
         Quark.configuration = ["foo": "bar"]
         let file = try File(path: "/tmp/QuarkConfiguration")
-        let parser = JSONStructuredDataParser()
+        let parser = JSONMapParser()
         let data = try file.readAll()
         let configuration = try parser.parse(data)
         XCTAssertEqual(configuration, ["foo": "bar"])

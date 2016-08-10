@@ -14,7 +14,7 @@ extension ResourceRoutes {
         add(method: .get, middleware: middleware, respond: respond)
     }
 
-    public func create<Content: StructuredDataInitializable>(
+    public func create<Content: MapInitializable>(
         middleware: [Middleware] = [],
         respond: @escaping (Request, Content) throws -> Response) {
         add(method: .post, middleware: middleware, respond: respond)
@@ -26,7 +26,7 @@ extension ResourceRoutes {
         add(method: .get, path: "/:id", middleware: middleware, respond: respond)
     }
 
-    public func update<ID: PathParameterConvertible, Content: StructuredDataInitializable>(
+    public func update<ID: PathParameterConvertible, Content: MapInitializable>(
         middleware: [Middleware] = [],
         respond: @escaping (Request, ID, Content) throws -> Response) {
         add(method: .patch, path: "/:id", middleware: middleware, respond: respond)

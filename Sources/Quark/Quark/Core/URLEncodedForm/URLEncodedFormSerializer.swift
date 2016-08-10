@@ -1,5 +1,5 @@
 enum URLEncodedFormSerializeError : Error {
-    case invalidStructuredData
+    case invalidMap
 }
 
 public struct URLEncodedFormSerializer {

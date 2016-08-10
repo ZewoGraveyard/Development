@@ -14,7 +14,7 @@ public protocol DataRepresentable {
     var data: Data { get }
 }
 
-public protocol DataConvertible: DataInitializable, DataRepresentable {}
+public protocol DataConvertible : DataInitializable, DataRepresentable {}
 
 extension Data {
     public init(_ string: String) {
@@ -28,40 +28,23 @@ extension Data {
     }
 }
 
-extension Data: RangeReplaceableCollection, MutableCollection {
+extension Data : RangeReplaceableCollection, MutableCollection {
     public init() {
         self.init([])
     }
 
-    #if swift(>=3.0)
-        public init<S : Sequence>(_ elements: S) where S.Iterator.Element == Byte {
-            self.init(Array(elements))
-        }
-    #else
-        public init<S : SequenceType where S.Generator.Element == Byte>(_ elements: S) {
-            self.init(Array(elements))
-        }
-    #endif
+    public init<S : Sequence>(_ elements: S) where S.Iterator.Element == Byte {
+        self.init(Array(elements))
+    }
 
-    #if swift(>=3.0)
-        public mutating func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Byte {
-            self.bytes.replaceSubrange(subRange, with: newElements)
-        }
-    #else
-        public mutating func replaceRange<C : CollectionType where C.Generator.Element == Byte>(subRange: Range<Int>, with newElements: C) {
-            self.bytes.replaceRange(subRange, with: newElements)
-        }
-    #endif
+    public mutating func replaceSubrange<C : Collection>(_ subRange: Range<Int>, with newElements: C) where C.Iterator.Element == Byte {
+        self.bytes.replaceSubrange(subRange, with: newElements)
+    }
 
-    #if swift(>=3.0)
-        public func makeIterator() -> IndexingIterator<[Byte]> {
-            return bytes.makeIterator()
-        }
-    #else
-        public func generate() -> IndexingGenerator<[Byte]> {
-            return bytes.generate()
-        }
-    #endif
+
+    public func makeIterator() -> IndexingIterator<[Byte]> {
+        return bytes.makeIterator()
+    }
 
     public var startIndex: Int {
         return bytes.startIndex
@@ -96,13 +79,13 @@ extension Data: RangeReplaceableCollection, MutableCollection {
     }
 }
 
-extension Data: ExpressibleByArrayLiteral {
+extension Data : ExpressibleByArrayLiteral {
     public init(arrayLiteral bytes: Byte...) {
         self.init(bytes)
     }
 }
 
-extension Data: ExpressibleByStringLiteral {
+extension Data : ExpressibleByStringLiteral {
     public init(stringLiteral string: String) {
         self.init(string)
     }
@@ -116,41 +99,23 @@ extension Data: ExpressibleByStringLiteral {
     }
 }
 
-extension Data: Equatable {}
+extension Data : Equatable {}
 
 public func == (lhs: Data, rhs: Data) -> Bool {
     return lhs.bytes == rhs.bytes
 }
 
-#if swift(>=3.0)
-    public func += <S : Sequence>(lhs: inout Data, rhs: S) where S.Iterator.Element == Byte {
-        return lhs.bytes += rhs
-    }
-#else
-    public func += <S : SequenceType where S.Generator.Element == Byte>(inout lhs: Data, rhs: S) {
-        return lhs.bytes += rhs
-    }
-#endif
+public func += <S : Sequence>(lhs: inout Data, rhs: S) where S.Iterator.Element == Byte {
+    return lhs.bytes += rhs
+}
 
-#if swift(>=3.0)
-    public func += (lhs: inout Data, rhs: Data) {
-        return lhs.bytes += rhs.bytes
-    }
-#else
-    public func += (inout lhs: Data, rhs: Data) {
-        return lhs.bytes += rhs.bytes
-    }
-#endif
+public func += (lhs: inout Data, rhs: Data) {
+    return lhs.bytes += rhs.bytes
+}
 
-#if swift(>=3.0)
-    public func += (lhs: inout Data, rhs: DataRepresentable) {
-        return lhs += rhs.data
-    }
-#else
-    public func += (inout lhs: Data, rhs: DataRepresentable) {
-        return lhs += rhs.data
-    }
-#endif
+public func += (lhs: inout Data, rhs: DataRepresentable) {
+    return lhs += rhs.data
+}
 
 public func + (lhs: Data, rhs: Data) -> Data {
     return Data(lhs.bytes + rhs.bytes)
@@ -164,42 +129,23 @@ public func + (lhs: DataRepresentable, rhs: Data) -> Data {
     return lhs.data + rhs
 }
 
-extension String: DataConvertible {
-    #if swift(>=3.0)
-        public init(data: Data) throws {
-            struct StringError: Error {}
-            var string = ""
-            var decoder = UTF8()
-            var generator = data.makeIterator()
+extension String : DataConvertible {
+    public init(data: Data) throws {
+        struct StringError: Error {}
+        var string = ""
+        var decoder = UTF8()
+        var generator = data.makeIterator()
 
-            loop: while true {
-                switch decoder.decode(&generator) {
-                case .scalarValue(let char): string.append(String(char))
-                case .emptyInput: break loop
-                case .error: throw StringError()
-                }
+        loop: while true {
+            switch decoder.decode(&generator) {
+            case .scalarValue(let char): string.append(String(char))
+            case .emptyInput: break loop
+            case .error: throw StringError()
             }
-
-            self = string
         }
-    #else
-        public init(data: Data) throws {
-            struct Error: Error {}
-            var string = ""
-            var decoder = UTF8()
-            var generator = data.generate()
 
-            loop: while true {
-                switch decoder.decode(&generator) {
-                case .Result(let char): string.append(char)
-                case .EmptyInput: break loop
-                case .Error: throw Error()
-                }
-            }
-
-            self.init(string)
-        }
-    #endif
+        self = string
+    }
 
     public var data: Data {
         return Data(self)
@@ -215,48 +161,29 @@ extension Data {
        return try bytes.withUnsafeMutableBufferPointer(body)
     }
 
-    #if swift(>=3.0)
-        public static func buffer(with size: Int) -> Data {
-            return Data([UInt8](repeating: 0, count: size))
-        }
-    #else
-        public static func buffer(with size: Int) -> Data {
-            return Data([UInt8](count: size, repeatedValue: 0))
-        }
-    #endif
+    public static func buffer(with size: Int) -> Data {
+        return Data([UInt8](repeating: 0, count: size))
+    }
 }
 
 extension Data {
-    #if swift(>=3.0)
-        public func hexadecimalString(inGroupsOf characterCount: Int = 0) -> String {
-            var string = ""
-            for (index, value) in self.enumerated() {
-                if characterCount != 0 && index > 0 && index % characterCount == 0 {
-                    string += " "
-                }
-                string += (value < 16 ? "0" : "") + String(value, radix: 16)
+    public func hexadecimalString(inGroupsOf characterCount: Int = 0) -> String {
+        var string = ""
+        for (index, value) in self.enumerated() {
+            if characterCount != 0 && index > 0 && index % characterCount == 0 {
+                string += " "
             }
-            return string
+            string += (value < 16 ? "0" : "") + String(value, radix: 16)
         }
-    #else
-        public func hexadecimalString(inGroupsOf characterCount: Int = 0) -> String {
-            var string = ""
-            for (index, value) in self.enumerate() {
-                if characterCount != 0 && index > 0 && index % characterCount == 0 {
-                    string += " "
-                }
-                string += (value < 16 ? "0" : "") + String(value, radix: 16)
-            }
-            return string
-        }
-    #endif
+        return string
+    }
 
     public var hexadecimalDescription: String {
         return hexadecimalString(inGroupsOf: 2)
     }
 }
 
-extension Data: CustomStringConvertible {
+extension Data : CustomStringConvertible {
     public var description: String {
         if let string = try? String(data: self) {
             return string
@@ -266,7 +193,7 @@ extension Data: CustomStringConvertible {
     }
 }
 
-extension Data: CustomDebugStringConvertible {
+extension Data : CustomDebugStringConvertible {
     public var debugDescription: String {
         return hexadecimalDescription
     }

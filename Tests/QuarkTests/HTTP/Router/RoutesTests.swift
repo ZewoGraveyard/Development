@@ -478,14 +478,14 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithContent<T : StructuredDataInitializable & StructuredDataRepresentable>(method: S4.Method, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, T) throws -> Response) -> Void), check: @escaping (Request, T) -> Void) throws {
+    private func checkRoutesWithContent<T : MapInitializable & MapRepresentable>(method: S4.Method, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, T) throws -> Response) -> Void), check: @escaping (Request, T) -> Void) throws {
         let routes = Routes(staticFilesPath: "", fileType: File.self)
 
         let path = "/path"
         var request = Request(method: method)
         let response = Response(status: .ok)
 
-        request.content = content.structuredData
+        request.content = content.map
 
         function(routes)(path, [], T.self) { request, t in
             check(request, t)
@@ -561,7 +561,7 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithOnePathParameterAndContent<A : PathParameterConvertible, T : StructuredDataInitializable & StructuredDataRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, T) throws -> Response) -> Void), check: @escaping (Request, A, T) -> Void) throws {
+    private func checkRoutesWithOnePathParameterAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, T) throws -> Response) -> Void), check: @escaping (Request, A, T) -> Void) throws {
         let routes = Routes(staticFilesPath: "", fileType: File.self)
 
         let path = "/:a"
@@ -579,7 +579,7 @@ class RoutesTests : XCTestCase {
         ]
 
         // We don't have content negotiation middleware we have to set content manually
-        request.content = content.structuredData
+        request.content = content.map
 
         function(routes)(path, [], T.self) { request, a, t in
             check(request, a, t)
@@ -664,7 +664,7 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithTwoPathParametersAndContent<A : PathParameterConvertible, T : StructuredDataInitializable & StructuredDataRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, T) -> Void) throws {
+    private func checkRoutesWithTwoPathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, T) -> Void) throws {
         let routes = Routes(staticFilesPath: "", fileType: File.self)
 
         let path = "/:a/:b"
@@ -684,7 +684,7 @@ class RoutesTests : XCTestCase {
         ]
 
         // We don't have content negotiation middleware we have to set content manually
-        request.content = content.structuredData
+        request.content = content.map
 
         function(routes)(path, [], T.self) { request, a, b, t in
             check(request, a, b, t)
@@ -770,7 +770,7 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithThreePathParametersAndContent<A : PathParameterConvertible, T : StructuredDataInitializable & StructuredDataRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, T) -> Void) throws {
+    private func checkRoutesWithThreePathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, T) -> Void) throws {
         let routes = Routes(staticFilesPath: "", fileType: File.self)
 
         let path = "/:a/:b/:c"
@@ -792,7 +792,7 @@ class RoutesTests : XCTestCase {
         ]
 
         // We don't have content negotiation middleware we have to set content manually
-        request.content = content.structuredData
+        request.content = content.map
 
         function(routes)(path, [], T.self) { request, a, b, c, t in
             check(request, a, b, c, t)
@@ -879,7 +879,7 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithFourPathParametersAndContent<A : PathParameterConvertible, T : StructuredDataInitializable & StructuredDataRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, A, T) -> Void) throws {
+    private func checkRoutesWithFourPathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, A, T) -> Void) throws {
         let routes = Routes(staticFilesPath: "", fileType: File.self)
 
         let path = "/:a/:b/:c/:d"
@@ -903,7 +903,7 @@ class RoutesTests : XCTestCase {
         ]
 
         // We don't have content negotiation middleware we have to set content manually
-        request.content = content.structuredData
+        request.content = content.map
 
         function(routes)(path, [], T.self) { request, a, b, c, d, t in
             check(request, a, b, c, d, t)
@@ -1098,7 +1098,7 @@ class RoutesTests : XCTestCase {
     func testRoutesWithouthContent() throws {
         let routes = Routes(staticFilesPath: "", fileType: File.self)
 
-        routes.get("/") { (_, t: StructuredData) in
+        routes.get("/") { (_, t: Map) in
             return Response()
         }
 
@@ -1121,7 +1121,7 @@ class RoutesTests : XCTestCase {
             "a": "a",
         ]
 
-        routes.get("/:a") { (_, a: String, t: StructuredData) in
+        routes.get("/:a") { (_, a: String, t: Map) in
             return Response()
         }
 
@@ -1145,7 +1145,7 @@ class RoutesTests : XCTestCase {
             "b": "b",
         ]
 
-        routes.get("/:a/:b") { (_, a: String, b: String, t: StructuredData) in
+        routes.get("/:a/:b") { (_, a: String, b: String, t: Map) in
             return Response()
         }
 
@@ -1170,7 +1170,7 @@ class RoutesTests : XCTestCase {
             "c": "c",
         ]
 
-        routes.get("/:a/:b/:c") { (_, a: String, b: String, c: String, t: StructuredData) in
+        routes.get("/:a/:b/:c") { (_, a: String, b: String, c: String, t: Map) in
             return Response()
         }
 
@@ -1196,7 +1196,7 @@ class RoutesTests : XCTestCase {
             "d": "d",
         ]
 
-        routes.get("/:a/:b/:c/:d") { (_, a: String, b: String, c: String, d: String, t: StructuredData) in
+        routes.get("/:a/:b/:c/:d") { (_, a: String, b: String, c: String, d: String, t: Map) in
             return Response()
         }
 
@@ -1222,7 +1222,7 @@ class RoutesTests : XCTestCase {
 //            signal(SIGABRT) { _ in
 //                _exit(0)
 //            }
-//            routes.get("/") { (_, a: String, t: StructuredData) in
+//            routes.get("/") { (_, a: String, t: Map) in
 //                return Response()
 //            }
 //            XCTFail()
@@ -1244,7 +1244,7 @@ class RoutesTests : XCTestCase {
 //                signal(SIGILL) { _ in
 //                    _exit(0)
 //                }
-//                routes.get("/:a/:a") { (_, a: String, b: String, t: StructuredData) in
+//                routes.get("/:a/:a") { (_, a: String, b: String, t: Map) in
 //                    return Response()
 //                }
 //                XCTFail()

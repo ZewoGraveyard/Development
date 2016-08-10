@@ -27,6 +27,6 @@ extension AsyncReadable {
     }
 }
 
-public protocol AsyncOutputStream: Closable, AsyncWritable {}
-public protocol AsyncInputStream: Closable, AsyncReadable {}
-public protocol AsyncStream: AsyncOutputStream, AsyncInputStream {}
+public protocol AsyncOutputStream : Closable, AsyncWritable {}
+public protocol AsyncInputStream : Closable, AsyncReadable {}
+public protocol AsyncStream : AsyncOutputStream, AsyncInputStream {}

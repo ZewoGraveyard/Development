@@ -7,11 +7,11 @@ extension JSON : MediaTypeRepresentor {
         )
     }
 
-    public static var parser: StructuredDataParser {
-        return JSONStructuredDataParser()
+    public static var parser: MapParser {
+        return JSONMapParser()
     }
 
-    public static var serializer: StructuredDataSerializer {
-        return JSONStructuredDataSerializer()
+    public static var serializer: MapSerializer {
+        return JSONMapSerializer()
     }
 }

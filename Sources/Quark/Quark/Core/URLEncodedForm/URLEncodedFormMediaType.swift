@@ -7,11 +7,11 @@ extension URLEncodedForm : MediaTypeRepresentor {
         )
     }
 
-    public static var parser: StructuredDataParser {
-        return URLEncodedFormStructuredDataParser()
+    public static var parser: MapParser {
+        return URLEncodedFormMapParser()
     }
 
-    public static var serializer: StructuredDataSerializer {
-        return URLEncodedFormStructuredDataSerializer()
+    public static var serializer: MapSerializer {
+        return URLEncodedFormMapSerializer()
     }
 }

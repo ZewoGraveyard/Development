@@ -1,18 +1,18 @@
 // This file has been modified from its original project Swift-JsonSerializer
 
-public struct JSONStructuredDataSerializer : StructuredDataSerializer {
+public struct JSONMapSerializer : MapSerializer {
     let ordering: Bool
 
     public init(ordering: Bool = false) {
         self.ordering = ordering
     }
 
-    public func serialize(_ data: StructuredData) throws -> Data {
-        return try Data(serializeToString(data))
+    public func serialize(_ map: Map) throws -> Data {
+        return try Data(serializeToString(map))
     }
 
-    public func serializeToString(_ data: StructuredData) throws -> String {
-        switch data {
+    public func serializeToString(_ map: Map) throws -> String {
+        switch map {
         case .null: return "null"
         case .bool(let bool): return String(bool)
         case .double(let number): return String(number)
@@ -20,11 +20,11 @@ public struct JSONStructuredDataSerializer : StructuredDataSerializer {
         case .string(let string): return escape(string)
         case .array(let array): return try serialize(array)
         case .dictionary(let dictionary): return try serialize(dictionary)
-        default: throw StructuredDataError.incompatibleType
+        default: throw MapError.incompatibleType
         }
     }
 
-    func serialize(_ array: [StructuredData]) throws -> String {
+    func serialize(_ array: [Map]) throws -> String {
         var string = "["
 
         for index in 0 ..< array.count {
@@ -38,7 +38,7 @@ public struct JSONStructuredDataSerializer : StructuredDataSerializer {
         return string + "]"
     }
 
-    func serialize(_ dictionary: [String: StructuredData]) throws -> String {
+    func serialize(_ dictionary: [String: Map]) throws -> String {
         var string = "{"
         var index = 0
 
