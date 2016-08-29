@@ -3,29 +3,33 @@ import XCTest
 
 class FileTests : XCTestCase {
     func testReadWrite() throws {
+        var buffer = Data(count: 6)
         let file = try File(path: "/tmp/zewo-test-file", mode: .truncateReadWrite)
         try file.write("abc")
-        XCTAssert(try file.cursorPosition() == 3)
+        try file.flush()
+        XCTAssertEqual(try file.cursorPosition(), 3)
         _ = try file.seek(cursorPosition: 0)
-        var data = try file.read(3)
-        XCTAssert(data == "abc".data)
-        XCTAssert(!file.cursorIsAtEndOfFile)
-        data = try file.read(3)
-        XCTAssert(data.count == 0)
-        XCTAssert(file.cursorIsAtEndOfFile)
+        var bytesRead = try file.read(into: &buffer, length: 3)
+        XCTAssertEqual(bytesRead, 3)
+        XCTAssertEqual(Data(buffer[0 ..< 3]), Data("abc"))
+        XCTAssertFalse(file.cursorIsAtEndOfFile)
+        bytesRead = try file.read(into: &buffer, length: 3)
+        XCTAssertEqual(bytesRead, 0)
+        XCTAssertTrue(file.cursorIsAtEndOfFile)
         _ = try file.seek(cursorPosition: 0)
-        XCTAssert(!file.cursorIsAtEndOfFile)
+        XCTAssertFalse(file.cursorIsAtEndOfFile)
         _ = try file.seek(cursorPosition: 3)
-        XCTAssert(!file.cursorIsAtEndOfFile)
-        data = try file.read(6)
-        XCTAssert(data.count == 0)
-        XCTAssert(file.cursorIsAtEndOfFile)
+        XCTAssertFalse(file.cursorIsAtEndOfFile)
+        bytesRead = try file.read(into: &buffer, length: 6)
+        XCTAssertEqual(bytesRead, 0)
+        XCTAssertTrue(file.cursorIsAtEndOfFile)
     }
 
     func testReadAllFile() throws {
         let file = try File(path: "/tmp/zewo-test-file", mode: .truncateReadWrite)
         let word = "hello"
         try file.write(word)
+        try file.flush()
         _ = try file.seek(cursorPosition: 0)
         let data = try file.readAll()
         XCTAssert(data.count == word.utf8.count)
@@ -40,7 +44,8 @@ class FileTests : XCTestCase {
         XCTAssertFalse(File.isDirectory(path: filePath))
         let word = "hello"
         try file.write(word)
-        try file.close()
+        try file.flush()
+        file.close()
         try File.removeFile(path: filePath)
         XCTAssertThrowsError(try File.removeFile(path: filePath))
         XCTAssertFalse(File.fileExists(path: filePath))
@@ -74,22 +79,25 @@ class FileTests : XCTestCase {
     func testFileSize() throws {
         let file = try File(path: "/tmp/zewo-test-file", mode: .truncateReadWrite)
         try file.write(Data("hello"), deadline: .never)
+        try file.flush()
         XCTAssertEqual(file.length, 5)
         try file.write(" world")
+        try file.flush()
         XCTAssertEqual(file.length, 11)
-        try file.close()
-        XCTAssertThrowsError(try file.close())
-        XCTAssertThrowsError(try file.read(5))
+        file.close()
+        var buffer = Data(count: 5)
+        XCTAssertThrowsError(try file.read(into: &buffer))
     }
 
     func testZero() throws {
         let file = try File(path: "/dev/zero")
         let count = 4096
         let length = 256
+        var buffer = Data(count: length)
 
         for _ in 0 ..< count {
-            let data = try file.read(length)
-            XCTAssertEqual(data.count, length)
+            let bytesRead = try file.read(into: &buffer)
+            XCTAssertEqual(bytesRead, length)
         }
     }
 
@@ -98,10 +106,11 @@ class FileTests : XCTestCase {
         let file = try File(path: "/dev/random")
         let count = 4096
         let length = 256
+        var buffer = Data(count: length)
 
         for _ in 0 ..< count {
-            let data = try file.read(length)
-            XCTAssertEqual(data.count, length)
+            let bytesRead = try file.read(into: &buffer)
+            XCTAssertEqual(bytesRead, length)
         }
 #endif
     }

@@ -8,9 +8,9 @@ class RequestTests : XCTestCase {
         XCTAssertEqual(request.uri, URI(path: "/"))
         XCTAssertEqual(request.version, Version(major: 1, minor: 1))
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
 
-        request = Request(body: Drain(buffer: "foo") as C7.InputStream)
+        request = Request(body: Drain(buffer: "foo") as Quark.InputStream)
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri, URI(path: "/"))
         XCTAssertEqual(request.version, Version(major: 1, minor: 1))
@@ -19,6 +19,7 @@ class RequestTests : XCTestCase {
 
         request = Request { stream in
             try stream.write("foo")
+            try stream.flush()
         }
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri, URI(path: "/"))
@@ -32,16 +33,16 @@ class RequestTests : XCTestCase {
         XCTAssertEqual(request.uri, URI(path: "/"))
         XCTAssertEqual(request.version, Version(major: 1, minor: 1))
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
 
         request = try Request(uri: "/")
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri, URI(path: "/"))
         XCTAssertEqual(request.version, Version(major: 1, minor: 1))
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
 
-        request = try Request(uri: "/", body: Drain(buffer: "foo") as C7.InputStream)
+        request = try Request(uri: "/", body: Drain(buffer: "foo") as Quark.InputStream)
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri, URI(path: "/"))
         XCTAssertEqual(request.version, Version(major: 1, minor: 1))
@@ -50,6 +51,7 @@ class RequestTests : XCTestCase {
 
         request = try Request(uri: "/") { stream in
             try stream.write("foo")
+            try stream.flush()
         }
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri, URI(path: "/"))

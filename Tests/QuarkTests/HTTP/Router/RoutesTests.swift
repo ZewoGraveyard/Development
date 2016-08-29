@@ -2,7 +2,7 @@ import XCTest
 @testable import Quark
 
 class RoutesTests : XCTestCase {
-    private func checkRoute(routes: Routes, method: S4.Method, path: String, request: Request, response: Response) throws {
+    private func checkRoute(routes: Routes, method: Quark.Method, path: String, request: Request, response: Response) throws {
         if routes.routes.count != 1 {
             XCTFail("Should've created exactly one route.")
         }
@@ -25,8 +25,8 @@ class RoutesTests : XCTestCase {
         XCTAssertEqual(routeResponse.status, response.status)
     }
 
-    private func checkSimpleRoute(method: S4.Method, function: (Routes) -> ((String, [Middleware], Respond) -> Void), check: @escaping (Request) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkSimpleRoute(method: Quark.Method, function: (Routes) -> ((String, [Middleware], @escaping Respond) -> Void), check: @escaping (Request) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/path"
         let request = Request(method: method)
@@ -47,7 +47,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testSimpleRoutes() throws {
-        func check(method: S4.Method) -> (Request) -> Void {
+        func check(method: Quark.Method) -> (Request) -> Void {
             return { request in
                 XCTAssertEqual(request.method, method)
             }
@@ -96,8 +96,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRouteWithOnePathParameter<A : PathParameterConvertible>(method: S4.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A) throws -> Response) -> Void), check: @escaping (Request, A) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRouteWithOnePathParameter<A : PathParameterConvertible>(method: Quark.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A) throws -> Response) -> Void), check: @escaping (Request, A) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a"
         var request = Request(
@@ -130,7 +130,7 @@ class RoutesTests : XCTestCase {
     func testRoutesWithOnePathParameter() throws {
         let parameter = "yo"
 
-        func check(method: S4.Method) -> (Request, String) -> Void {
+        func check(method: Quark.Method) -> (Request, String) -> Void {
             return { request, a in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -187,8 +187,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRouteWithTwoPathParameters<A : PathParameterConvertible>(method: S4.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A, A) throws -> Response) -> Void), check: @escaping (Request, A, A) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRouteWithTwoPathParameters<A : PathParameterConvertible>(method: Quark.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A, A) throws -> Response) -> Void), check: @escaping (Request, A, A) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a/:b"
         var request = Request(
@@ -223,7 +223,7 @@ class RoutesTests : XCTestCase {
     func testRoutesWithTwoPathParameters() throws {
         let parameter = "yo"
 
-        func check(method: S4.Method) -> (Request, String, String) -> Void {
+        func check(method: Quark.Method) -> (Request, String, String) -> Void {
             return { request, a, b in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -281,8 +281,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithThreePathParameters<A : PathParameterConvertible>(method: S4.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A, A, A) throws -> Response) -> Void), check: @escaping (Request, A, A, A) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithThreePathParameters<A : PathParameterConvertible>(method: Quark.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A, A, A) throws -> Response) -> Void), check: @escaping (Request, A, A, A) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a/:b/:c"
         var request = Request(
@@ -319,7 +319,7 @@ class RoutesTests : XCTestCase {
     func testRoutesWithThreePathParameters() throws {
         let parameter = "yo"
 
-        func check(method: S4.Method) -> (Request, String, String, String) -> Void {
+        func check(method: Quark.Method) -> (Request, String, String, String) -> Void {
             return { request, a, b, c in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -378,8 +378,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithFourPathParameters<A : PathParameterConvertible>(method: S4.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A, A, A, A) throws -> Response) -> Void), check: @escaping (Request, A, A, A, A) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithFourPathParameters<A : PathParameterConvertible>(method: Quark.Method, parameter: A, function: (Routes) -> ((String, [Middleware], @escaping (Request, A, A, A, A) throws -> Response) -> Void), check: @escaping (Request, A, A, A, A) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a/:b/:c/:d"
         var request = Request(
@@ -418,7 +418,7 @@ class RoutesTests : XCTestCase {
     func testRoutesWithFourPathParameters() throws {
         let parameter = "yo"
 
-        func check(method: S4.Method) -> (Request, String, String, String, String) -> Void {
+        func check(method: Quark.Method) -> (Request, String, String, String, String) -> Void {
             return { request, a, b, c, d in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a.pathParameter, parameter)
@@ -478,8 +478,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithContent<T : MapInitializable & MapRepresentable>(method: S4.Method, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, T) throws -> Response) -> Void), check: @escaping (Request, T) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithContent<T : MapInitializable & MapRepresentable>(method: Quark.Method, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, T) throws -> Response) -> Void), check: @escaping (Request, T) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/path"
         var request = Request(method: method)
@@ -504,7 +504,7 @@ class RoutesTests : XCTestCase {
     func testRoutesWithContent() throws {
         let content = 42
 
-        func check(method: S4.Method) -> (Request, Int) -> Void {
+        func check(method: Quark.Method) -> (Request, Int) -> Void {
             return { request, t in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(t, content)
@@ -561,8 +561,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithOnePathParameterAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, T) throws -> Response) -> Void), check: @escaping (Request, A, T) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithOnePathParameterAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: Quark.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, T) throws -> Response) -> Void), check: @escaping (Request, A, T) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a"
         var request = Request(
@@ -599,7 +599,7 @@ class RoutesTests : XCTestCase {
         let parameter = "yo"
         let content = 42
 
-        func check(method: S4.Method) -> (Request, String, Int) -> Void {
+        func check(method: Quark.Method) -> (Request, String, Int) -> Void {
             return { request, a, t in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -664,8 +664,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithTwoPathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, T) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithTwoPathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: Quark.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, T) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a/:b"
         var request = Request(
@@ -704,7 +704,7 @@ class RoutesTests : XCTestCase {
         let parameter = "yo"
         let content = 42
 
-        func check(method: S4.Method) -> (Request, String, String, Int) -> Void {
+        func check(method: Quark.Method) -> (Request, String, String, Int) -> Void {
             return { request, a, b, t in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -770,8 +770,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithThreePathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, T) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithThreePathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: Quark.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, T) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a/:b/:c"
         var request = Request(
@@ -812,7 +812,7 @@ class RoutesTests : XCTestCase {
         let parameter = "yo"
         let content = 42
 
-        func check(method: S4.Method) -> (Request, String, String, String, Int) -> Void {
+        func check(method: Quark.Method) -> (Request, String, String, String, Int) -> Void {
             return { request, a, b, c, t in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -879,8 +879,8 @@ class RoutesTests : XCTestCase {
         )
     }
 
-    private func checkRoutesWithFourPathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: S4.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, A, T) -> Void) throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+    private func checkRoutesWithFourPathParametersAndContent<A : PathParameterConvertible, T : MapInitializable & MapRepresentable>(method: Quark.Method, parameter: A, content: T, function: (Routes) -> ((String, [Middleware], T.Type, @escaping (Request, A, A, A, A, T) throws -> Response) -> Void), check: @escaping (Request, A, A, A, A, T) -> Void) throws {
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/:a/:b/:c/:d"
         var request = Request(
@@ -923,7 +923,7 @@ class RoutesTests : XCTestCase {
         let parameter = "yo"
         let content = 42
 
-        func check(method: S4.Method) -> (Request, String, String, String, String, Int) -> Void {
+        func check(method: Quark.Method) -> (Request, String, String, String, String, Int) -> Void {
             return { request, a, b, c, d, t in
                 XCTAssertEqual(request.method, method)
                 XCTAssertEqual(a, parameter)
@@ -992,7 +992,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testMethods() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/"
         var called = false
@@ -1006,7 +1006,7 @@ class RoutesTests : XCTestCase {
                 return Response(status: .badRequest)
             default:
                 XCTFail()
-                throw ServerError.internalServerError
+                throw HTTPError.internalServerError
             }
         }
 
@@ -1035,7 +1035,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testFallback() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         var called = false
 
@@ -1051,7 +1051,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testRouteFallback() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         let path = "/"
         var called = false
@@ -1096,7 +1096,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testRoutesWithouthContent() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         routes.get("/") { (_, t: Map) in
             return Response()
@@ -1114,7 +1114,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testRoutesOnePathParameterWithouthContent() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         var request = Request(uri: URI(path: "/a"))
         request.pathParameters = [
@@ -1137,7 +1137,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testRoutesTwoPathParameterWithouthContent() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         var request = Request(uri: URI(path: "/a/b"))
         request.pathParameters = [
@@ -1161,7 +1161,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testRoutesThreePathParameterWithouthContent() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         var request = Request(uri: URI(path: "/a/b/c"))
         request.pathParameters = [
@@ -1186,7 +1186,7 @@ class RoutesTests : XCTestCase {
     }
 
     func testRoutesFourPathParameterWithouthContent() throws {
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         var request = Request(uri: URI(path: "/a/b/c/d"))
         request.pathParameters = [
@@ -1218,7 +1218,7 @@ class RoutesTests : XCTestCase {
 //        XCTAssert(pid >= 0)
 //        if pid == 0 {
 //            alarm(1)
-//            let routes = Routes(staticFilesPath: "", fileType: File.self)
+//            let routes = Routes(staticFilesPath: "")
 //            signal(SIGABRT) { _ in
 //                _exit(0)
 //            }
@@ -1240,7 +1240,7 @@ class RoutesTests : XCTestCase {
 //            XCTAssert(pid >= 0)
 //            if pid == 0 {
 //                alarm(1)
-//                let routes = Routes(staticFilesPath: "", fileType: File.self)
+//                let routes = Routes(staticFilesPath: "")
 //                signal(SIGILL) { _ in
 //                    _exit(0)
 //                }
@@ -1262,7 +1262,7 @@ class RoutesTests : XCTestCase {
             }
         }
 
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         routes.compose("/foo", router: router)
 
@@ -1286,7 +1286,7 @@ class RoutesTests : XCTestCase {
             }
         }
 
-        let routes = Routes(staticFilesPath: "", fileType: File.self)
+        let routes = Routes(staticFilesPath: "")
 
         routes.compose("/foo", resource: resource)
 

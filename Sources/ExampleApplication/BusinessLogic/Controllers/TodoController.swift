@@ -1,4 +1,4 @@
-public struct TodoController : Controller {
+public struct TodoController {
     let store: Store
 
     public var repository: Repository<Todo> {
@@ -6,7 +6,7 @@ public struct TodoController : Controller {
     }
 
     public func list() throws -> [Todo] {
-        return try self.super.list()
+        return try repository.fetchAll().map({ $0.model })
     }
 
     public func listDone() throws -> [Todo] {
@@ -14,18 +14,19 @@ public struct TodoController : Controller {
     }
 
     public func create(model todo: Todo) throws -> (String, Todo) {
-        return try self.super.create(model: todo)
+        let record = try repository.save(todo)
+        return (record.id, record.model)
     }
 
     public func detail(id: String) throws -> Todo {
-        return try self.super.detail(id: id)
+        return try repository.fetch(id: id).model
     }
 
     public func update(id: String, model todo: Todo) throws -> Todo {
-        return try self.super.update(id: id, model: todo)
+        return try repository.update(id: id, model: todo).model
     }
 
     public func destroy(id: String) throws -> Todo {
-        return try self.super.destroy(id: id)
+        return try repository.remove(id: id).model
     }
 }

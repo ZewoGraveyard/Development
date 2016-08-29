@@ -17,7 +17,7 @@ let bufferSizes = [
     2048
 ]
 
-let methods: [S4.Method] = [
+let methods: [Quark.Method] = [
     .delete,
     .get,
     .head,
@@ -178,7 +178,7 @@ class RequestParserTests : XCTestCase {
                         XCTAssert(request.version.major == 1)
                         XCTAssert(request.version.minor == 1)
                         XCTAssert(request.headers["Content-Length"] == "4")
-                        XCTAssert(request.body == .buffer("Zewo"))
+                        XCTAssert(request.body == .buffer(Data("Zewo")))
                     }
                 }
             }
@@ -188,7 +188,7 @@ class RequestParserTests : XCTestCase {
     func testManyRequests() {
         var request = ""
 
-        for _ in 0 ..< 1_000 {
+        for _ in 0 ..< 100 {
             request += "POST / HTTP/1.1\r\nContent-Length: 4\r\n\r\nZewo"
         }
 
@@ -200,7 +200,7 @@ class RequestParserTests : XCTestCase {
                     XCTAssert(request.version.major == 1)
                     XCTAssert(request.version.minor == 1)
                     XCTAssert(request.headers["Content-Length"] == "4")
-                    XCTAssert(request.body == .buffer("Zewo"))
+                    XCTAssert(request.body == .buffer(Data("Zewo")))
                 }
             } catch {
                 XCTFail()
@@ -213,7 +213,7 @@ class RequestParserTests : XCTestCase {
     }
 
     func testUnknownMethod() {
-        XCTAssertEqual(Method(code: 1969), .other(method: "UNKNOWN"))
+        XCTAssertEqual(Quark.Method(code: 1969), .other(method: "UNKNOWN"))
     }
 
     func testDuplicateHeaders() throws {
@@ -248,9 +248,9 @@ extension RequestParserTests {
             ("testCookiesRequest", testCookiesRequest),
             ("testBodyRequest", testBodyRequest),
             ("testManyRequests", testManyRequests),
-            ("testManyRequests", testErrorDescription),
-            ("testManyRequests", testUnknownMethod),
-            ("testManyRequests", testDuplicateHeaders),
+            ("testErrorDescription", testErrorDescription),
+            ("testUnknownMethod", testUnknownMethod),
+            ("testDuplicateHeaders", testDuplicateHeaders),
         ]
     }
 }

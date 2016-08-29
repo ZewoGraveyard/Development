@@ -7,7 +7,7 @@ enum TestRouterError : Error {
 
 struct EmptyRouter : Router {}
 
-struct CustomRouter : Router {
+struct TestRouter : Router {
     func custom(routes: Routes) {
         routes.get("/") { _ in
             return Response()
@@ -35,8 +35,8 @@ class RouterTests : XCTestCase {
         XCTAssertEqual(response.status, .notFound)
     }
 
-    func testCustomRouter() throws {
-        let router = CustomRouter()
+    func testRouter() throws {
+        let router = TestRouter()
         let request = Request()
         let response = try router.router.respond(to: request)
         XCTAssertEqual(response.status, .ok)
@@ -54,7 +54,7 @@ extension RouterTests {
     static var allTests: [(String, (RouterTests) -> () throws -> Void)] {
         return [
             ("testEmptyRouter", testEmptyRouter),
-            ("testCustomRouter", testCustomRouter),
+            ("testRouter", testRouter),
             ("testCustomRecoverRouter", testCustomRecoverRouter),
         ]
     }

@@ -58,11 +58,6 @@ public func every(_ napDuration: Double, routine: @escaping (_ done: (Void) -> V
     }
 }
 
-/// Preallocates coroutine stacks. Returns the number of stacks that it actually managed to allocate.
-public func preallocateCoroutineStacks(stackCount: Int, stackSize: Int) {
-    return goprepare(Int32(stackCount), stackSize)
-}
-
 /// Sleeps for duration.
 public func nap(for duration: Double) {
     mill_msleep(duration.fromNow().int64milliseconds, "nap")

@@ -191,7 +191,7 @@ class TrieRouteMatcherTests : XCTestCase {
     }
 
     func testPerformance() {
-        let routePairs: [(S4.Method, String)] = [
+        let routePairs: [(Quark.Method, String)] = [
             // Objects
             (.post, "/1/classes/:className"),
             (.get, "/1/classes/:className/:objectId"),
@@ -235,7 +235,7 @@ class TrieRouteMatcherTests : XCTestCase {
             (.post, "/1/functions"),
             ]
 
-        let requestPairs: [(S4.Method, String)] = [
+        let requestPairs: [(Quark.Method, String)] = [
             // Objects
             (.post, "/1/classes/test"),
             (.get, "/1/classes/test/test"),

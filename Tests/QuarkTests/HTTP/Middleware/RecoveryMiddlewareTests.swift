@@ -10,7 +10,7 @@ class RecoveryMiddlewareTests : XCTestCase {
         let request = Request()
 
         var responder = BasicResponder { _ in
-            throw ClientError.badRequest
+            throw HTTPError.badRequest
         }
 
         var recovery = RecoveryMiddleware()

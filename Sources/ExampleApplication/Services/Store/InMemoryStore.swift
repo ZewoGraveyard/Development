@@ -4,7 +4,7 @@ public final class InMemoryStore : Store {
 
     public func fetchUser(email: String) throws -> Record<User> {
         guard let user = try users.fetchAll().filter({ $0.model.email == email }).first else {
-            throw ClientError.notFound
+            throw HTTPError.notFound
         }
         return user
     }

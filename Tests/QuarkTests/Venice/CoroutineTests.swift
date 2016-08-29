@@ -11,10 +11,6 @@ class CoroutineTests : XCTestCase {
         }
     }
 
-    func testStackPreallocation() {
-        preallocateCoroutineStacks(stackCount: 10, stackSize: 25000)
-    }
-
     func testCo() {
         coroutine(self.worker(count: 3, n: 7))
         co(self.worker(count: 1, n: 11))
@@ -71,7 +67,7 @@ class CoroutineTests : XCTestCase {
     func testEvery() {
         let channel = Channel<Void>()
         var counter = 0
-        let period = 1.millisecond
+        let period = 50.millisecond
         every(period) { done in
             counter += 1
             if counter == 3 {
@@ -82,7 +78,7 @@ class CoroutineTests : XCTestCase {
         let then = now()
         channel.receive()
         let diff = now() - then
-        let threshold = 5.millisecond
+        let threshold = 50.millisecond
         XCTAssert(diff > 3 * period - threshold && diff < 3 * period + threshold)
     }
 

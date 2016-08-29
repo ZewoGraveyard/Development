@@ -7,7 +7,7 @@ enum TestResourceError : Error {
 
 struct EmptyResource : Resource {}
 
-struct CustomResource : Resource {
+struct TestResource : Resource {
     func custom(routes: ResourceRoutes) {
         routes.get("/foo") { _ in
             return Response()
@@ -27,7 +27,7 @@ struct CustomRecoverResource : Resource {
     }
 }
 
-struct TestResource : Resource {
+struct CompleteResource : Resource {
     func list(request: Request) throws -> Response {
         return Response()
     }
@@ -80,8 +80,8 @@ class ResourceTests : XCTestCase {
         XCTAssertEqual(response.status, .notFound)
     }
 
-    func testCustomResource() throws {
-        let resource = CustomResource()
+    func testResource() throws {
+        let resource = TestResource()
         let request = try Request(method: .get, uri: "/foo")
         let response = try resource.router.respond(to: request)
         XCTAssertEqual(response.status, .ok)
@@ -94,8 +94,8 @@ class ResourceTests : XCTestCase {
         XCTAssertEqual(response.status, .ok)
     }
 
-    func testResource() throws {
-        let resource = TestResource()
+    func testCompleteResource() throws {
+        let resource = CompleteResource()
 
         var request = Request()
         var response = try resource.router.respond(to: request)
@@ -125,9 +125,9 @@ extension ResourceTests {
     static var allTests: [(String, (ResourceTests) -> () throws -> Void)] {
         return [
             ("testEmptyResource", testEmptyResource),
-            ("testCustomResource", testCustomResource),
-            ("testCustomRecoverResource", testCustomRecoverResource),
             ("testResource", testResource),
+            ("testCustomRecoverResource", testCustomRecoverResource),
+            ("testCompleteResource", testCompleteResource),
         ]
     }
 }

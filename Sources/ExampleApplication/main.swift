@@ -1,17 +1,17 @@
 @_exported import Quark
 @_exported import ExampleDomain
 
-struct ServerConfiguration : Configuration {
-    let host: String
-    let port: Int
+struct Pokémon : MapInitializable {
+    let name: String
 }
 
-struct AppConfiguration : Configuration {
-    let server: ServerConfiguration
-}
+let pokémon = try Client.get("http://pokeapi.co/api/v2/pokemon/1/")
+print(pokémon)
 
-configure { (configuration: Map) in
-    let store = InMemoryStore()
-    let app = Application(store: store)
-    return Router(app: app)
-}
+//let development = try Configuration(file: "Development.swift")
+//let production = try Configuration(file: "Production.swift")
+//let store = InMemoryStore()
+//let app = Application(store: store)
+//let router = MainRouter(app: app)
+//let server = try Server(configuration: development["server"], responder: router)
+//try server.start()

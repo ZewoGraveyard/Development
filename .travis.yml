@@ -5,16 +5,12 @@ sudo: required
 osx_image: xcode8
 install:
   - source install-swift.sh
-#  - rvm install 2.2.3
-#  - gem install xcpretty
+  - rvm install 2.2.3
+  - gem install xcpretty
 script:
+  - set -o
   - swift build
-  - swift build --configuration release
-  - swift test
-#  - swift package generate-xcodeproj
-#  - set -o pipefail
-#  - export WORKING_DIRECTORY=$(PWD)
-#  - export TOOLCHAINS=org.swift.3020160804a
-#  - xcodebuild ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES -project Quark.xcodeproj -scheme Quark -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES test | xcpretty
-#after_success:
-#  - bash <(curl -s https://codecov.io/bash)
+  - swift package generate-xcodeproj
+  - WORKING_DIRECTORY=$(PWD) xcodebuild -toolchain org.swift.3020160818a -project Quark.xcodeproj -scheme Quark -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES test | xcpretty
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

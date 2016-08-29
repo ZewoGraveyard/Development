@@ -1,4 +1,4 @@
 @_exported import Quark
 
-extension Todo : Mappable {}
-extension User : Mappable {}
+extension Todo : MapConvertible {}
+extension User : MapConvertible {}

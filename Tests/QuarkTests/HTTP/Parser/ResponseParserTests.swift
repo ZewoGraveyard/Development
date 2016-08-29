@@ -139,7 +139,7 @@ class ResponseParserTests : XCTestCase {
                         XCTAssert(response.version.major == 1)
                         XCTAssert(response.version.minor == 1)
                         XCTAssert(response.headers["Content-Length"] == "4")
-                        XCTAssert(response.body == .buffer("Zewo"))
+                        XCTAssert(response.body == .buffer(Data("Zewo")))
                     }
                 }
             }
@@ -149,7 +149,7 @@ class ResponseParserTests : XCTestCase {
     func testManyResponses() {
         var response = ""
 
-        for _ in 0 ..< 1_000 {
+        for _ in 0 ..< 100 {
             response += "HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\nZewo"
         }
 
@@ -160,7 +160,7 @@ class ResponseParserTests : XCTestCase {
                     XCTAssert(response.version.major == 1)
                     XCTAssert(response.version.minor == 1)
                     XCTAssert(response.headers["Content-Length"] == "4")
-                    XCTAssert(response.body == .buffer("Zewo"))
+                    XCTAssert(response.body == .buffer(Data("Zewo")))
                 }
             } catch {
                 XCTFail()

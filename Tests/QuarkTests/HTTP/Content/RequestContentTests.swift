@@ -15,7 +15,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -25,7 +25,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -35,7 +35,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -45,7 +45,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -56,7 +56,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -66,7 +66,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -76,7 +76,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -86,7 +86,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -96,7 +96,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 
@@ -107,7 +107,7 @@ class RequestContentTests : XCTestCase {
         XCTAssertEqual(request.method, .get)
         XCTAssertEqual(request.uri.path, "/")
         XCTAssertEqual(request.headers, ["Content-Length": "0"])
-        XCTAssertEqual(request.body, .buffer([]))
+        XCTAssertEqual(request.body, .buffer(Data()))
         XCTAssertEqual(request.content, Map(content))
     }
 }

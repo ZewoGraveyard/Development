@@ -1,9 +1,9 @@
-struct Credentials : Mappable {
+struct Credentials : MapConvertible {
     let email: String
     let password: String
 }
 
-public struct Router : MainRouter {
+public struct MainRouter : Router {
     let app: Application
     let todos: TodoResource
 
@@ -14,6 +14,10 @@ public struct Router : MainRouter {
 
     public func custom(routes: Routes) {
         routes.compose("/todos", resource: todos)
+
+        routes.get("/test") { request in
+            return Response()
+        }
 
         routes.get("/") { request in
             guard request.session["user-id"] != nil else {

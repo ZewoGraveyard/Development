@@ -2,98 +2,167 @@ import XCTest
 @testable import Quark
 
 class BodyTests : XCTestCase {
-    let data: C7.Data = [0x00, 0x01, 0x02, 0x03]
+    let testData = Data([0x00, 0x01, 0x02, 0x03])
 
-    func checkBodyProperties(_ body: Body) {
-        var bodyForBuffer = body
-        var bodyForReader = body
-        var bodyForWriter = body
-
-        XCTAssert(data == (try! bodyForBuffer.becomeBuffer()), "Garbled buffer bytes")
-        switch bodyForBuffer {
-        case .buffer(let d):
-            XCTAssert(data == d, "Garbled buffer bytes")
+    func testBufferBecomeBuffer() throws {
+        var body: Body = .buffer(testData)
+        let buffer = try body.becomeBuffer()
+        XCTAssertTrue(body.isBuffer)
+        XCTAssertFalse(body.isReader)
+        XCTAssertFalse(body.isWriter)
+        XCTAssertEqual(buffer, testData)
+        switch body {
+        case .buffer(let data):
+            XCTAssertEqual(data, self.testData)
         default:
-            XCTFail("Incorrect type")
-        }
-
-        bodyForReader.forceReopenDrain()
-        let readerDrain = Drain(stream: try! bodyForReader.becomeReader())
-        XCTAssert(data == readerDrain.data, "Garbled reader bytes")
-        switch bodyForReader {
-        case .reader(let reader):
-            bodyForReader.forceReopenDrain()
-            let readerDrain = Drain(stream: reader)
-            XCTAssert(data == readerDrain.data, "Garbed reader bytes")
-        default:
-            XCTFail("Incorrect type")
-        }
-
-
-        let writerDrain = Drain()
-        bodyForReader.forceReopenDrain()
-        do {
-            try bodyForWriter.becomeWriter()(writerDrain)
-
-        } catch {
-            XCTFail("Drain threw error \(error)")
-        }
-        XCTAssert(data == writerDrain.data, "Garbled writer bytes")
-
-        switch bodyForWriter {
-        case .writer(let closure):
-            let writerDrain = Drain()
-            bodyForReader.forceReopenDrain()
-            do {
-                try closure(writerDrain)
-            } catch {
-                XCTFail("Drain threw error \(error)")
-            }
-            XCTAssert(data == writerDrain.data, "Garbed writer bytes")
-        default:
-            XCTFail("Incorrect type")
+            XCTFail()
         }
     }
 
-    func testWriter() {
-        let writer = Body.writer { stream in
-            try stream.write(self.data)
+    func testBufferBecomeReader() throws {
+        var body: Body = .buffer(testData)
+        let reader = try body.becomeReader()
+        XCTAssertFalse(body.isBuffer)
+        XCTAssertTrue(body.isReader)
+        XCTAssertFalse(body.isWriter)
+        XCTAssertFalse(reader.closed)
+        var buffer = Data(count: testData.count)
+        let bytesRead = try reader.read(into: &buffer)
+        XCTAssertFalse(reader.closed)
+        XCTAssertEqual(bytesRead, testData.count)
+        XCTAssertEqual(buffer, testData)
+    }
+
+    func testBufferBecomeWriter() throws {
+        var body: Body = .buffer(testData)
+        let writer = try body.becomeWriter()
+        let writerStream = Drain()
+        try writer(writerStream)
+        XCTAssertFalse(body.isBuffer)
+        XCTAssertFalse(body.isReader)
+        XCTAssertTrue(body.isWriter)
+        XCTAssertFalse(writerStream.closed)
+        var buffer = Data(count: testData.count)
+        let bytesRead = try writerStream.read(into: &buffer)
+        XCTAssertFalse(writerStream.closed)
+        XCTAssertEqual(bytesRead, testData.count)
+        XCTAssertEqual(buffer, testData)
+    }
+
+    func testReaderBecomeBuffer() throws {
+        let readerSteram = Drain(buffer: testData)
+        var body: Body = .reader(readerSteram)
+        let buffer = try body.becomeBuffer()
+        XCTAssertTrue(body.isBuffer)
+        XCTAssertFalse(body.isReader)
+        XCTAssertFalse(body.isWriter)
+        XCTAssertEqual(buffer, testData)
+        switch body {
+        case .buffer(let data):
+            XCTAssertEqual(data, self.testData)
+        default:
+            XCTFail()
         }
-        checkBodyProperties(writer)
     }
 
-    func testReader() {
-        let drain = Drain(buffer: data)
-        let reader = Body.reader(drain)
-        checkBodyProperties(reader)
+    func testReaderBecomeReader() throws {
+        let readerSteram = Drain(buffer: testData)
+        var body: Body = .reader(readerSteram)
+        let reader = try body.becomeReader()
+        XCTAssertFalse(body.isBuffer)
+        XCTAssertTrue(body.isReader)
+        XCTAssertFalse(body.isWriter)
+        XCTAssertFalse(reader.closed)
+        var buffer = Data(count: testData.count)
+        let bytesRead = try reader.read(into: &buffer)
+        XCTAssertFalse(reader.closed)
+        XCTAssertEqual(bytesRead, testData.count)
+        XCTAssertEqual(buffer, testData)
     }
 
-    func testBuffer() {
-        let buffer = Body.buffer(data)
-        checkBodyProperties(buffer)
+    func testReaderBecomeWriter() throws {
+        let readerSteram = Drain(buffer: testData)
+        var body: Body = .reader(readerSteram)
+        let writer = try body.becomeWriter()
+        let writerStream = Drain()
+        try writer(writerStream)
+        XCTAssertFalse(body.isBuffer)
+        XCTAssertFalse(body.isReader)
+        XCTAssertTrue(body.isWriter)
+        XCTAssertFalse(writerStream.closed)
+        var buffer = Data(count: testData.count)
+        let bytesRead = try writerStream.read(into: &buffer)
+        XCTAssertFalse(writerStream.closed)
+        XCTAssertEqual(bytesRead, testData.count)
+        XCTAssertEqual(buffer, testData)
+    }
+
+    func testWriterBecomeBuffer() throws {
+        var body: Body = .writer { writerStream in
+            try writerStream.write(self.testData)
+        }
+        let buffer = try body.becomeBuffer()
+        XCTAssertTrue(body.isBuffer)
+        XCTAssertFalse(body.isReader)
+        XCTAssertFalse(body.isWriter)
+        XCTAssertEqual(buffer, testData)
+        switch body {
+        case .buffer(let data):
+            XCTAssertEqual(data, self.testData)
+        default:
+            XCTFail()
+        }
+    }
+
+    func testWriterBecomeReader() throws {
+        var body: Body = .writer { writerStream in
+            try writerStream.write(self.testData)
+        }
+        let reader = try body.becomeReader()
+        XCTAssertFalse(body.isBuffer)
+        XCTAssertTrue(body.isReader)
+        XCTAssertFalse(body.isWriter)
+        XCTAssertFalse(reader.closed)
+        var buffer = Data(count: testData.count)
+        let bytesRead = try reader.read(into: &buffer)
+        XCTAssertFalse(reader.closed)
+        XCTAssertEqual(bytesRead, testData.count)
+        XCTAssertEqual(buffer, testData)
+    }
+
+    func testWriterBecomeWriter() throws {
+        var body: Body = .writer { writerStream in
+            try writerStream.write(self.testData)
+        }
+        let writer = try body.becomeWriter()
+        let writerStream = Drain()
+        try writer(writerStream)
+        XCTAssertFalse(body.isBuffer)
+        XCTAssertFalse(body.isReader)
+        XCTAssertTrue(body.isWriter)
+        XCTAssertFalse(writerStream.closed)
+        var buffer = Data(count: testData.count)
+        let bytesRead = try writerStream.read(into: &buffer)
+        XCTAssertFalse(writerStream.closed)
+        XCTAssertEqual(bytesRead, testData.count)
+        XCTAssertEqual(buffer, testData)
     }
 
     func testBodyEquality() {
-        let buffer = Body.buffer(data)
+        let buffer = Body.buffer(testData)
 
-        let drain = Drain(buffer: data)
+        let drain = Drain(buffer: testData)
         let reader = Body.reader(drain)
 
         let writer = Body.writer { stream in
-            try stream.write(self.data)
+            try stream.write(self.testData)
+            try stream.flush()
         }
 
         XCTAssertEqual(buffer, buffer)
         XCTAssertNotEqual(buffer, reader)
         XCTAssertNotEqual(buffer, writer)
         XCTAssertNotEqual(reader, writer)
-    }
-
-    func testBecomeFailure() {
-        var body = Body.asyncReader(AsyncDrain())
-        XCTAssertThrowsError(try body.becomeBuffer())
-        XCTAssertThrowsError(try body.becomeReader())
-        XCTAssertThrowsError(try body.becomeWriter())
     }
 }
 
@@ -108,11 +177,8 @@ extension Body {
 extension BodyTests {
     static var allTests : [(String, (BodyTests) -> () throws -> Void)] {
         return [
-            ("testWriter", testWriter),
-            ("testReader", testReader),
-            ("testBuffer", testBuffer),
+            ("testBufferBecomeBuffer", testBufferBecomeBuffer),
             ("testBodyEquality", testBodyEquality),
-            ("testBecomeFailure", testBecomeFailure),
         ]
     }
 }

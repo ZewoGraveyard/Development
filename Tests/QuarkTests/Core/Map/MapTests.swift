@@ -7,7 +7,6 @@ class MapTests : XCTestCase {
         let null = Map(nullValue)
         XCTAssertEqual(null, nil)
         XCTAssertEqual(null, .null)
-        XCTAssertEqual(null, .infer(nullValue))
         XCTAssert(null.isNull)
         XCTAssertFalse(null.isBool)
         XCTAssertFalse(null.isDouble)
@@ -16,13 +15,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(null.isData)
         XCTAssertFalse(null.isArray)
         XCTAssertFalse(null.isDictionary)
-        XCTAssertNil(null.asBool)
-        XCTAssertNil(null.asDouble)
-        XCTAssertNil(null.asInt)
-        XCTAssertNil(null.asString)
-        XCTAssertNil(null.asData)
-        XCTAssertNil(null.asArray)
-        XCTAssertNil(null.asDictionary)
+        XCTAssertNil(null.bool)
+        XCTAssertNil(null.double)
+        XCTAssertNil(null.int)
+        XCTAssertNil(null.string)
+        XCTAssertNil(null.data)
+        XCTAssertNil(null.array)
+        XCTAssertNil(null.dictionary)
         XCTAssertThrowsError(try null.asBool())
         XCTAssertThrowsError(try null.asDouble())
         XCTAssertThrowsError(try null.asInt())
@@ -35,7 +34,6 @@ class MapTests : XCTestCase {
         let nullArray = Map(nullArrayValue)
         XCTAssertEqual(nullArray, nil)
         XCTAssertEqual(nullArray, .null)
-        XCTAssertEqual(nullArray, .infer(nullArrayValue))
         XCTAssert(nullArray.isNull)
         XCTAssertFalse(nullArray.isBool)
         XCTAssertFalse(nullArray.isDouble)
@@ -44,13 +42,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(nullArray.isData)
         XCTAssertFalse(nullArray.isArray)
         XCTAssertFalse(nullArray.isDictionary)
-        XCTAssertNil(nullArray.asBool)
-        XCTAssertNil(nullArray.asDouble)
-        XCTAssertNil(nullArray.asInt)
-        XCTAssertNil(nullArray.asString)
-        XCTAssertNil(nullArray.asData)
-        XCTAssertNil(nullArray.asArray)
-        XCTAssertNil(nullArray.asDictionary)
+        XCTAssertNil(nullArray.bool)
+        XCTAssertNil(nullArray.double)
+        XCTAssertNil(nullArray.int)
+        XCTAssertNil(nullArray.string)
+        XCTAssertNil(nullArray.data)
+        XCTAssertNil(nullArray.array)
+        XCTAssertNil(nullArray.dictionary)
         XCTAssertThrowsError(try null.asBool())
         XCTAssertThrowsError(try null.asDouble())
         XCTAssertThrowsError(try null.asInt())
@@ -63,7 +61,6 @@ class MapTests : XCTestCase {
         let nullArrayOfNull = Map(nullArrayOfNullValue)
         XCTAssertEqual(nullArrayOfNull, nil)
         XCTAssertEqual(nullArrayOfNull, .null)
-        XCTAssertEqual(nullArrayOfNull, .infer(nullArrayOfNullValue))
         XCTAssert(nullArrayOfNull.isNull)
         XCTAssertFalse(nullArrayOfNull.isBool)
         XCTAssertFalse(nullArrayOfNull.isDouble)
@@ -72,13 +69,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(nullArrayOfNull.isData)
         XCTAssertFalse(nullArrayOfNull.isArray)
         XCTAssertFalse(nullArrayOfNull.isDictionary)
-        XCTAssertNil(nullArrayOfNull.asBool)
-        XCTAssertNil(nullArrayOfNull.asDouble)
-        XCTAssertNil(nullArrayOfNull.asInt)
-        XCTAssertNil(nullArrayOfNull.asString)
-        XCTAssertNil(nullArrayOfNull.asData)
-        XCTAssertNil(nullArrayOfNull.asArray)
-        XCTAssertNil(nullArrayOfNull.asDictionary)
+        XCTAssertNil(nullArrayOfNull.bool)
+        XCTAssertNil(nullArrayOfNull.double)
+        XCTAssertNil(nullArrayOfNull.int)
+        XCTAssertNil(nullArrayOfNull.string)
+        XCTAssertNil(nullArrayOfNull.data)
+        XCTAssertNil(nullArrayOfNull.array)
+        XCTAssertNil(nullArrayOfNull.dictionary)
         XCTAssertThrowsError(try null.asBool())
         XCTAssertThrowsError(try null.asDouble())
         XCTAssertThrowsError(try null.asInt())
@@ -91,7 +88,6 @@ class MapTests : XCTestCase {
         let nullDictionary = Map(nullDictionaryValue)
         XCTAssertEqual(nullDictionary, nil)
         XCTAssertEqual(nullDictionary, .null)
-        XCTAssertEqual(nullDictionary, .infer(nullDictionaryValue))
         XCTAssert(nullDictionary.isNull)
         XCTAssertFalse(nullDictionary.isBool)
         XCTAssertFalse(nullDictionary.isDouble)
@@ -100,13 +96,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(nullDictionary.isData)
         XCTAssertFalse(nullDictionary.isArray)
         XCTAssertFalse(nullDictionary.isDictionary)
-        XCTAssertNil(nullDictionary.asBool)
-        XCTAssertNil(nullDictionary.asDouble)
-        XCTAssertNil(nullDictionary.asInt)
-        XCTAssertNil(nullDictionary.asString)
-        XCTAssertNil(nullDictionary.asData)
-        XCTAssertNil(nullDictionary.asArray)
-        XCTAssertNil(nullDictionary.asDictionary)
+        XCTAssertNil(nullDictionary.bool)
+        XCTAssertNil(nullDictionary.double)
+        XCTAssertNil(nullDictionary.int)
+        XCTAssertNil(nullDictionary.string)
+        XCTAssertNil(nullDictionary.data)
+        XCTAssertNil(nullDictionary.array)
+        XCTAssertNil(nullDictionary.dictionary)
         XCTAssertThrowsError(try null.asBool())
         XCTAssertThrowsError(try null.asDouble())
         XCTAssertThrowsError(try null.asInt())
@@ -119,7 +115,6 @@ class MapTests : XCTestCase {
         let nullDictionaryOfNull = Map(nullDictionaryOfNullValue)
         XCTAssertEqual(nullDictionaryOfNull, nil)
         XCTAssertEqual(nullDictionaryOfNull, .null)
-        XCTAssertEqual(nullDictionaryOfNull, .infer(nullDictionaryOfNullValue))
         XCTAssert(nullDictionaryOfNull.isNull)
         XCTAssertFalse(nullDictionaryOfNull.isBool)
         XCTAssertFalse(nullDictionaryOfNull.isDouble)
@@ -128,13 +123,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(nullDictionaryOfNull.isData)
         XCTAssertFalse(nullDictionaryOfNull.isArray)
         XCTAssertFalse(nullDictionaryOfNull.isDictionary)
-        XCTAssertNil(nullDictionaryOfNull.asBool)
-        XCTAssertNil(nullDictionaryOfNull.asDouble)
-        XCTAssertNil(nullDictionaryOfNull.asInt)
-        XCTAssertNil(nullDictionaryOfNull.asString)
-        XCTAssertNil(nullDictionaryOfNull.asData)
-        XCTAssertNil(nullDictionaryOfNull.asArray)
-        XCTAssertNil(nullDictionaryOfNull.asDictionary)
+        XCTAssertNil(nullDictionaryOfNull.bool)
+        XCTAssertNil(nullDictionaryOfNull.double)
+        XCTAssertNil(nullDictionaryOfNull.int)
+        XCTAssertNil(nullDictionaryOfNull.string)
+        XCTAssertNil(nullDictionaryOfNull.data)
+        XCTAssertNil(nullDictionaryOfNull.array)
+        XCTAssertNil(nullDictionaryOfNull.dictionary)
         XCTAssertThrowsError(try null.asBool())
         XCTAssertThrowsError(try null.asDouble())
         XCTAssertThrowsError(try null.asInt())
@@ -147,7 +142,6 @@ class MapTests : XCTestCase {
         let bool = Map(boolValue)
         XCTAssertEqual(bool, true)
         XCTAssertEqual(bool, .bool(boolValue))
-        XCTAssertEqual(bool, .infer(boolValue))
         XCTAssertFalse(bool.isNull)
         XCTAssert(bool.isBool)
         XCTAssertFalse(bool.isDouble)
@@ -156,13 +150,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(bool.isData)
         XCTAssertFalse(bool.isArray)
         XCTAssertFalse(bool.isDictionary)
-        XCTAssertEqual(bool.asBool, boolValue)
-        XCTAssertNil(bool.asDouble)
-        XCTAssertNil(bool.asInt)
-        XCTAssertNil(bool.asString)
-        XCTAssertNil(bool.asData)
-        XCTAssertNil(bool.asArray)
-        XCTAssertNil(bool.asDictionary)
+        XCTAssertEqual(bool.bool, boolValue)
+        XCTAssertNil(bool.double)
+        XCTAssertNil(bool.int)
+        XCTAssertNil(bool.string)
+        XCTAssertNil(bool.data)
+        XCTAssertNil(bool.array)
+        XCTAssertNil(bool.dictionary)
         XCTAssertEqual(try bool.asBool(), boolValue)
         XCTAssertThrowsError(try bool.asDouble())
         XCTAssertThrowsError(try bool.asInt())
@@ -175,7 +169,6 @@ class MapTests : XCTestCase {
         let double = Map(doubleValue)
         XCTAssertEqual(double, 4.20)
         XCTAssertEqual(double, .double(doubleValue))
-        XCTAssertEqual(double, .infer(doubleValue))
         XCTAssertFalse(double.isNull)
         XCTAssertFalse(double.isBool)
         XCTAssert(double.isDouble)
@@ -184,13 +177,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(double.isData)
         XCTAssertFalse(double.isArray)
         XCTAssertFalse(double.isDictionary)
-        XCTAssertNil(double.asBool)
-        XCTAssertEqual(double.asDouble, doubleValue)
-        XCTAssertNil(double.asInt)
-        XCTAssertNil(double.asString)
-        XCTAssertNil(double.asData)
-        XCTAssertNil(double.asArray)
-        XCTAssertNil(double.asDictionary)
+        XCTAssertNil(double.bool)
+        XCTAssertEqual(double.double, doubleValue)
+        XCTAssertNil(double.int)
+        XCTAssertNil(double.string)
+        XCTAssertNil(double.data)
+        XCTAssertNil(double.array)
+        XCTAssertNil(double.dictionary)
         XCTAssertThrowsError(try double.asBool())
         XCTAssertEqual(try double.asDouble(), doubleValue)
         XCTAssertThrowsError(try double.asInt())
@@ -203,7 +196,6 @@ class MapTests : XCTestCase {
         let int = Map(intValue)
         XCTAssertEqual(int, 1969)
         XCTAssertEqual(int, .int(intValue))
-        XCTAssertEqual(int, .infer(intValue))
         XCTAssertFalse(int.isNull)
         XCTAssertFalse(int.isBool)
         XCTAssertFalse(int.isDouble)
@@ -212,13 +204,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(int.isData)
         XCTAssertFalse(int.isArray)
         XCTAssertFalse(int.isDictionary)
-        XCTAssertNil(int.asBool)
-        XCTAssertNil(int.asDouble)
-        XCTAssertEqual(int.asInt, intValue)
-        XCTAssertNil(int.asString)
-        XCTAssertNil(int.asData)
-        XCTAssertNil(int.asArray)
-        XCTAssertNil(int.asDictionary)
+        XCTAssertNil(int.bool)
+        XCTAssertNil(int.double)
+        XCTAssertEqual(int.int, intValue)
+        XCTAssertNil(int.string)
+        XCTAssertNil(int.data)
+        XCTAssertNil(int.array)
+        XCTAssertNil(int.dictionary)
         XCTAssertThrowsError(try null.asBool())
         XCTAssertThrowsError(try null.asDouble())
         XCTAssertEqual(try int.asInt(), intValue)
@@ -231,7 +223,6 @@ class MapTests : XCTestCase {
         let string = Map(stringValue)
         XCTAssertEqual(string, "foo")
         XCTAssertEqual(string, .string(stringValue))
-        XCTAssertEqual(string, .infer(stringValue))
         XCTAssertFalse(string.isNull)
         XCTAssertFalse(string.isBool)
         XCTAssertFalse(string.isDouble)
@@ -240,13 +231,13 @@ class MapTests : XCTestCase {
         XCTAssertFalse(string.isData)
         XCTAssertFalse(string.isArray)
         XCTAssertFalse(string.isDictionary)
-        XCTAssertNil(string.asBool)
-        XCTAssertNil(string.asDouble)
-        XCTAssertNil(string.asInt)
-        XCTAssertEqual(string.asString, stringValue)
-        XCTAssertNil(string.asData)
-        XCTAssertNil(string.asArray)
-        XCTAssertNil(string.asDictionary)
+        XCTAssertNil(string.bool)
+        XCTAssertNil(string.double)
+        XCTAssertNil(string.int)
+        XCTAssertEqual(string.string, stringValue)
+        XCTAssertNil(string.data)
+        XCTAssertNil(string.array)
+        XCTAssertNil(string.dictionary)
         XCTAssertThrowsError(try string.asBool())
         XCTAssertThrowsError(try string.asDouble())
         XCTAssertThrowsError(try string.asInt())
@@ -255,10 +246,9 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try string.asArray())
         XCTAssertThrowsError(try string.asDictionary())
 
-        let dataValue: C7.Data = "foo"
+        let dataValue = Data("foo")
         let data = Map(dataValue)
         XCTAssertEqual(data, .data(dataValue))
-        XCTAssertEqual(data, .infer(dataValue))
         XCTAssertFalse(data.isNull)
         XCTAssertFalse(data.isBool)
         XCTAssertFalse(data.isDouble)
@@ -267,13 +257,13 @@ class MapTests : XCTestCase {
         XCTAssert(data.isData)
         XCTAssertFalse(data.isArray)
         XCTAssertFalse(data.isDictionary)
-        XCTAssertNil(data.asBool)
-        XCTAssertNil(data.asDouble)
-        XCTAssertNil(data.asInt)
-        XCTAssertNil(data.asString)
-        XCTAssertEqual(data.asData, dataValue)
-        XCTAssertNil(data.asArray)
-        XCTAssertNil(data.asDictionary)
+        XCTAssertNil(data.bool)
+        XCTAssertNil(data.double)
+        XCTAssertNil(data.int)
+        XCTAssertNil(data.string)
+        XCTAssertEqual(data.data, dataValue)
+        XCTAssertNil(data.array)
+        XCTAssertNil(data.dictionary)
         XCTAssertThrowsError(try data.asBool())
         XCTAssertThrowsError(try data.asDouble())
         XCTAssertThrowsError(try data.asInt())
@@ -286,7 +276,6 @@ class MapTests : XCTestCase {
         let array = Map([arrayValue])
         XCTAssertEqual(array, [1969])
         XCTAssertEqual(array, .array([.int(arrayValue)]))
-        XCTAssertEqual(array, .infer([arrayValue]))
         XCTAssertFalse(array.isNull)
         XCTAssertFalse(array.isBool)
         XCTAssertFalse(array.isDouble)
@@ -295,17 +284,17 @@ class MapTests : XCTestCase {
         XCTAssertFalse(array.isData)
         XCTAssert(array.isArray)
         XCTAssertFalse(array.isDictionary)
-        XCTAssertNil(array.asBool)
-        XCTAssertNil(array.asDouble)
-        XCTAssertNil(array.asInt)
-        XCTAssertNil(array.asString)
-        XCTAssertNil(array.asData)
-        if let a = array.asArray {
+        XCTAssertNil(array.bool)
+        XCTAssertNil(array.double)
+        XCTAssertNil(array.int)
+        XCTAssertNil(array.string)
+        XCTAssertNil(array.data)
+        if let a = array.array {
             XCTAssertEqual(a, [.int(arrayValue)])
         } else {
-            XCTAssertNotNil(array.asArray)
+            XCTAssertNotNil(array.array)
         }
-        XCTAssertNil(array.asDictionary)
+        XCTAssertNil(array.dictionary)
         XCTAssertThrowsError(try array.asBool())
         XCTAssertThrowsError(try array.asDouble())
         XCTAssertThrowsError(try array.asInt())
@@ -318,7 +307,6 @@ class MapTests : XCTestCase {
         let arrayOfOptional = Map([arrayOfOptionalValue])
         XCTAssertEqual(arrayOfOptional, [1969])
         XCTAssertEqual(arrayOfOptional, .array([.int(arrayValue)]))
-        XCTAssertEqual(arrayOfOptional, .infer([arrayOfOptionalValue]))
         XCTAssertFalse(arrayOfOptional.isNull)
         XCTAssertFalse(arrayOfOptional.isBool)
         XCTAssertFalse(arrayOfOptional.isDouble)
@@ -327,17 +315,17 @@ class MapTests : XCTestCase {
         XCTAssertFalse(arrayOfOptional.isData)
         XCTAssert(arrayOfOptional.isArray)
         XCTAssertFalse(arrayOfOptional.isDictionary)
-        XCTAssertNil(arrayOfOptional.asBool)
-        XCTAssertNil(arrayOfOptional.asDouble)
-        XCTAssertNil(arrayOfOptional.asInt)
-        XCTAssertNil(arrayOfOptional.asString)
-        XCTAssertNil(arrayOfOptional.asData)
-        if let a = arrayOfOptional.asArray {
+        XCTAssertNil(arrayOfOptional.bool)
+        XCTAssertNil(arrayOfOptional.double)
+        XCTAssertNil(arrayOfOptional.int)
+        XCTAssertNil(arrayOfOptional.string)
+        XCTAssertNil(arrayOfOptional.data)
+        if let a = arrayOfOptional.array {
             XCTAssertEqual(a, [.int(arrayValue)])
         } else {
-            XCTAssertNotNil(arrayOfOptional.asArray)
+            XCTAssertNotNil(arrayOfOptional.array)
         }
-        XCTAssertNil(arrayOfOptional.asDictionary)
+        XCTAssertNil(arrayOfOptional.dictionary)
         XCTAssertThrowsError(try arrayOfOptional.asBool())
         XCTAssertThrowsError(try arrayOfOptional.asDouble())
         XCTAssertThrowsError(try arrayOfOptional.asInt())
@@ -350,7 +338,6 @@ class MapTests : XCTestCase {
         let arrayOfNull = Map([arrayOfNullValue])
         XCTAssertEqual(arrayOfNull, [nil])
         XCTAssertEqual(arrayOfNull, .array([.null]))
-        XCTAssertEqual(arrayOfNull, .infer([arrayOfNullValue]))
         XCTAssertFalse(arrayOfNull.isNull)
         XCTAssertFalse(arrayOfNull.isBool)
         XCTAssertFalse(arrayOfNull.isDouble)
@@ -359,17 +346,17 @@ class MapTests : XCTestCase {
         XCTAssertFalse(arrayOfNull.isData)
         XCTAssert(arrayOfNull.isArray)
         XCTAssertFalse(arrayOfNull.isDictionary)
-        XCTAssertNil(arrayOfNull.asBool)
-        XCTAssertNil(arrayOfNull.asDouble)
-        XCTAssertNil(arrayOfNull.asInt)
-        XCTAssertNil(arrayOfNull.asString)
-        XCTAssertNil(arrayOfNull.asData)
-        if let a = arrayOfNull.asArray {
+        XCTAssertNil(arrayOfNull.bool)
+        XCTAssertNil(arrayOfNull.double)
+        XCTAssertNil(arrayOfNull.int)
+        XCTAssertNil(arrayOfNull.string)
+        XCTAssertNil(arrayOfNull.data)
+        if let a = arrayOfNull.array {
             XCTAssertEqual(a, [.null])
         } else {
-            XCTAssertNotNil(arrayOfNull.asArray)
+            XCTAssertNotNil(arrayOfNull.array)
         }
-        XCTAssertNil(arrayOfNull.asDictionary)
+        XCTAssertNil(arrayOfNull.dictionary)
         XCTAssertThrowsError(try arrayOfNull.asBool())
         XCTAssertThrowsError(try arrayOfNull.asDouble())
         XCTAssertThrowsError(try arrayOfNull.asInt())
@@ -382,7 +369,6 @@ class MapTests : XCTestCase {
         let dictionary = Map(["foo": dictionaryValue])
         XCTAssertEqual(dictionary, ["foo": 1969])
         XCTAssertEqual(dictionary, .dictionary(["foo": .int(dictionaryValue)]))
-        XCTAssertEqual(dictionary, .infer(["foo": dictionaryValue]))
         XCTAssertFalse(dictionary.isNull)
         XCTAssertFalse(dictionary.isBool)
         XCTAssertFalse(dictionary.isDouble)
@@ -391,16 +377,16 @@ class MapTests : XCTestCase {
         XCTAssertFalse(dictionary.isData)
         XCTAssertFalse(dictionary.isArray)
         XCTAssert(dictionary.isDictionary)
-        XCTAssertNil(dictionary.asBool)
-        XCTAssertNil(dictionary.asDouble)
-        XCTAssertNil(dictionary.asInt)
-        XCTAssertNil(dictionary.asString)
-        XCTAssertNil(dictionary.asData)
-        XCTAssertNil(dictionary.asArray)
-        if let d = dictionary.asDictionary {
+        XCTAssertNil(dictionary.bool)
+        XCTAssertNil(dictionary.double)
+        XCTAssertNil(dictionary.int)
+        XCTAssertNil(dictionary.string)
+        XCTAssertNil(dictionary.data)
+        XCTAssertNil(dictionary.array)
+        if let d = dictionary.dictionary {
             XCTAssertEqual(d, ["foo": .int(dictionaryValue)])
         } else {
-            XCTAssertNotNil(dictionary.asDictionary)
+            XCTAssertNotNil(dictionary.dictionary)
         }
         XCTAssertThrowsError(try dictionary.asBool())
         XCTAssertThrowsError(try dictionary.asDouble())
@@ -414,7 +400,6 @@ class MapTests : XCTestCase {
         let dictionaryOfOptional = Map(["foo": dictionaryOfOptionalValue])
         XCTAssertEqual(dictionaryOfOptional, ["foo": 1969])
         XCTAssertEqual(dictionaryOfOptional, .dictionary(["foo": .int(dictionaryValue)]))
-        XCTAssertEqual(dictionaryOfOptional, .infer(["foo": dictionaryOfOptionalValue]))
         XCTAssertFalse(dictionaryOfOptional.isNull)
         XCTAssertFalse(dictionaryOfOptional.isBool)
         XCTAssertFalse(dictionaryOfOptional.isDouble)
@@ -423,16 +408,16 @@ class MapTests : XCTestCase {
         XCTAssertFalse(dictionaryOfOptional.isData)
         XCTAssertFalse(dictionaryOfOptional.isArray)
         XCTAssert(dictionaryOfOptional.isDictionary)
-        XCTAssertNil(dictionaryOfOptional.asBool)
-        XCTAssertNil(dictionaryOfOptional.asDouble)
-        XCTAssertNil(dictionaryOfOptional.asInt)
-        XCTAssertNil(dictionaryOfOptional.asString)
-        XCTAssertNil(dictionaryOfOptional.asData)
-        XCTAssertNil(dictionaryOfOptional.asArray)
-        if let d = dictionaryOfOptional.asDictionary {
+        XCTAssertNil(dictionaryOfOptional.bool)
+        XCTAssertNil(dictionaryOfOptional.double)
+        XCTAssertNil(dictionaryOfOptional.int)
+        XCTAssertNil(dictionaryOfOptional.string)
+        XCTAssertNil(dictionaryOfOptional.data)
+        XCTAssertNil(dictionaryOfOptional.array)
+        if let d = dictionaryOfOptional.dictionary {
             XCTAssertEqual(d, ["foo": .int(dictionaryValue)])
         } else {
-            XCTAssertNotNil(dictionaryOfOptional.asDictionary)
+            XCTAssertNotNil(dictionaryOfOptional.dictionary)
         }
         XCTAssertThrowsError(try dictionaryOfOptional.asBool())
         XCTAssertThrowsError(try dictionaryOfOptional.asDouble())
@@ -446,7 +431,6 @@ class MapTests : XCTestCase {
         let dictionaryOfNull = Map(["foo": dictionaryOfNullValue])
         XCTAssertEqual(dictionaryOfNull, ["foo": nil])
         XCTAssertEqual(dictionaryOfNull, .dictionary(["foo": .null]))
-        XCTAssertEqual(dictionaryOfNull, .infer(["foo": dictionaryOfNullValue]))
         XCTAssertFalse(dictionaryOfNull.isNull)
         XCTAssertFalse(dictionaryOfNull.isBool)
         XCTAssertFalse(dictionaryOfNull.isDouble)
@@ -455,16 +439,16 @@ class MapTests : XCTestCase {
         XCTAssertFalse(dictionaryOfNull.isData)
         XCTAssertFalse(dictionaryOfNull.isArray)
         XCTAssert(dictionaryOfNull.isDictionary)
-        XCTAssertNil(dictionaryOfNull.asBool)
-        XCTAssertNil(dictionaryOfNull.asDouble)
-        XCTAssertNil(dictionaryOfNull.asInt)
-        XCTAssertNil(dictionaryOfNull.asString)
-        XCTAssertNil(dictionaryOfNull.asData)
-        XCTAssertNil(dictionaryOfNull.asArray)
-        if let d = dictionaryOfNull.asDictionary {
+        XCTAssertNil(dictionaryOfNull.bool)
+        XCTAssertNil(dictionaryOfNull.double)
+        XCTAssertNil(dictionaryOfNull.int)
+        XCTAssertNil(dictionaryOfNull.string)
+        XCTAssertNil(dictionaryOfNull.data)
+        XCTAssertNil(dictionaryOfNull.array)
+        if let d = dictionaryOfNull.dictionary {
             XCTAssertEqual(d, ["foo": .null])
         } else {
-            XCTAssertNotNil(dictionaryOfNull.asDictionary)
+            XCTAssertNotNil(dictionaryOfNull.dictionary)
         }
         XCTAssertThrowsError(try dictionaryOfNull.asBool())
         XCTAssertThrowsError(try dictionaryOfNull.asDouble())
@@ -481,7 +465,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try null.asDouble(converting: true), 0)
         XCTAssertEqual(try null.asInt(converting: true), 0)
         XCTAssertEqual(try null.asString(converting: true), "null")
-        XCTAssertEqual(try null.asData(converting: true), [])
+        XCTAssertEqual(try null.asData(converting: true), Data())
         XCTAssertEqual(try null.asArray(converting: true), [])
         XCTAssertEqual(try null.asDictionary(converting: true), [:])
 
@@ -490,7 +474,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try `true`.asDouble(converting: true), 1.0)
         XCTAssertEqual(try `true`.asInt(converting: true), 1)
         XCTAssertEqual(try `true`.asString(converting: true), "true")
-        XCTAssertEqual(try `true`.asData(converting: true), [0xff])
+        XCTAssertEqual(try `true`.asData(converting: true), Data([0xff]))
         XCTAssertThrowsError(try `true`.asArray(converting: true))
         XCTAssertThrowsError(try `true`.asDictionary(converting: true))
 
@@ -499,7 +483,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try `false`.asDouble(converting: true), 0.0)
         XCTAssertEqual(try `false`.asInt(converting: true), 0)
         XCTAssertEqual(try `false`.asString(converting: true), "false")
-        XCTAssertEqual(try `false`.asData(converting: true), [0x00])
+        XCTAssertEqual(try `false`.asData(converting: true), Data([0x00]))
         XCTAssertThrowsError(try `false`.asArray(converting: true))
         XCTAssertThrowsError(try `false`.asDictionary(converting: true))
 
@@ -544,7 +528,7 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try string.asDouble(converting: true))
         XCTAssertThrowsError(try string.asInt(converting: true))
         XCTAssertEqual(try string.asString(converting: true), "foo")
-        XCTAssertEqual(try string.asData(converting: true), Data("foo"))
+        XCTAssertEqual(try string.asData(converting: true), Quark.Data("foo"))
         XCTAssertThrowsError(try string.asArray(converting: true))
         XCTAssertThrowsError(try string.asDictionary(converting: true))
 
@@ -553,7 +537,7 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try stringTrue.asDouble(converting: true))
         XCTAssertThrowsError(try stringTrue.asInt(converting: true))
         XCTAssertEqual(try stringTrue.asString(converting: true), "TRUE")
-        XCTAssertEqual(try stringTrue.asData(converting: true), Data("TRUE"))
+        XCTAssertEqual(try stringTrue.asData(converting: true), Quark.Data("TRUE"))
         XCTAssertThrowsError(try stringTrue.asArray(converting: true))
         XCTAssertThrowsError(try stringTrue.asDictionary(converting: true))
 
@@ -562,7 +546,7 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try stringFalse.asDouble(converting: true))
         XCTAssertThrowsError(try stringFalse.asInt(converting: true))
         XCTAssertEqual(try stringFalse.asString(converting: true), "FALSE")
-        XCTAssertEqual(try stringFalse.asData(converting: true), Data("FALSE"))
+        XCTAssertEqual(try stringFalse.asData(converting: true), Quark.Data("FALSE"))
         XCTAssertThrowsError(try stringFalse.asArray(converting: true))
         XCTAssertThrowsError(try stringFalse.asDictionary(converting: true))
 
@@ -571,7 +555,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try stringDouble.asDouble(converting: true), 4.20)
         XCTAssertThrowsError(try stringDouble.asInt(converting: true))
         XCTAssertEqual(try stringDouble.asString(converting: true), "4.20")
-        XCTAssertEqual(try stringDouble.asData(converting: true), Data("4.20"))
+        XCTAssertEqual(try stringDouble.asData(converting: true), Quark.Data("4.20"))
         XCTAssertThrowsError(try stringDouble.asArray(converting: true))
         XCTAssertThrowsError(try stringDouble.asDictionary(converting: true))
 
@@ -580,25 +564,25 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try stringInt.asDouble(converting: true), 1969.0)
         XCTAssertEqual(try stringInt.asInt(converting: true), 1969)
         XCTAssertEqual(try stringInt.asString(converting: true), "1969")
-        XCTAssertEqual(try stringInt.asData(converting: true), Data("1969"))
+        XCTAssertEqual(try stringInt.asData(converting: true), Quark.Data("1969"))
         XCTAssertThrowsError(try stringInt.asArray(converting: true))
         XCTAssertThrowsError(try stringInt.asDictionary(converting: true))
 
-        let data: Map = .data("foo")
+        let data: Map = .data(Data("foo"))
         XCTAssertEqual(try data.asBool(converting: true), true)
         XCTAssertThrowsError(try data.asDouble(converting: true))
         XCTAssertThrowsError(try data.asInt(converting: true))
         XCTAssertEqual(try data.asString(converting: true), "foo")
-        XCTAssertEqual(try data.asData(converting: true), "foo")
+        XCTAssertEqual(try data.asData(converting: true), Data("foo"))
         XCTAssertThrowsError(try data.asArray(converting: true))
         XCTAssertThrowsError(try data.asDictionary(converting: true))
 
-        let dataEmpty: Map = .data([])
+        let dataEmpty: Map = .data(Data())
         XCTAssertEqual(try dataEmpty.asBool(converting: true), false)
         XCTAssertThrowsError(try dataEmpty.asDouble(converting: true))
         XCTAssertThrowsError(try dataEmpty.asInt(converting: true))
         XCTAssertEqual(try dataEmpty.asString(converting: true), "")
-        XCTAssertEqual(try dataEmpty.asData(converting: true), [])
+        XCTAssertEqual(try dataEmpty.asData(converting: true), Data())
         XCTAssertThrowsError(try dataEmpty.asArray(converting: true))
         XCTAssertThrowsError(try dataEmpty.asDictionary(converting: true))
 
@@ -644,7 +628,7 @@ class MapTests : XCTestCase {
             "array": [
                 [],
                 true,
-                .data("bar"),
+                .data(Data("bar")),
                 [:],
                 4.20,
                 1969,
@@ -652,11 +636,11 @@ class MapTests : XCTestCase {
                 "foo\nbar",
             ],
             "bool": true,
-            "data": .data("bar"),
+            "data": .data(Data("bar")),
             "dictionary": [
                 "array": [],
                 "bool": true,
-                "data": .data("bar"),
+                "data": .data(Data("bar")),
                 "dictionary": [:],
                 "double": 4.20,
                 "int": 1969,
@@ -674,15 +658,6 @@ class MapTests : XCTestCase {
         XCTAssertEqual(data.description, description)
     }
 
-    func testStringInterpolationLiteral() {
-        var data: Map = "\(1969)+\(4.20)"
-        XCTAssertEqual(data, .string("1969+4.2"))
-        data = Map(unicodeScalarLiteral: "foo")
-        XCTAssertEqual(data, .string("foo"))
-        data = Map(extendedGraphemeClusterLiteral: "foo")
-        XCTAssertEqual(data, .string("foo"))
-    }
-
     func testEquality() {
         let a: Map = "foo"
         let b: Map = 1968
@@ -693,28 +668,28 @@ class MapTests : XCTestCase {
         var data: Map
 
         data = [["foo"]]
-        XCTAssertEqual(try data.get(at: 0, 0), "foo")
-        try data.set(value: "bar", at: 0, 0)
-        XCTAssertEqual(try data.get(at: 0, 0), "bar")
+        XCTAssertEqual(try data.get(0, 0), "foo")
+        try data.set("bar", for: 0, 0)
+        XCTAssertEqual(try data.get(0, 0), "bar")
 
         data = [["foo": "bar"]]
-        XCTAssertEqual(try data.get(at: 0, "foo"), "bar")
-        try data.set(value: "baz", at: 0, "foo")
-        XCTAssertEqual(try data.get(at: 0, "foo"), "baz")
+        XCTAssertEqual(try data.get(0, "foo"), "bar")
+        try data.set("baz", for: 0, "foo")
+        XCTAssertEqual(try data.get(0, "foo"), "baz")
 
         data = ["foo": ["bar"]]
-        XCTAssertEqual(try data.get(at: "foo", 0), "bar")
-        try data.set(value: "baz", at: "foo", 0)
-        XCTAssertEqual(try data.get(at: "foo", 0), "baz")
+        XCTAssertEqual(try data.get("foo", 0), "bar")
+        try data.set("baz", for: "foo", 0)
+        XCTAssertEqual(try data.get("foo", 0), "baz")
 
         data = ["foo": ["bar": "baz"]]
-        XCTAssertEqual(try data.get(at: "foo", "bar"), "baz")
-        try data.set(value: "buh", at: "foo", "bar")
-        XCTAssertEqual(try data.get(at: "foo", "bar"), "buh")
-        try data.set(value: "uhu", at: "foo", "yoo")
-        XCTAssertEqual(try data.get(at: "foo", "bar"), "buh")
-        XCTAssertEqual(try data.get(at: "foo", "yoo"), "uhu")
-        try data.remove(at: "foo", "bar")
+        XCTAssertEqual(try data.get("foo", "bar"), "baz")
+        try data.set("buh", for: "foo", "bar")
+        XCTAssertEqual(try data.get("foo", "bar"), "buh")
+        try data.set("uhu", for: "foo", "yoo")
+        XCTAssertEqual(try data.get("foo", "bar"), "buh")
+        XCTAssertEqual(try data.get("foo", "yoo"), "uhu")
+        try data.remove("foo", "bar")
         XCTAssertEqual(data, ["foo": ["yoo": "uhu"]])
     }
 
@@ -751,8 +726,8 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try Int(map: nil))
         XCTAssertEqual(try String(map: "foo"), "foo")
         XCTAssertThrowsError(try String(map: nil))
-        XCTAssertEqual(try Data(map: .data("foo")), Data("foo"))
-        XCTAssertThrowsError(try Data(map: nil))
+        XCTAssertEqual(try Data(map: .data(Data("foo"))), Data("foo"))
+        XCTAssertThrowsError(try Quark.Data(map: nil))
         XCTAssertEqual(try Optional<Int>(map: nil), nil)
         XCTAssertEqual(try Optional<Int>(map: 1969), 1969)
         XCTAssertThrowsError(try Optional<Baz>(map: nil))
@@ -765,6 +740,22 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try Dictionary<String, Int>(map: nil))
         XCTAssertThrowsError(try Dictionary<Int, Int>(map: [:]))
         XCTAssertThrowsError(try Dictionary<String, Baz>(map: [:]))
+
+        let map: Map = [
+            "fey": [
+                "foo": "bar",
+                "fuu": "baz"
+            ]
+        ]
+
+        struct Fey : MapInitializable {
+            let foo: String
+            let fuu: String
+        }
+
+        let fey: Fey = try map.get("fey")
+        XCTAssertEqual(fey.foo, "bar")
+        XCTAssertEqual(fey.fuu, "baz")
     }
 
     func testMapRepresentable() throws {
@@ -788,7 +779,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(4.2.map, 4.2)
         XCTAssertEqual(1969.map, 1969)
         XCTAssertEqual("foo".map, "foo")
-        XCTAssertEqual(Data("foo").map, .data("foo"))
+        XCTAssertEqual(Data("foo").map, .data(Data("foo")))
         let optional: Int? = nil
         XCTAssertEqual(optional.map, nil)
         XCTAssertEqual(Int?(1969).map, 1969)
@@ -817,7 +808,6 @@ extension MapTests {
            ("testCreation", testCreation),
            ("testConversion", testConversion),
            ("testDescription", testDescription),
-           ("testStringInterpolationLiteral", testStringInterpolationLiteral),
            ("testEquality", testEquality),
            ("testIndexPath", testIndexPath),
            ("testMapInitializable", testMapInitializable),

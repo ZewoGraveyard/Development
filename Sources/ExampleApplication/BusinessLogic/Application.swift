@@ -10,7 +10,7 @@ public struct Application {
     public func signIn(email: String, password: String) throws -> String {
         let user = try store.fetchUser(email: email)
         if user.model.password != password {
-            throw ClientError.badRequest
+            throw HTTPError.badRequest
         }
         return user.id
     }
