@@ -26,9 +26,9 @@ public struct Property {
 
 /// Retrieve properties for `instance`
 public func properties(_ instance: Any) throws -> [Property] {
-    let properties = try Quark.properties(type(of: instance))
+    let props = try properties(type(of: instance))
     var copy = instance
-    return properties.map { nextPropertyForDescription($0, pointer: storageForInstance(&copy)) }
+    return props.map { nextPropertyForDescription($0, pointer: storageForInstance(&copy)) }
 }
 
 /// Retrieve property descriptions for `type`

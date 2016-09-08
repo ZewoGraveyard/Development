@@ -21,8 +21,8 @@ private func propertyForType(_ type: Any.Type, withName key: String) throws -> P
     return property
 }
 
-private func setValue(_ value: Any, forKey key: String, property: Property.Description, storage: UnsafeMutablePointer<UInt8>) throws {
-    guard Quark.value(value, is: property.type) else { throw ReflectionError.valueIsNotType(value: value, type: property.type) }
-    var copy: Any = value
+private func setValue(_ val: Any, forKey key: String, property: Property.Description, storage: UnsafeMutablePointer<UInt8>) throws {
+    guard value(val, is: property.type) else { throw ReflectionError.valueIsNotType(value: val, type: property.type) }
+    var copy: Any = val
     storage.advanced(by: property.offset).consume(buffer: buffer(instance: &copy))
 }

@@ -17,13 +17,6 @@ coverage:
 
     changes: true
 
-  ignore:
-    - "ExampleDomain/*"
-    - "ExampleApplication/*"
-    - "Mustache/*"
-    - "C7/*"
-    - "S4/*"
-
   notify:
     slack:
       default:

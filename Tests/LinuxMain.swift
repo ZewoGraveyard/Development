@@ -1,10 +1,7 @@
 import XCTest
-@testable import QuarkTests
+@testable import FluxTests
 
 XCTMain([
-    // Quark
-    testCase(QuarkTests.allTests),
-
     // Venice
     testCase(ChannelTests.allTests),
     testCase(CoroutineTests.allTests),

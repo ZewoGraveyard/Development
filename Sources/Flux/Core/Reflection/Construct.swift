@@ -19,10 +19,10 @@ private func constructValueType<T>(_ constructor: (Property.Description) throws 
 
 private func constructType(storage: UnsafeMutablePointer<UInt8>, values: inout [Any], properties: [Property.Description], constructor: (Property.Description) throws -> Any) throws {
     for property in properties {
-        var value = try constructor(property)
-        guard Quark.value(value, is: property.type) else { throw ReflectionError.valueIsNotType(value: value, type: property.type) }
-        values.append(value)
-        storage.advanced(by: property.offset).consume(buffer: buffer(instance: &value))
+        var val = try constructor(property)
+        guard value(val, is: property.type) else { throw ReflectionError.valueIsNotType(value: val, type: property.type) }
+        values.append(val)
+        storage.advanced(by: property.offset).consume(buffer: buffer(instance: &val))
     }
 }
 

@@ -1,5 +1,6 @@
 os:
   - osx
+  - linux
 language: generic
 sudo: required
 osx_image: xcode8
@@ -10,7 +11,8 @@ install:
 script:
   - set -o
   - swift build
+  - swift test
   - swift package generate-xcodeproj
-  - WORKING_DIRECTORY=$(PWD) xcodebuild -toolchain org.swift.3020160818a -project Quark.xcodeproj -scheme Quark -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES test | xcpretty
+  - xcodebuild -toolchain org.swift.3020160818a -project Flux.xcodeproj -scheme Flux -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES test | xcpretty
 after_success:
   - bash <(curl -s https://codecov.io/bash)
