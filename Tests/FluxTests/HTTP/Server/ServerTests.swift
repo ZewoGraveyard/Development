@@ -67,10 +67,10 @@ final class ServerStream : Flux.Stream {
 }
 
 class TestHost : Flux.Host {
-    let data: Flux.Data
+    let data: Data
     let closeOnFlush: Bool
 
-    init(data: Flux.Data, closeOnFlush: Bool = false) {
+    init(data: Data, closeOnFlush: Bool = false) {
         self.data = data
         self.closeOnFlush = closeOnFlush
     }
