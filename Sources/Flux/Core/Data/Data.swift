@@ -18,47 +18,6 @@ extension Data : DataRepresentable {
 
 public protocol DataConvertible : DataInitializable, DataRepresentable {}
 
-#if os(Linux)
-extension Data : RangeReplaceableCollection {
-    public mutating func replaceSubrange<ByteCollection : Collection>(_ subrange: Range<Index>, with newElements: ByteCollection) where ByteCollection.Iterator.Element == Data.Iterator.Element {
-        // Calculate this once, it may not be O(1)
-        let replacementCount : Int = numericCast(newElements.count)
-        let currentCount = self.count
-        let subrangeCount = subrange.count
-
-        if currentCount < subrange.lowerBound + subrangeCount {
-            if subrangeCount == 0 {
-                preconditionFailure("location \(subrange.lowerBound) exceeds data count \(currentCount)")
-            } else {
-                preconditionFailure("range \(subrange) exceeds data count \(currentCount)")
-            }
-        }
-
-        let resultCount = currentCount - subrangeCount + replacementCount
-        if resultCount != currentCount {
-            // This may realloc.
-            // In the future, if we keep the malloced pointer and count inside this struct/ref instead of deferring to NSData, we may be able to do this more efficiently.
-            self.count = resultCount
-        }
-
-        let shift = resultCount - currentCount
-        let start = subrange.lowerBound
-
-        self.withUnsafeMutableBytes { (bytes : UnsafeMutablePointer<UInt8>) -> () in
-            if shift != 0 {
-                let destination = bytes + start + replacementCount
-                let source = bytes + start + subrangeCount
-                memmove(destination, source, currentCount - start - subrangeCount)
-            }
-
-            if replacementCount != 0 {
-                newElements._copyContents(initializing: bytes + start)
-            }
-        }
-    }
-}
-#endif
-
 extension Data {
     public init(_ string: String) {
         self = Data(string.utf8)
