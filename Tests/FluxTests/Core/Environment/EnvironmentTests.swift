@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class EnvironmentTests : XCTestCase {
     func testEnvironment() throws {

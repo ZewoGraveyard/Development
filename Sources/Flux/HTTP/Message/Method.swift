@@ -1,17 +1,4 @@
-public enum Method {
-    case delete
-    case get
-    case head
-    case post
-    case put
-    case connect
-    case options
-    case trace
-    case patch
-    case other(method: String)
-}
-
-extension Method {
+extension Request.Method {
     init(_ rawValue: String) {
         #if swift(>=3.0)
         let method = rawValue.uppercased()
@@ -43,7 +30,7 @@ extension Method {
     }
 }
 
-extension Method : CustomStringConvertible {
+extension Request.Method : CustomStringConvertible {
     public var description: String {
         #if swift(>=3.0)
         switch self {
@@ -75,7 +62,7 @@ extension Method : CustomStringConvertible {
     }
 }
 
-extension Method : Hashable {
+extension Request.Method : Hashable {
     public var hashValue: Int {
         switch self {
         case .delete:            return 0
@@ -92,6 +79,6 @@ extension Method : Hashable {
     }
 }
 
-public func ==(lhs: Method, rhs: Method) -> Bool {
+public func ==(lhs: Request.Method, rhs: Request.Method) -> Bool {
     return lhs.description == rhs.description
 }

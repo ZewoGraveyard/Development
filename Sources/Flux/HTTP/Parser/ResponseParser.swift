@@ -159,7 +159,7 @@ func onResponseMessageComplete(_ parser: Parser?) -> Int32 {
     return parser!.pointee.data.assumingMemoryBound(to: ResponseParserContext.self).withPointee {
         let response = Response(
             version: $0.version,
-            status: Status(statusCode: $0.statusCode, reasonPhrase: $0.reasonPhrase),
+            status: Response.Status(statusCode: $0.statusCode, reasonPhrase: $0.reasonPhrase),
             headers: $0.headers,
             cookieHeaders: $0.cookieHeaders,
             body: .buffer($0.body)

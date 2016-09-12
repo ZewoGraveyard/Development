@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class TrieRouteMatcherTests : XCTestCase {
     let ok = BasicResponder { request in
@@ -191,7 +191,7 @@ class TrieRouteMatcherTests : XCTestCase {
     }
 
     func testPerformance() {
-        let routePairs: [(Quark.Method, String)] = [
+        let routePairs: [(Request.Method, String)] = [
             // Objects
             (.post, "/1/classes/:className"),
             (.get, "/1/classes/:className/:objectId"),
@@ -235,7 +235,7 @@ class TrieRouteMatcherTests : XCTestCase {
             (.post, "/1/functions"),
             ]
 
-        let requestPairs: [(Quark.Method, String)] = [
+        let requestPairs: [(Request.Method, String)] = [
             // Objects
             (.post, "/1/classes/test"),
             (.get, "/1/classes/test/test"),

@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 import CHTTPParser
 
 let requestCount = [
@@ -17,7 +17,7 @@ let bufferSizes = [
     2048
 ]
 
-let methods: [Quark.Method] = [
+let methods: [Request.Method] = [
     .delete,
     .get,
     .head,
@@ -213,7 +213,7 @@ class RequestParserTests : XCTestCase {
     }
 
     func testUnknownMethod() {
-        XCTAssertEqual(Quark.Method(code: 1969), .other(method: "UNKNOWN"))
+        XCTAssertEqual(Request.Method(code: 1969), .other(method: "UNKNOWN"))
     }
 
     func testDuplicateHeaders() throws {

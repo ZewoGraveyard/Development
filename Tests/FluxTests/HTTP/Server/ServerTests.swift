@@ -1,8 +1,8 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 extension Server {
-    init(host: Quark.Host, responder: Responder) throws {
+    init(host: Flux.Host, responder: Responder) throws {
         self.tcpHost = host
         self.host = "127.0.0.1"
         self.port = 8080
@@ -13,7 +13,7 @@ extension Server {
     }
 }
 
-final class ServerStream : Quark.Stream {
+final class ServerStream : Flux.Stream {
     var inputBuffer: Data
     var outputBuffer = Data()
     var closed = false
@@ -66,16 +66,16 @@ final class ServerStream : Quark.Stream {
     }
 }
 
-class TestHost : Quark.Host {
-    let data: Quark.Data
+class TestHost : Flux.Host {
+    let data: Flux.Data
     let closeOnFlush: Bool
 
-    init(data: Quark.Data, closeOnFlush: Bool = false) {
+    init(data: Flux.Data, closeOnFlush: Bool = false) {
         self.data = data
         self.closeOnFlush = closeOnFlush
     }
 
-    func accept(deadline: Double) throws -> Quark.Stream {
+    func accept(deadline: Double) throws -> Flux.Stream {
         return ServerStream(data, closeOnFlush: closeOnFlush)
     }
 }
@@ -107,7 +107,7 @@ class ServerTests : XCTestCase {
 
     func testServerRecover() throws {
         var called = false
-        var stream: Quark.Stream = ServerStream()
+        var stream: Flux.Stream = ServerStream()
 
         let responder = BasicResponder { request in
             called = true
@@ -128,7 +128,7 @@ class ServerTests : XCTestCase {
 
     func testServerNoRecover() throws {
         var called = false
-        var stream: Quark.Stream = ServerStream()
+        var stream: Flux.Stream = ServerStream()
 
         let responder = BasicResponder { request in
             called = true
@@ -149,7 +149,7 @@ class ServerTests : XCTestCase {
 
     func testBrokenPipe() throws {
         var called = false
-        var stream: Quark.Stream = ServerStream()
+        var stream: Flux.Stream = ServerStream()
 
         let responder = BasicResponder { request in
             called = true
@@ -171,7 +171,7 @@ class ServerTests : XCTestCase {
 
     func testNotKeepAlive() throws {
         var called = false
-        var stream: Quark.Stream = ServerStream()
+        var stream: Flux.Stream = ServerStream()
 
         let responder = BasicResponder { request in
             called = true
@@ -196,7 +196,7 @@ class ServerTests : XCTestCase {
     func testUpgradeConnection() throws {
         var called = false
         var upgradeCalled = false
-        var stream: Quark.Stream = ServerStream()
+        var stream: Flux.Stream = ServerStream()
 
         let responder = BasicResponder { request in
             called = true

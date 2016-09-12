@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 let map: [Int32: SystemError] = [
     EPERM: .operationNotPermitted,

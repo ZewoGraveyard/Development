@@ -8,7 +8,7 @@ extension http_errno : Error, CustomStringConvertible {
     }
 }
 
-extension Method {
+extension Request.Method {
     init(code: Int) {
         switch code {
         case 00: self = .delete

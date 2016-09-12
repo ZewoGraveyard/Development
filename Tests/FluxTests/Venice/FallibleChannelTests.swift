@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 struct SomeError : Error {}
 struct NastyError : Error {}

@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class URLEncodedFormParserTests : XCTestCase {
     func testSingleValue() throws {

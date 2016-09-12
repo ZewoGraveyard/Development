@@ -173,7 +173,7 @@ extension Client {
         return try request(method: .options, uri: uri, headers: headers, body: body, middleware: middleware)
     }
 
-    private func request(method: Method, uri: String, headers: Headers = [:], body: DataRepresentable = Data(), middleware: [Middleware] = []) throws -> Response {
+    private func request(method: Request.Method, uri: String, headers: Headers = [:], body: DataRepresentable = Data(), middleware: [Middleware] = []) throws -> Response {
         let req = try Request(method: method, uri: URI(uri), headers: headers, body: body.data)
         return try request(req, middleware: middleware)
     }
@@ -208,7 +208,7 @@ extension Client {
         return try request(method: .options, uri: uri, headers: headers, body: body, middleware: middleware)
     }
 
-    fileprivate static func request(method: Method, uri: String, headers: Headers = [:], body: DataRepresentable, middleware: [Middleware] = []) throws -> Response {
+    fileprivate static func request(method: Request.Method, uri: String, headers: Headers = [:], body: DataRepresentable, middleware: [Middleware] = []) throws -> Response {
         let clientURI = try URI(uri)
         let client = try getCachedClient(uri: clientURI)
         let requestURI = URI(path: clientURI.path ?? "/", query: clientURI.query, fragment: clientURI.fragment)

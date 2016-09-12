@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 class PerformanceTests : XCTestCase {
     let dictionary: [String : Any] = ["firstName": "Brad", "lastName": "Hilton", "age": 27]

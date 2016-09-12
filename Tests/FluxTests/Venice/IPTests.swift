@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 class IPTests : XCTestCase {
     func testErrorDescription() {

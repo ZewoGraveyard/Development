@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 class TCPTests : XCTestCase {
     func testConnectionRefused() throws {

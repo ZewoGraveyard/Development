@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 let responseCount = [
     1,
@@ -7,7 +7,7 @@ let responseCount = [
     5
 ]
 
-let statuses: [Status] = [
+let statuses: [Response.Status] = [
     .`continue`,
     .switchingProtocols,
     .processing,

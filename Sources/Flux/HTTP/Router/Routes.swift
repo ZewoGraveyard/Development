@@ -857,13 +857,13 @@ extension Routes {
 }
 
 extension Routes {
-    public func add(methods: Set<Method>, path: String = "", middleware: [Middleware] = [], responder: Responder) {
+    public func add(methods: Set<Request.Method>, path: String = "", middleware: [Middleware] = [], responder: Responder) {
         for method in methods {
             add(method: method, path: path, middleware: middleware, responder: responder)
         }
     }
 
-    public func add(methods: Set<Method>, path: String = "", middleware: [Middleware] = [], respond: @escaping Respond) {
+    public func add(methods: Set<Request.Method>, path: String = "", middleware: [Middleware] = [], respond: @escaping Respond) {
         add(methods: methods, path: path, middleware: middleware, responder: BasicResponder(respond))
     }
 }
@@ -872,7 +872,7 @@ extension Routes {
     public func add<
         A: PathParameterConvertible
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A) throws -> Response) {
@@ -895,7 +895,7 @@ extension Routes {
         A: PathParameterConvertible,
         B: PathParameterConvertible
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, B) throws -> Response) {
@@ -920,7 +920,7 @@ extension Routes {
         B: PathParameterConvertible,
         C: PathParameterConvertible
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, B, C) throws -> Response) {
@@ -947,7 +947,7 @@ extension Routes {
         C: PathParameterConvertible,
         D: PathParameterConvertible
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, B, C, D) throws -> Response) {
@@ -972,7 +972,7 @@ extension Routes {
     public func add<
         T: MapInitializable
         >(
-        method: Method,
+        method: Request.Method,
         path: String = "",
         middleware: [Middleware] = [],
         respond: @escaping (_ request: Request, _ content: T) throws -> Response) {
@@ -990,7 +990,7 @@ extension Routes {
         A: PathParameterConvertible,
         T: MapInitializable
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, T) throws -> Response) {
@@ -1019,7 +1019,7 @@ extension Routes {
         B: PathParameterConvertible,
         T: MapInitializable
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, B, T) throws -> Response) {
@@ -1049,7 +1049,7 @@ extension Routes {
         C: PathParameterConvertible,
         T: MapInitializable
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, B, C, T) throws -> Response) {
@@ -1082,7 +1082,7 @@ extension Routes {
         D: PathParameterConvertible,
         T: MapInitializable
         >(
-        method: Method,
+        method: Request.Method,
         path: String,
         middleware: [Middleware] = [],
         respond: @escaping (Request, A, B, C, D, T) throws -> Response) {
@@ -1145,7 +1145,7 @@ extension Routes {
         fallback(path, middleware: middleware, responder: BasicResponder(respond))
     }
 
-    public func add(method: Method, path: String = "", middleware: [Middleware] = [], respond: @escaping Respond) {
+    public func add(method: Request.Method, path: String = "", middleware: [Middleware] = [], respond: @escaping Respond) {
         add(method: method, path: path, middleware: middleware, responder: BasicResponder(respond))
     }
 }
@@ -1163,7 +1163,7 @@ extension Routes {
         }
     }
 
-    public func add(method: Method, path: String = "", middleware: [Middleware] = [], responder: Responder) {
+    public func add(method: Request.Method, path: String = "", middleware: [Middleware] = [], responder: Responder) {
         let action = middleware.chain(to: responder)
         let routePath = path
 

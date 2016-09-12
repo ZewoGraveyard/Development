@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class HTTPSerializerTests: XCTestCase {
     func testResponseSerializeBuffer() throws {
@@ -26,7 +26,7 @@ class HTTPSerializerTests: XCTestCase {
         let outStream = Drain()
         let serializer = ResponseSerializer(stream: outStream)
 
-        let response = Response { (stream: Quark.OutputStream) in
+        let response = Response { (stream: Flux.OutputStream) in
             try stream.write("foo")
             try stream.flush()
         }
@@ -48,7 +48,7 @@ class HTTPSerializerTests: XCTestCase {
         let inStream = Drain(buffer: "foo")
         let outStream = Drain()
         let serializer = RequestSerializer(stream: outStream)
-        let request = Request(body: inStream as Quark.InputStream)
+        let request = Request(body: inStream as Flux.InputStream)
 
         try serializer.serialize(request)
         XCTAssertEqual(outStream.buffer, Data("GET / HTTP/1.1\r\nTransfer-Encoding: chunked\r\n\r\n3\r\nfoo\r\n0\r\n\r\n"))
@@ -58,7 +58,7 @@ class HTTPSerializerTests: XCTestCase {
         let outStream = Drain()
         let serializer = RequestSerializer(stream: outStream)
 
-        let request = Request { (stream: Quark.OutputStream) in
+        let request = Request { (stream: Flux.OutputStream) in
             try stream.write("foo")
             try stream.flush()
         }

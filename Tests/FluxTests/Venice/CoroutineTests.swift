@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 class CoroutineTests : XCTestCase {
     var sum: Int = 0
@@ -53,7 +53,7 @@ class CoroutineTests : XCTestCase {
     }
 
     func testFork() {
-        _ = Quark.fork()
+        _ = Flux.fork()
     }
 
     func testLogicalCPUCount() {
@@ -61,7 +61,7 @@ class CoroutineTests : XCTestCase {
     }
 
     func testDump() {
-        Quark.dump()
+        Flux.dump()
     }
 
     func testEvery() {

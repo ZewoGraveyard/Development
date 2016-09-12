@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class RedirectMiddlewareTests : XCTestCase {
     let redirect = RedirectMiddleware(redirectTo: "/over-there", if: { $0.method == .get })

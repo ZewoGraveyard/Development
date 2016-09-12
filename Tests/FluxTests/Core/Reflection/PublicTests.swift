@@ -1,5 +1,5 @@
 import XCTest
-import Quark
+@testable import Flux
 
 struct Person : Equatable {
     var firstName: String
@@ -118,23 +118,23 @@ class PublicTests : XCTestCase {
     }
 
     func testValueIs() {
-        XCTAssert(Quark.value("John", is: String.self))
-        XCTAssert(Quark.value(89, is: Int.self))
-        XCTAssert(Quark.value(["Larry"], is: Array<String>.self))
-        XCTAssert(!Quark.value("John", is: Array<String>.self))
-        XCTAssert(!Quark.value(89, is: String.self))
-        XCTAssert(!Quark.value(["Larry"], is: Int.self))
+        XCTAssert(Flux.value("John", is: String.self))
+        XCTAssert(Flux.value(89, is: Int.self))
+        XCTAssert(Flux.value(["Larry"], is: Array<String>.self))
+        XCTAssert(!Flux.value("John", is: Array<String>.self))
+        XCTAssert(!Flux.value(89, is: String.self))
+        XCTAssert(!Flux.value(["Larry"], is: Int.self))
 
         let person = Person(firstName: "Hillary", lastName: "Mason", age: 32)
         let referencePerson = ReferencePerson()
         let subclassedPerson = SubclassedPerson()
-        XCTAssert(Quark.value(person, is: Person.self))
-        XCTAssert(Quark.value(referencePerson, is: ReferencePerson.self))
-        XCTAssert(!Quark.value(person, is: ReferencePerson.self))
-        XCTAssert(!Quark.value(referencePerson, is: Person.self))
-        XCTAssert(Quark.value(subclassedPerson, is: SubclassedPerson.self))
-        XCTAssert(Quark.value(subclassedPerson, is: ReferencePerson.self))
-        XCTAssert(!Quark.value(referencePerson, is: SubclassedPerson.self))
+        XCTAssert(Flux.value(person, is: Person.self))
+        XCTAssert(Flux.value(referencePerson, is: ReferencePerson.self))
+        XCTAssert(!Flux.value(person, is: ReferencePerson.self))
+        XCTAssert(!Flux.value(referencePerson, is: Person.self))
+        XCTAssert(Flux.value(subclassedPerson, is: SubclassedPerson.self))
+        XCTAssert(Flux.value(subclassedPerson, is: ReferencePerson.self))
+        XCTAssert(!Flux.value(referencePerson, is: SubclassedPerson.self))
     }
 
     func testMemoryProperties() {

@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class CookieTests : XCTestCase {
     func testConstruction() throws {

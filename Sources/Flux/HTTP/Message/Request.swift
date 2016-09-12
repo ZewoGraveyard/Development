@@ -1,4 +1,17 @@
 public struct Request : Message {
+    public enum Method {
+        case delete
+        case get
+        case head
+        case post
+        case put
+        case connect
+        case options
+        case trace
+        case patch
+        case other(method: String)
+    }
+    
     public var method: Method
     public var uri: URI
     public var version: Version

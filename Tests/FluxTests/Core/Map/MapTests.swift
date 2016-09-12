@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class MapTests : XCTestCase {
     func testCreation() {
@@ -528,7 +528,7 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try string.asDouble(converting: true))
         XCTAssertThrowsError(try string.asInt(converting: true))
         XCTAssertEqual(try string.asString(converting: true), "foo")
-        XCTAssertEqual(try string.asData(converting: true), Quark.Data("foo"))
+        XCTAssertEqual(try string.asData(converting: true), Data("foo"))
         XCTAssertThrowsError(try string.asArray(converting: true))
         XCTAssertThrowsError(try string.asDictionary(converting: true))
 
@@ -537,7 +537,7 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try stringTrue.asDouble(converting: true))
         XCTAssertThrowsError(try stringTrue.asInt(converting: true))
         XCTAssertEqual(try stringTrue.asString(converting: true), "TRUE")
-        XCTAssertEqual(try stringTrue.asData(converting: true), Quark.Data("TRUE"))
+        XCTAssertEqual(try stringTrue.asData(converting: true), Data("TRUE"))
         XCTAssertThrowsError(try stringTrue.asArray(converting: true))
         XCTAssertThrowsError(try stringTrue.asDictionary(converting: true))
 
@@ -546,7 +546,7 @@ class MapTests : XCTestCase {
         XCTAssertThrowsError(try stringFalse.asDouble(converting: true))
         XCTAssertThrowsError(try stringFalse.asInt(converting: true))
         XCTAssertEqual(try stringFalse.asString(converting: true), "FALSE")
-        XCTAssertEqual(try stringFalse.asData(converting: true), Quark.Data("FALSE"))
+        XCTAssertEqual(try stringFalse.asData(converting: true), Data("FALSE"))
         XCTAssertThrowsError(try stringFalse.asArray(converting: true))
         XCTAssertThrowsError(try stringFalse.asDictionary(converting: true))
 
@@ -555,7 +555,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try stringDouble.asDouble(converting: true), 4.20)
         XCTAssertThrowsError(try stringDouble.asInt(converting: true))
         XCTAssertEqual(try stringDouble.asString(converting: true), "4.20")
-        XCTAssertEqual(try stringDouble.asData(converting: true), Quark.Data("4.20"))
+        XCTAssertEqual(try stringDouble.asData(converting: true), Data("4.20"))
         XCTAssertThrowsError(try stringDouble.asArray(converting: true))
         XCTAssertThrowsError(try stringDouble.asDictionary(converting: true))
 
@@ -564,7 +564,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try stringInt.asDouble(converting: true), 1969.0)
         XCTAssertEqual(try stringInt.asInt(converting: true), 1969)
         XCTAssertEqual(try stringInt.asString(converting: true), "1969")
-        XCTAssertEqual(try stringInt.asData(converting: true), Quark.Data("1969"))
+        XCTAssertEqual(try stringInt.asData(converting: true), Data("1969"))
         XCTAssertThrowsError(try stringInt.asArray(converting: true))
         XCTAssertThrowsError(try stringInt.asDictionary(converting: true))
 
@@ -727,7 +727,7 @@ class MapTests : XCTestCase {
         XCTAssertEqual(try String(map: "foo"), "foo")
         XCTAssertThrowsError(try String(map: nil))
         XCTAssertEqual(try Data(map: .data(Data("foo"))), Data("foo"))
-        XCTAssertThrowsError(try Quark.Data(map: nil))
+        XCTAssertThrowsError(try Data(map: nil))
         XCTAssertEqual(try Optional<Int>(map: nil), nil)
         XCTAssertEqual(try Optional<Int>(map: 1969), 1969)
         XCTAssertThrowsError(try Optional<Baz>(map: nil))

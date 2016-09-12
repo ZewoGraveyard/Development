@@ -3,7 +3,7 @@ import CHTTPParser
 typealias RequestContext = UnsafeMutablePointer<RequestParserContext>
 
 struct RequestParserContext {
-    var method: Method! = nil
+    var method: Request.Method! = nil
     var uri: URI! = nil
     var version: Version = Version(major: 0, minor: 0)
     var headers: Headers = Headers([:])
@@ -122,7 +122,7 @@ func onRequestHeaderValue(_ parser: Parser?, data: UnsafePointer<Int8>?, length:
 
 func onRequestHeadersComplete(_ parser: Parser?) -> Int32 {
     return parser!.pointee.data.assumingMemoryBound(to: RequestParserContext.self).withPointee {
-        $0.method = Method(code: Int(parser!.pointee.method))
+        $0.method = Request.Method(code: Int(parser!.pointee.method))
         let major = Int(parser!.pointee.http_major)
         let minor = Int(parser!.pointee.http_minor)
         $0.version = Version(major: major, minor: minor)

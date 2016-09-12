@@ -1,5 +1,5 @@
 import XCTest
-@testable import Quark
+@testable import Flux
 
 class ResponseTests : XCTestCase {
     func testCreation() throws {
@@ -9,7 +9,7 @@ class ResponseTests : XCTestCase {
         XCTAssertEqual(response.headers, ["Content-Length": "0"])
         XCTAssertEqual(response.body, .buffer(Data()))
 
-        response = Response(body: Drain(buffer: "foo") as Quark.InputStream)
+        response = Response(body: Drain(buffer: "foo") as Flux.InputStream)
         XCTAssertEqual(response.status, .ok)
         XCTAssertEqual(response.version, Version(major: 1, minor: 1))
         XCTAssertEqual(response.headers, ["Transfer-Encoding": "chunked"])

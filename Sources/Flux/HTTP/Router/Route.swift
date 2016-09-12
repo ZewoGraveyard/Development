@@ -1,17 +1,17 @@
 public final class Route : Responder {
     public let path: String
     public let middleware: [Middleware]
-    public var actions: [Method: Responder]
+    public var actions: [Request.Method: Responder]
     public var fallback: Responder
 
-    public init(path: String, middleware: [Middleware] = [], actions: [Method: Responder] = [:], fallback: Responder = Route.defaultFallback) {
+    public init(path: String, middleware: [Middleware] = [], actions: [Request.Method: Responder] = [:], fallback: Responder = Route.defaultFallback) {
         self.path = path
         self.middleware = middleware
         self.actions = actions
         self.fallback = fallback
     }
 
-    public func addAction(method: Method, action: Responder) {
+    public func addAction(method: Request.Method, action: Responder) {
         actions[method] = action
     }
 
