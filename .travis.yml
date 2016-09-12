@@ -9,10 +9,6 @@ install:
   - rvm install 2.2.3
   - gem install xcpretty
 script:
-  - set -o
-  - swift build
-  - swift test
-  - swift package generate-xcodeproj
-  - xcodebuild -toolchain org.swift.3020160818a -project Flux.xcodeproj -scheme Flux -sdk macosx10.12 -destination arch=x86_64 -configuration Debug -enableCodeCoverage YES test | xcpretty
+  - ./ci.sh
 after_success:
   - bash <(curl -s https://codecov.io/bash)
