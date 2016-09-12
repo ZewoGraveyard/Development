@@ -3,6 +3,7 @@ os:
   - linux
 language: generic
 sudo: required
+dist: trusty
 osx_image: xcode8
 install:
   - source install-swift.sh
