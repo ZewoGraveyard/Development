@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class HTTPSerializerTests: XCTestCase {
+class HTTPSerializerTests : XCTestCase {
     func testResponseSerializeBuffer() throws {
         let outStream = Drain()
         let serializer = ResponseSerializer(stream: outStream)
