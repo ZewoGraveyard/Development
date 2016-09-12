@@ -51,7 +51,4 @@ XCTMain([
     testCase(TrieRouteMatcherTests.allTests),
     testCase(HTTPSerializerTests.allTests),
     testCase(ServerTests.allTests),
-
-    // Template
-    testCase(MustacheSerializerTests.allTests),
 ])
