@@ -186,7 +186,7 @@ class ResponseParserTests : XCTestCase {
 }
 
 extension ResponseParserTests {
-    static var allTests: [(String, (ResponseParserTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (ResponseParserTests) -> () throws -> Void)] {
         return [
             ("testInvalidHTTPVersion", testInvalidHTTPVersion),
             ("testShortResponses", testShortResponses),

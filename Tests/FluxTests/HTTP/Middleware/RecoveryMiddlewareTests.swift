@@ -56,7 +56,7 @@ class RecoveryMiddlewareTests : XCTestCase {
 }
 
 extension RecoveryMiddlewareTests {
-    static var allTests : [(String, (RecoveryMiddlewareTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RecoveryMiddlewareTests) -> () throws -> Void)] {
         return [
             ("testRecoveryMiddleware", testRecoveryMiddleware),
         ]

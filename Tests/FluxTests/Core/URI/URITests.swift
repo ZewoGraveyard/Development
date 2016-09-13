@@ -141,7 +141,7 @@ func == (lhs: [String: [String?]], rhs: [String: [String?]]) -> Bool {
 }
 
 extension URITests {
-    static var allTests: [(String, (URITests) -> () throws -> Void)] {
+    public static var allTests: [(String, (URITests) -> () throws -> Void)] {
         return [
             ("testParseFailure", testParseFailure),
             ("testSmallURI", testSmallURI),

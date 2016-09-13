@@ -33,7 +33,7 @@ class RedirectMiddlewareTests : XCTestCase {
 }
 
 extension RedirectMiddlewareTests {
-    static var allTests : [(String, (RedirectMiddlewareTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RedirectMiddlewareTests) -> () throws -> Void)] {
         return [
             ("testDoesRedirect", testDoesRedirect),
             ("testDoesntRedirect", testDoesntRedirect),

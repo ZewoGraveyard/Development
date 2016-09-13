@@ -218,7 +218,7 @@ class CoroutineTests : XCTestCase {
 }
 
 extension CoroutineTests {
-    static var allTests : [(String, (CoroutineTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (CoroutineTests) -> () throws -> Void)] {
         return [
             ("testCo", testCo),
             ("testStackdeallocationWorks", testStackdeallocationWorks),

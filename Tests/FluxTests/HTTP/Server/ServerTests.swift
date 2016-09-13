@@ -232,7 +232,7 @@ class ServerTests : XCTestCase {
 }
 
 extension ServerTests {
-    static var allTests : [(String, (ServerTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (ServerTests) -> () throws -> Void)] {
         return [
             ("testServer", testServer),
             ("testServerRecover", testServerRecover),

@@ -155,7 +155,7 @@ class PublicTests : XCTestCase {
 }
 
 extension PublicTests {
-    static var allTests: [(String, (PublicTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (PublicTests) -> () throws -> Void)] {
         return [
             ("testConstructType", testConstructType),
             ("testConstructFlags", testConstructFlags),

@@ -95,7 +95,7 @@ class BasicAuthMiddlewareTests : XCTestCase {
 }
 
 extension BasicAuthMiddlewareTests {
-    static var allTests : [(String, (BasicAuthMiddlewareTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (BasicAuthMiddlewareTests) -> () throws -> Void)] {
         return [
             ("testBasicAuthMiddleware", testBasicAuthMiddleware),
             ("testInvalidRequests", testInvalidRequests),

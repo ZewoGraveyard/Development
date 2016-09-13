@@ -131,7 +131,7 @@ class RequestTests : XCTestCase {
 }
 
 extension RequestTests {
-    static var allTests : [(String, (RequestTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RequestTests) -> () throws -> Void)] {
         return [
             ("testCreation", testCreation),
             ("testCreation", testURIAccessors),

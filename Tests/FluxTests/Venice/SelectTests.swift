@@ -471,7 +471,7 @@ extension SelectTests {
 }
 
 extension SelectTests {
-    static var allTests : [(String, (SelectTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (SelectTests) -> () throws -> Void)] {
         return [
             ("testNonBlockingReceiver", testNonBlockingReceiver),
             ("testBlockingReceiver", testBlockingReceiver),

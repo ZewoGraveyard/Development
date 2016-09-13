@@ -51,7 +51,7 @@ class RouterTests : XCTestCase {
 }
 
 extension RouterTests {
-    static var allTests: [(String, (RouterTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RouterTests) -> () throws -> Void)] {
         return [
             ("testEmptyRouter", testEmptyRouter),
             ("testRouter", testRouter),

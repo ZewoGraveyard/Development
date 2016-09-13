@@ -14,7 +14,7 @@ class TickerTests : XCTestCase {
 }
 
 extension TickerTests {
-    static var allTests : [(String, (TickerTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (TickerTests) -> () throws -> Void)] {
         return [
             ("testTicker", testTicker),
         ]

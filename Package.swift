@@ -3,8 +3,8 @@ import PackageDescription
 let package = Package(
     name: "Flux",
     targets: [
-        Target(name: "Flux"),
-
+        Target(name: "POSIX"),
+        Target(name: "Flux", dependencies: ["POSIX"]),
     ],
     dependencies: [
         .Package(url: "https://github.com/VeniceX/CLibvenice.git", majorVersion: 0, minor: 6),

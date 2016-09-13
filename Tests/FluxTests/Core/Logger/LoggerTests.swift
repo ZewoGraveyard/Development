@@ -29,7 +29,7 @@ class LoggerTests : XCTestCase {
 }
 
 extension LoggerTests {
-    static var allTests : [(String, (LoggerTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (LoggerTests) -> () throws -> Void)] {
         return [
             ("testLogger", testLogger),
         ]

@@ -234,7 +234,7 @@ class JSONTests : XCTestCase {
 }
 
 extension JSONTests {
-    static var allTests: [(String, (JSONTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (JSONTests) -> () throws -> Void)] {
         return [
             ("testJSON", testJSON),
             ("testNumberWithExponent", testNumberWithExponent),

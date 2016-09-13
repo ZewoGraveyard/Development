@@ -145,7 +145,7 @@ class FileTests : XCTestCase {
 }
 
 extension FileTests {
-    static var allTests : [(String, (FileTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (FileTests) -> () throws -> Void)] {
         return [
             ("testReadWrite", testReadWrite),
             ("testReadAllFile", testReadAllFile),

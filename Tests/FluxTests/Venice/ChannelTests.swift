@@ -217,7 +217,7 @@ class ChannelTests : XCTestCase {
 }
 
 extension ChannelTests {
-    static var allTests : [(String, (ChannelTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (ChannelTests) -> () throws -> Void)] {
         return [
             ("testReceiverWaitsForSender", testReceiverWaitsForSender),
             ("testSenderWaitsForReceiver", testSenderWaitsForReceiver),

@@ -93,7 +93,7 @@ class StringTests : XCTestCase {
 }
 
 extension StringTests {
-    static var allTests: [(String, (StringTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (StringTests) -> () throws -> Void)] {
         return [
             ("testCString", testCString),
             ("testCapitalization", testCapitalization),

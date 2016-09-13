@@ -803,7 +803,7 @@ class MapTests : XCTestCase {
 }
 
 extension MapTests {
-    static var allTests: [(String, (MapTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (MapTests) -> () throws -> Void)] {
         return [
            ("testCreation", testCreation),
            ("testConversion", testConversion),

@@ -451,7 +451,7 @@ extension FallibleChannelTests {
 }
 
 extension FallibleChannelTests {
-    static var allTests : [(String, (FallibleChannelTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (FallibleChannelTests) -> () throws -> Void)] {
         return [
             ("testReceiverWaitsForSender", testReceiverWaitsForSender),
             ("testReceiverWaitsForSenderError", testReceiverWaitsForSenderError),

@@ -64,13 +64,13 @@ extension TimeUnitRepresentable {
     }
 }
 
-extension Double: TimeUnitRepresentable {
+extension Double : TimeUnitRepresentable {
     public var seconds: Double {
         return self
     }
 }
 
-extension Int: TimeUnitRepresentable {
+extension Int : TimeUnitRepresentable {
     public var seconds: Double {
         return Double(self)
     }

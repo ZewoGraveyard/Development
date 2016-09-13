@@ -84,7 +84,7 @@ class HTTPSerializerTests : XCTestCase {
 }
 
 extension HTTPSerializerTests {
-    static var allTests: [(String, (HTTPSerializerTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (HTTPSerializerTests) -> () throws -> Void)] {
         return [
             ("testResponseSerializeBuffer", testResponseSerializeBuffer),
             ("testResponseSerializeBuffer", testResponseSerializeReaderStream),

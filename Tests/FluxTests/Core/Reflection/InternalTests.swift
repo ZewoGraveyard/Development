@@ -58,7 +58,7 @@ func == (lhs: [Any.Type], rhs: [Any.Type]) -> Bool {
 }
 
 extension InternalTests {
-    static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
             ("testShallowMetadata", testShallowMetadata),
             ("testNominalMetadata", testNominalMetadata),

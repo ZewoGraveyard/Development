@@ -128,7 +128,7 @@ class TCPTests : XCTestCase {
 }
 
 extension TCPTests {
-    static var allTests : [(String, (TCPTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (TCPTests) -> () throws -> Void)] {
         return [
             ("testConnectionRefused", testConnectionRefused),
             ("testSendClosedSocket", testSendClosedSocket),

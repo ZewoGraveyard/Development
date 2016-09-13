@@ -30,7 +30,7 @@ class PerformanceTests : XCTestCase {
 }
 
 extension PerformanceTests {
-    static var allTests: [(String, (PerformanceTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (PerformanceTests) -> () throws -> Void)] {
         return [
             ("testConstructType", testConstructType),
             ("testConstructTypeManually", testConstructTypeManually),

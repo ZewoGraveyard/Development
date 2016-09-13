@@ -67,7 +67,7 @@ class ResponseTests : XCTestCase {
 }
 
 extension ResponseTests {
-    static var allTests : [(String, (ResponseTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (ResponseTests) -> () throws -> Void)] {
         return [
             ("testCreation", testCreation),
             ("testStatusAccessors", testStatusAccessors),

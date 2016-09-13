@@ -1,21 +1,25 @@
 import XCTest
-@testable import FluxTests
+import POSIXTests
+
+import FluxTests
 
 XCTMain([
+    // POSIX
+    testCase(POSIXTests.allTests),
+    testCase(EnvironmentTests.allTests),
+
     // Venice
     testCase(ChannelTests.allTests),
     testCase(CoroutineTests.allTests),
     testCase(FallibleChannelTests.allTests),
     testCase(FileTests.allTests),
     testCase(IPTests.allTests),
-    testCase(POSIXTests.allTests),
     testCase(SelectTests.allTests),
     testCase(TCPTests.allTests),
     testCase(TickerTests.allTests),
     testCase(TimerTests.allTests),
 
     // Core
-    testCase(EnvironmentTests.allTests),
     testCase(JSONTests.allTests),
     testCase(LoggerTests.allTests),
     testCase(InternalTests.allTests),

@@ -1305,7 +1305,7 @@ class RoutesTests : XCTestCase {
 }
 
 extension RoutesTests {
-    static var allTests : [(String, (RoutesTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RoutesTests) -> () throws -> Void)] {
         return [
             ("testSimpleRoutes", testSimpleRoutes),
             ("testRoutesWithOnePathParameter", testRoutesWithOnePathParameter),

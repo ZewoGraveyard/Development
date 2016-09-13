@@ -122,7 +122,7 @@ class ResourceTests : XCTestCase {
 }
 
 extension ResourceTests {
-    static var allTests: [(String, (ResourceTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (ResourceTests) -> () throws -> Void)] {
         return [
             ("testEmptyResource", testEmptyResource),
             ("testResource", testResource),

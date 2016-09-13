@@ -298,7 +298,7 @@ class TrieRouteMatcherTests : XCTestCase {
 }
 
 extension TrieRouteMatcherTests {
-    static var allTests: [(String, (TrieRouteMatcherTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (TrieRouteMatcherTests) -> () throws -> Void)] {
         return [
             ("testTrie", testTrie),
             ("testMatcherMatchesRoutes", testMatcherMatchesRoutes),

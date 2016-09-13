@@ -72,7 +72,7 @@ class AttributedCookieTests : XCTestCase {
 }
 
 extension AttributedCookieTests {
-    static var allTests : [(String, (AttributedCookieTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (AttributedCookieTests) -> () throws -> Void)] {
         return [
             ("testConstruction", testConstruction),
             ("testParsing", testParsing),

@@ -61,7 +61,7 @@ class SessionMiddlewareTests : XCTestCase {
 }
 
 extension SessionMiddlewareTests {
-    static var allTests : [(String, (SessionMiddlewareTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (SessionMiddlewareTests) -> () throws -> Void)] {
         return [
            ("testCookieIsAdded", testCookieIsAdded),
            ("testSessionPersists", testSessionPersists)

@@ -132,7 +132,7 @@ class MapConvertibleTests : XCTestCase {
 }
 
 extension MapConvertibleTests {
-    static var allTests: [(String, (MapConvertibleTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (MapConvertibleTests) -> () throws -> Void)] {
         return [
             ("testMapConvertible", testMapConvertible),
             ("testGenericMapConvertible", testGenericMapConvertible),

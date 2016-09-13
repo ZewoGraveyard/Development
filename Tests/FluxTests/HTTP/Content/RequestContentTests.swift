@@ -113,7 +113,7 @@ class RequestContentTests : XCTestCase {
 }
 
 extension RequestContentTests {
-    static var allTests : [(String, (RequestContentTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RequestContentTests) -> () throws -> Void)] {
         return [
             ("testContent", testContent),
             ("testOptionalContent", testOptionalContent),

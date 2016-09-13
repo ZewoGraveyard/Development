@@ -89,7 +89,7 @@ class MessageTests : XCTestCase {
 }
 
 extension MessageTests {
-    static var allTests: [(String, (MessageTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (MessageTests) -> () throws -> Void)] {
         return [
             ("testHeadersCaseInsensitivity", testHeadersCaseInsensitivity),
             ("testContentTypeHeader", testHeadersDescription),

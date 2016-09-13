@@ -30,7 +30,7 @@ class LogMiddlewareTests : XCTestCase {
 }
 
 extension LogMiddlewareTests {
-    static var allTests : [(String, (LogMiddlewareTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (LogMiddlewareTests) -> () throws -> Void)] {
         return [
             ("testLogMiddleware", testLogMiddleware),
             ("testDebugLogMiddleware", testDebugLogMiddleware),

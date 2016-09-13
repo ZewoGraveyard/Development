@@ -235,7 +235,7 @@ class RequestParserTests : XCTestCase {
 }
 
 extension RequestParserTests {
-    static var allTests: [(String, (RequestParserTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (RequestParserTests) -> () throws -> Void)] {
         return [
             ("testInvalidMethod", testInvalidMethod),
             ("testInvalidURI", testInvalidURI),

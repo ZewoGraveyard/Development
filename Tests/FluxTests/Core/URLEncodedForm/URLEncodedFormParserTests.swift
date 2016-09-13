@@ -51,7 +51,7 @@ class URLEncodedFormParserTests : XCTestCase {
 }
 
 extension URLEncodedFormParserTests {
-    static var allTests: [(String, (URLEncodedFormParserTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (URLEncodedFormParserTests) -> () throws -> Void)] {
         return [
            ("testSingleValue", testSingleValue),
            ("testMultipleValues", testMultipleValues),

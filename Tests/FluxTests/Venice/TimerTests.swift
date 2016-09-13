@@ -27,7 +27,7 @@ class TimerTests : XCTestCase {
 }
 
 extension TimerTests {
-    static var allTests : [(String, (TimerTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (TimerTests) -> () throws -> Void)] {
         return [
             ("testTimer", testTimer),
             ("testTimerStops", testTimerStops),

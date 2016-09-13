@@ -175,7 +175,7 @@ extension Body {
 }
 
 extension BodyTests {
-    static var allTests : [(String, (BodyTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (BodyTests) -> () throws -> Void)] {
         return [
             ("testBufferBecomeBuffer", testBufferBecomeBuffer),
             ("testBodyEquality", testBodyEquality),

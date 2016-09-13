@@ -175,7 +175,7 @@ class ContentNegotiationMiddlewareTests : XCTestCase {
 }
 
 extension ContentNegotiationMiddlewareTests {
-    static var allTests : [(String, (ContentNegotiationMiddlewareTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (ContentNegotiationMiddlewareTests) -> () throws -> Void)] {
         return [
             ("testJSONRequestDefaultResponse", testJSONRequestDefaultResponse),
             ("testJSONRequestResponse", testJSONRequestResponse),

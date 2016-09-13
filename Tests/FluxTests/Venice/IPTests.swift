@@ -105,7 +105,7 @@ class IPTests : XCTestCase {
 }
 
 extension IPTests {
-    static var allTests : [(String, (IPTests) -> () throws -> Void)] {
+    public static var allTests: [(String, (IPTests) -> () throws -> Void)] {
         return [
             ("testErrorDescription", testErrorDescription),
             ("testLocalIPV4", testLocalIPV4),
