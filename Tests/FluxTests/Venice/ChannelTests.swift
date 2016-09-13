@@ -6,7 +6,7 @@ struct Fou {
     let baz: Int
 }
 
-class ChannelTests : XCTestCase {
+public class ChannelTests : XCTestCase {
     func testReceiverWaitsForSender() {
         let channel = Channel<Int>()
         co {

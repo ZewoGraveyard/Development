@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class CookieTests : XCTestCase {
+public class CookieTests : XCTestCase {
     func testConstruction() throws {
         let cookieString = "foo=bar"
         let cookie = Cookie(

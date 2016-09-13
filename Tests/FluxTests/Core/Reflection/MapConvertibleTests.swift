@@ -22,7 +22,7 @@ struct AppConfiguration : MapConvertible {
     let server: ServerConfiguration
 }
 
-class MapConvertibleTests : XCTestCase {
+public class MapConvertibleTests : XCTestCase {
     func testMapConvertible() throws {
         let map: Map = [
             "firstName": "Jane",

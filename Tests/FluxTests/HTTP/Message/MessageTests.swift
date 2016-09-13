@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class MessageTests : XCTestCase {
+public class MessageTests : XCTestCase {
     func testHeadersCaseInsensitivity() {
         let headers: Headers = [
             "Content-Type": "application/json",

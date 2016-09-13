@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class RoutesTests : XCTestCase {
+public class RoutesTests : XCTestCase {
     private func checkRoute(routes: Routes, method: Request.Method, path: String, request: Request, response: Response) throws {
         if routes.routes.count != 1 {
             XCTFail("Should've created exactly one route.")

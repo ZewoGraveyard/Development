@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class MapTests : XCTestCase {
+public class MapTests : XCTestCase {
     func testCreation() {
         let nullValue: Bool? = nil
         let null = Map(nullValue)

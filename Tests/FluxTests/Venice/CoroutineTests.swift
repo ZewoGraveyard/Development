@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class CoroutineTests : XCTestCase {
+public class CoroutineTests : XCTestCase {
     var sum: Int = 0
 
     func worker(count: Int, n: Int) {

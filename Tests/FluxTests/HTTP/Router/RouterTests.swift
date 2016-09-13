@@ -27,7 +27,7 @@ struct CustomRecoverRouter : Router {
     }
 }
 
-class RouterTests : XCTestCase {
+public class RouterTests : XCTestCase {
     func testEmptyRouter() throws {
         let router = EmptyRouter()
         let request = Request()

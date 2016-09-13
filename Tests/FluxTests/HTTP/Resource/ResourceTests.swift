@@ -54,7 +54,7 @@ struct CompleteResource : Resource {
     }
 }
 
-class ResourceTests : XCTestCase {
+public class ResourceTests : XCTestCase {
     func testEmptyResource() throws {
         let resource = EmptyResource()
         var request = Request()

@@ -71,7 +71,7 @@ let statuses: [Response.Status] = [
     .networkAuthenticationRequired,
 ]
 
-class ResponseParserTests : XCTestCase {
+public class ResponseParserTests : XCTestCase {
     func testInvalidHTTPVersion() throws {
         let data = "HUEHUE 200 OK\r\n\r\n"
         let stream = Drain(buffer: data)

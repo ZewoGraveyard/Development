@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class SelectTests : XCTestCase {
+public class SelectTests : XCTestCase {
     func testNonBlockingReceiver() {
         let channel = Channel<Int>()
         co {

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class ContentNegotiationMiddlewareTests : XCTestCase {
+public class ContentNegotiationMiddlewareTests : XCTestCase {
     let contentNegotiation = ContentNegotiationMiddleware(mediaTypes: [JSON.self, URLEncodedForm.self])
     let clientContentNegotiation = ContentNegotiationMiddleware(mediaTypes: [JSON.self, URLEncodedForm.self], mode: .client)
 

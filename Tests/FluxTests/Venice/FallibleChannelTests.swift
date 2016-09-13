@@ -4,7 +4,7 @@ import XCTest
 struct SomeError : Error {}
 struct NastyError : Error {}
 
-class FallibleChannelTests : XCTestCase {
+public class FallibleChannelTests : XCTestCase {
     func testReceiverWaitsForSender() {
         let channel = FallibleChannel<Int>()
         co {

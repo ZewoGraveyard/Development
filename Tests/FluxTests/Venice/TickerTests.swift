@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class TickerTests : XCTestCase {
+public class TickerTests : XCTestCase {
     func testTicker() {
         let ticker = Ticker(period: 10.milliseconds)
         co {

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class TCPTests : XCTestCase {
+public class TCPTests : XCTestCase {
     func testConnectionRefused() throws {
         let connection = try TCPConnection(host: "127.0.0.1", port: 1111)
         XCTAssertThrowsError(try connection.open())

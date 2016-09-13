@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class AttributedCookieTests : XCTestCase {
+public class AttributedCookieTests : XCTestCase {
     func testConstruction() throws {
         let cookieString = "foo=bar; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Domain=zewo.io; Path=/libs; Secure; HttpOnly"
         let cookie = AttributedCookie(

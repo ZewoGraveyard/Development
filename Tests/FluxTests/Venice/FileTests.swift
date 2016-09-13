@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class FileTests : XCTestCase {
+public class FileTests : XCTestCase {
     func testReadWrite() throws {
         var buffer = Data(count: 6)
         let file = try File(path: "/tmp/zewo-test-file", mode: .truncateReadWrite)

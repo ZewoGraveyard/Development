@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class TimerTests : XCTestCase {
+public class TimerTests : XCTestCase {
     func testTimer() {
         let timer = Timer(deadline: 100.milliseconds.fromNow())
         timer.channel.receive()

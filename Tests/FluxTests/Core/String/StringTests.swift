@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class StringTests : XCTestCase {
+public class StringTests : XCTestCase {
     func testCString() {
         let validUTF8: [CChar] = [67, 97, 102, -61, -87, 0]
         validUTF8.withUnsafeBufferPointer { ptr in

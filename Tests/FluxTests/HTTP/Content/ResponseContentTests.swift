@@ -8,7 +8,7 @@ struct Fuu : MapFallibleRepresentable {
     }
 }
 
-class ResponseContentTests : XCTestCase {
+public class ResponseContentTests : XCTestCase {
     func testContent() throws {
         let content = 1969
         let response = Response(content: content)

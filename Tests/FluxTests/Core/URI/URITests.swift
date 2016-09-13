@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class URITests : XCTestCase {
+public class URITests : XCTestCase {
     func testParseFailure() {
         XCTAssertThrowsError(try URI(""))
         XCTAssertThrowsError(try URI("http"))

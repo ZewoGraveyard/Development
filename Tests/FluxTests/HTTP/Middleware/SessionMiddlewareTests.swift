@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class SessionMiddlewareTests : XCTestCase {
+public class SessionMiddlewareTests : XCTestCase {
     let middleware = SessionMiddleware()
 
     func testCookieIsAdded() throws {

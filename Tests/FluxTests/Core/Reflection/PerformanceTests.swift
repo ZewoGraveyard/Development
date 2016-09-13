@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class PerformanceTests : XCTestCase {
+public class PerformanceTests : XCTestCase {
     let dictionary: [String : Any] = ["firstName": "Brad", "lastName": "Hilton", "age": 27]
     let iterations = 0..<10_000
     var target = ""

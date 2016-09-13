@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class RedirectMiddlewareTests : XCTestCase {
+public class RedirectMiddlewareTests : XCTestCase {
     let redirect = RedirectMiddleware(redirectTo: "/over-there", if: { $0.method == .get })
 
     func testDoesRedirect() throws {

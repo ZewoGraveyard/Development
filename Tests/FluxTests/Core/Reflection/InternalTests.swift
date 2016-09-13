@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class InternalTests : XCTestCase {
+public class InternalTests : XCTestCase {
     func testShallowMetadata() {
         func testShallowMetadata<T>(type: T.Type, expectedKind: Metadata.Kind) {
             let shallowMetadata = Metadata(type: type)

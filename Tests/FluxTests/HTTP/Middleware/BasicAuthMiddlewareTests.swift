@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class BasicAuthMiddlewareTests : XCTestCase {
+public class BasicAuthMiddlewareTests : XCTestCase {
     func testBasicAuthMiddleware() throws {
         var serverBasicAuth = BasicAuthMiddleware(realm: "Zewo") { username, password in
             if username == "foo" && password == "bar" {

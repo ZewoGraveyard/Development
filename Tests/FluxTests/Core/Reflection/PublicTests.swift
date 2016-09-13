@@ -41,7 +41,7 @@ func == (lhs: ReferencePerson, rhs: ReferencePerson) -> Bool {
     return lhs.firstName == rhs.firstName && lhs.lastName == rhs.lastName && lhs.age == rhs.age
 }
 
-class PublicTests : XCTestCase {
+public class PublicTests : XCTestCase {
     func testConstructType() throws {
         for _ in 0 ..< 1000 {
             let person: Person = try construct {

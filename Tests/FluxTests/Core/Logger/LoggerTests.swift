@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class LoggerTests : XCTestCase {
+public class LoggerTests : XCTestCase {
     func testLogger() throws {
         let appender = StandardOutputAppender()
         let logger = Logger(appenders: [appender])

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class LogMiddlewareTests : XCTestCase {
+public class LogMiddlewareTests : XCTestCase {
     func testLogMiddleware() throws {
         let log = LogMiddleware()
         let request = Request()

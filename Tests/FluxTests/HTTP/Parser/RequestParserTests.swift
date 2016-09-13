@@ -52,7 +52,7 @@ let methods: [Request.Method] = [
     .other(method: "UNLINK"),
 ]
 
-class RequestParserTests : XCTestCase {
+public class RequestParserTests : XCTestCase {
     func testInvalidMethod() {
         let data = "INVALID / HTTP/1.1\r\n\r\n"
         let stream = Drain(buffer: data)

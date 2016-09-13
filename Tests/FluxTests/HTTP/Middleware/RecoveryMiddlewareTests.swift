@@ -5,7 +5,7 @@ enum RecoveryMiddlewareTestError : Error {
     case error
 }
 
-class RecoveryMiddlewareTests : XCTestCase {
+public class RecoveryMiddlewareTests : XCTestCase {
     func testRecoveryMiddleware() throws {
         let request = Request()
 

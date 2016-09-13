@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class JSONTests : XCTestCase {
+public class JSONTests : XCTestCase {
     func testJSON() throws {
         let parser = JSONMapParser()
         let serializer = JSONMapSerializer(ordering: true)

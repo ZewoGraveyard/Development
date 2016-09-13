@@ -84,7 +84,7 @@ enum CustomError :  Error {
     case error
 }
 
-class ServerTests : XCTestCase {
+public class ServerTests : XCTestCase {
     func testServer() throws {
         var called = false
 

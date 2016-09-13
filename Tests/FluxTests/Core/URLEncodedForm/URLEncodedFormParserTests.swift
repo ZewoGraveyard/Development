@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class URLEncodedFormParserTests : XCTestCase {
+public class URLEncodedFormParserTests : XCTestCase {
     func testSingleValue() throws {
         let data = Data("key=value")
         let urlEncodedForm = try URLEncodedFormParser().parse(data: data)

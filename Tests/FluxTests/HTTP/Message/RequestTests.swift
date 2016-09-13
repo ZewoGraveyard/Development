@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class RequestTests : XCTestCase {
+public class RequestTests : XCTestCase {
     func testCreation() throws {
         var request = Request()
         XCTAssertEqual(request.method, .get)

@@ -1,7 +1,7 @@
 import XCTest
 @testable import Flux
 
-class TrieRouteMatcherTests : XCTestCase {
+public class TrieRouteMatcherTests : XCTestCase {
     let ok = BasicResponder { request in
         return Response(status: .ok)
     }
