@@ -10,6 +10,7 @@ import IPTests
 import POSIXTests
 import ReflectionTests
 import TCPTests
+import UDPTests
 import VeniceTests
 
 XCTMain([
@@ -63,4 +64,8 @@ XCTMain([
     testCase(TrieRouteMatcherTests.allTests),
     testCase(HTTPSerializerTests.allTests),
     testCase(ServerTests.allTests),
+
+
+    // UDP
+    testCase(UDPSocketTests.allTests),
 ])

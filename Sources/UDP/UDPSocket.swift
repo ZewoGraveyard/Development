@@ -22,10 +22,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Core
 import CLibvenice
-// import C7
 import POSIX
-// @_exported import IP
 
 public enum UDPError: Error {
     case didSendDataWithError(error: SystemError, remaining: Data)
