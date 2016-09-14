@@ -23,9 +23,9 @@
 // SOFTWARE.
 
 import CLibvenice
-import C7
+// import C7
 import POSIX
-@_exported import IP
+// @_exported import IP
 
 public enum UDPError: Error {
     case didSendDataWithError(error: SystemError, remaining: Data)
@@ -70,8 +70,8 @@ public final class UDPSocket {
     public func send(_ data: Data, ip: IP, timingOut deadline: Double = .never) throws {
         try ensureStreamIsOpen()
 
-        data.withUnsafeBufferPointer {
-            udpsend(socket, ip.address, $0.baseAddress, $0.count)
+        data.withUnsafeBytes { (ptr: UnsafePointer<Data>) -> Void in
+            udpsend(socket, ip.address, ptr, data.count)
         }
 
         try ensureLastOperationSucceeded()
@@ -81,10 +81,11 @@ public final class UDPSocket {
         try ensureStreamIsOpen()
 
         var address = ipaddr()
-        var data = Data.buffer(with: byteCount)
+        // var data = Data.buffer(with: byteCount)
+        var data = Data(count: byteCount)
 
-        let received = data.withUnsafeMutableBufferPointer {
-            udprecv(socket, &address, $0.baseAddress, $0.count, deadline.int64milliseconds)
+        let received = data.withUnsafeMutableBytes { (ptr: UnsafeMutablePointer<Data>) -> Int in
+            udprecv(socket, &address, ptr, data.count, deadline.int64milliseconds)
         }
 
         let receivedData = Data(data.prefix(received))
@@ -108,7 +109,7 @@ public final class UDPSocket {
 
     private func ensureStreamIsOpen() throws {
         if closed {
-            throw StreamError.closedStream(data: [])
+            throw StreamError.closedStream(data: Data())
         }
     }
 }
