@@ -16,3 +16,7 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       swiftenv rehash
     fi
 fi
+
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+	rvm get head
+fi
