@@ -1,5 +1,6 @@
 import XCTest
 import CoreTests
+import FileTests
 // import HTTPClientTests
 // import HTTPFileTests
 import HTTPServerTests
@@ -36,7 +37,6 @@ XCTMain([
     testCase(PublicTests.allTests),
     testCase(StringTests.allTests),
     testCase(MapTests.allTests),
-    testCase(URITests.allTests),
     testCase(URLEncodedFormParserTests.allTests),
 
 
