@@ -1,7 +1,15 @@
 import XCTest
+import CoreTests
+// import HTTPClientTests
+// import HTTPFileTests
+import HTTPServerTests
+import HTTPTests
+import IPTests
+// import OpenSSLTests
 import POSIXTests
-
-import FluxTests
+import ReflectionTests
+import TCPTests
+import VeniceTests
 
 XCTMain([
     // POSIX

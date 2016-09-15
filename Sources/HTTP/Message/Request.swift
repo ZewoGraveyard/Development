@@ -50,7 +50,7 @@ extension Request : RequestConvertible {
 }
 
 extension Request {
-    public init(method: Method = .get, url: URL, headers: Headers = [:], body: Body) {
+    public init(method: Method = .get, url: URL = URL(string: "/")!, headers: Headers = [:], body: Body) {
         self.init(
             method: method,
             url: url,
@@ -67,7 +67,7 @@ extension Request {
         }
     }
 
-    public init(method: Method = .get, url: URL, headers: Headers = [:], body: Data = Data()) {
+    public init(method: Method = .get, url: URL = URL(string: "/")!, headers: Headers = [:], body: Data = Data()) {
         self.init(
             method: method,
             url: url,
@@ -76,7 +76,7 @@ extension Request {
         )
     }
 
-    public init(method: Method = .get, url: URL, headers: Headers = [:], body: Core.InputStream) {
+    public init(method: Method = .get, url: URL = URL(string: "/")!, headers: Headers = [:], body: Core.InputStream) {
         self.init(
             method: method,
             url: url,
@@ -85,7 +85,7 @@ extension Request {
         )
     }
 
-    public init(method: Method = .get, url: URL, headers: Headers = [:], body: @escaping (Core.OutputStream) throws -> Void) {
+    public init(method: Method = .get, url: URL = URL(string: "/")!, headers: Headers = [:], body: @escaping (Core.OutputStream) throws -> Void) {
         self.init(
             method: method,
             url: url,
@@ -96,7 +96,7 @@ extension Request {
 }
 
 extension Request {
-    public init(method: Method = .get, url: URL, headers: Headers = [:], body: DataRepresentable) {
+    public init(method: Method = .get, url: URL = URL(string: "/")!, headers: Headers = [:], body: DataRepresentable) {
         self.init(
             method: method,
             url: url,
