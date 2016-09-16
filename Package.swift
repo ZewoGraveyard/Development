@@ -15,7 +15,7 @@ let package = Package(
         Target(name: "File", dependencies: ["Core"]),
         Target(name: "HTTPFile", dependencies: ["HTTP", "File"]),
         Target(name: "HTTPServer", dependencies: ["HTTPFile", "TCP", "Venice"]),
-        Target(name: "HTTPClient", dependencies: ["HTTP", "TCP", "Venice"]),
+        Target(name: "HTTPClient", dependencies: ["HTTPFile", "TCP", "Venice"]),
     ],
     dependencies: [
         .Package(url: "https://github.com/VeniceX/CLibvenice.git", majorVersion: 0, minor: 13),
