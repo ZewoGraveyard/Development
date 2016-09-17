@@ -16,6 +16,8 @@ XCTMain([
     // POSIX
     testCase(POSIXTests.allTests),
     testCase(EnvironmentTests.allTests),
+    testCase(ThreadTests.allTests),
+    testCase(LockTests.allTests),
 
     // Venice
     testCase(ChannelTests.allTests),
