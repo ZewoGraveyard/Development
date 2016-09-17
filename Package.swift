@@ -1,7 +1,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Flux",
+    name: "Development",
     targets: [
         Target(name: "POSIX"),
         Target(name: "Reflection"),
